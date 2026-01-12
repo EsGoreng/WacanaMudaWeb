@@ -1,10 +1,4 @@
-<x-layouts.app :title="__('Home')">
-    <x-slot:secondary_nav>
-        <flux:navbar.item :href="route('home')" :current="true" wire:navigate>
-            {{ __('For you') }}
-        </flux:navbar.item>
-    </x-slot:secondary_nav>
-
+<x-dashboard.layout>
     <flux:heading size="xl" level="1">{{ __('Good afternoon') }}, {{ auth()->user()->name }}</flux:heading>
     <flux:text class="mb-6 mt-2 text-base">{{ __("Here's what's new today") }}</flux:text>
     <flux:separator variant="subtle" />
@@ -27,4 +21,4 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-dashboard.layout>

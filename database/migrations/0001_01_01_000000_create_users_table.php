@@ -25,6 +25,9 @@ return new class extends Migration
             $table->string('phone');
             $table->boolean('is_active')->default(false);
 
+            $table->numeric('followers_count')->default(0);
+            $table->numeric('following_count')->default(0);
+
             $table->rememberToken();
             $table->timestamps();
         });

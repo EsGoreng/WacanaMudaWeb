@@ -22,11 +22,15 @@
                         wire:navigate>
                         {{ __('Home') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="computer-desktop" :href="route('home')"
-                        :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __(key: 'Dashboard') }}
-                    </flux:sidebar.item>
+                    @can(['create posts'])
+                        <flux:sidebar.item icon="computer-desktop" :href="route('dashboard')"
+                            :current="request()->routeIs('dashboard*')" wire:navigate>
+                            {{ __('Dashboard') }}
+                        </flux:sidebar.item>
+                    @endcan
                 </flux:sidebar.group>
+
+                <flux:separator variant="subtle" />
 
                 <flux:sidebar.group :heading="__('Main Menu')" class="grid">
                     <flux:sidebar.item icon="book-open" :href="route('home')" :current="request()->routeIs('articles')"
@@ -45,7 +49,7 @@
             </flux:sidebar.nav>
 
             <flux:spacer />
-
+            <flux:separator variant="subtle" />
             <flux:sidebar.group heading="{{ __('Contact Us') }}">
                 <flux:sidebar.nav>
                     <flux:sidebar.item href="https://www.instagram.com/wacanamuda/" target="_blank">
@@ -120,6 +124,7 @@
         </div>
     </div>
     @fluxScripts
+    @filamentScripts
 </body>
 
 </html>

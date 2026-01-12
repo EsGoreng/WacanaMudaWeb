@@ -31,7 +31,8 @@ class RoleSeeder extends Seeder
             'create posts',
             'edit own posts',
             'delete own posts',
-            'post comments'
+            'create comments',
+            'delete own comments',
         ]);
 
         $rolePengurus = Role::create(['name' => 'admin']);
@@ -42,7 +43,8 @@ class RoleSeeder extends Seeder
             'create posts', 
             'edit own posts',
             'delete own posts',
-            'post comments'
+            'create comments',
+            'delete comments',
         ]);
 
         $roleSuperadmin = Role::create(['name' => 'superadmin']);
@@ -60,7 +62,6 @@ class RoleSeeder extends Seeder
         ]);
         $admin->assignRole('superadmin');
 
-        // Akun Pengurus Contoh
         $pengurus = User::firstOrCreate([
             'email' => 'pengurus@wacanamuda.id',
         ], [
