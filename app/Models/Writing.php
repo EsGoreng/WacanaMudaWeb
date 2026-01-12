@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+class Writing extends Model
+{
+    use HasFactory;
+
+    protected $primaryKey = 'article_id';
+
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'series_id',
+        'title',
+        'slug',
+        'content',
+        'featured_image',
+        'reading_time',
+        'is_anonymous',
+        'status',
+        'published_at',
+    ];
+
+    protected $casts = [
+        'is_anonymous' => 'boolean',
+        'published_at' => 'datetime',
+        'reading_time' => 'integer',
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function series(): BelongsTo
+    {
+        return $this->belongsTo(Series::class, 'series_id');
+    }
+
+    public function getAuthorDisplayNameAttribute()
+    {
+        if ($this->is_anonymous) {
+            return 'Anonymous';
+        }
+        return $this->user->name ?? 'Unknown';
+    }
+}

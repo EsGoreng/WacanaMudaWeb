@@ -18,16 +18,18 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'edit own posts']);
         Permission::create(['name' => 'delete own posts']);
         
-        Permission::create(['name' => 'post comments']);
-        Permission::create(['name' => 'validate members']);
+        Permission::create(['name' => 'create comments']);
+        Permission::create(['name' => 'delete own comments']);
+        Permission::create(['name' => 'delete   comments']);
         
         Permission::create(['name' => 'manage events']);
         Permission::create(['name' => 'moderate content']);
+        Permission::create(['name' => 'validate members']);
         
         Permission::create(['name' => 'manage admins']);
 
-        $roleAnggota = Role::create(['name' => 'member']);
-        $roleAnggota->givePermissionTo([
+        $roleMember = Role::create(['name' => 'member']);
+        $roleMember->givePermissionTo([
             'create posts',
             'edit own posts',
             'delete own posts',
@@ -35,8 +37,8 @@ class RoleSeeder extends Seeder
             'delete own comments',
         ]);
 
-        $rolePengurus = Role::create(['name' => 'admin']);
-        $rolePengurus->givePermissionTo([
+        $roleAdmin = Role::create(['name' => 'admin']);
+        $roleAdmin->givePermissionTo([
             'validate members',
             'manage events',
             'moderate content',
@@ -51,8 +53,8 @@ class RoleSeeder extends Seeder
         $roleSuperadmin->givePermissionTo(Permission::all());
 
 
-        $admin = User::firstOrCreate([
-            'email' => 'admin@wacanamuda.id',
+        $superadmin = User::firstOrCreate([
+            'email' => 'superadmin@wacanamuda.id',
         ], [
             'name' => 'Super Admin',
             'username' => 'superadmin',
@@ -60,17 +62,17 @@ class RoleSeeder extends Seeder
             'is_active' => true,
             'phone' => '6281234567890'
         ]);
-        $admin->assignRole('superadmin');
+        $superadmin->assignRole('superadmin');
 
-        $pengurus = User::firstOrCreate([
-            'email' => 'pengurus@wacanamuda.id',
+        $admin = User::firstOrCreate([
+            'email' => 'admin@wacanamuda.id',
         ], [
-            'name' => 'Divisi Kegiatan',
-            'username' => 'pengurus1',
+            'name' => 'Anonymous Admin',
+            'username' => 'admin1',
             'password' => Hash::make('password123'),
             'is_active' => true,
             'phone' => '6281200000000'
         ]);
-        $pengurus->assignRole('admin');
+        $admin->assignRole('admin');
     }
 }

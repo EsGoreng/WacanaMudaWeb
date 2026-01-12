@@ -21,12 +21,12 @@ return new class extends Migration
 
             $table->string('username')->unique();
             $table->string('avatar')->nullable();
-            $table->string('bio')->nullable();
+            $table->text('bio')->nullable();
             $table->string('phone');
             $table->boolean('is_active')->default(false);
 
-            $table->numeric('followers_count')->default(0);
-            $table->numeric('following_count')->default(0);
+            $table->integer('followers_count')->default(0);
+            $table->integer('following_count')->default(0);
 
             $table->rememberToken();
             $table->timestamps();
