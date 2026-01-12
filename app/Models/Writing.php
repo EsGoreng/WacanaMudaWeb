@@ -11,7 +11,7 @@ class Writing extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'article_id';
+    protected $primaryKey = 'writing_id';
 
     protected $fillable = [
         'user_id',

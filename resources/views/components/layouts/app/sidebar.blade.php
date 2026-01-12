@@ -113,7 +113,7 @@
 
             </flux:header>
 
-            <main class="flex-1 overflow-y-auto" @scroll="handleScroll($event)">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden" @scroll="handleScroll($event)">
                 <div class="min-h-full">
                     {{ $slot }}
                 </div>
@@ -123,8 +123,11 @@
 
         </div>
     </div>
-    @fluxScripts
+    @livewire('notifications')
+
     @filamentScripts
+    @vite('resources/js/app.js')
+    @fluxScripts
 </body>
 
 </html>

@@ -3,10 +3,9 @@
 namespace Database\Seeders;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
@@ -27,10 +26,6 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'Jelajah Rasa',
                 'description' => 'Fokus pada refleksi, perenungan, dan pembelajaran pengalaman.',
-            ],
-            [
-                'name' => 'Isu Terkini',
-                'description' => 'Tanggapan terhadap isu-isu hangat yang sedang terjadi.',
             ],
         ];
 

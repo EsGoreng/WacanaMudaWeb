@@ -45,20 +45,7 @@
 
                 <div class="mt-4">
                     <div x-show="activeTab === 'all'" x-transition>
-                        <div class="flex flex-col gap-6">
-                            <div
-                                class="aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700 p-6 flex items-center justify-center">
-                                Content Tab 1 - Card A
-                            </div>
-                            <div
-                                class="aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700 p-6 flex items-center justify-center">
-                                Content Tab 1 - Card B
-                            </div>
-                            <div
-                                class="aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700 p-6 flex items-center justify-center">
-                                Content Tab 1 - Card C
-                            </div>
-                        </div>
+                        @livewire('writing-crud')
                     </div>
 
                     <div x-show="activeTab === 'published'" x-cloak x-transition>

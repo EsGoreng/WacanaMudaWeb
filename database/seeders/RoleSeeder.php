@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
@@ -17,15 +17,15 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'create posts']);
         Permission::create(['name' => 'edit own posts']);
         Permission::create(['name' => 'delete own posts']);
-        
+
         Permission::create(['name' => 'create comments']);
         Permission::create(['name' => 'delete own comments']);
-        Permission::create(['name' => 'delete   comments']);
-        
+        Permission::create(['name' => 'delete comments']);
+
         Permission::create(['name' => 'manage events']);
         Permission::create(['name' => 'moderate content']);
         Permission::create(['name' => 'validate members']);
-        
+
         Permission::create(['name' => 'manage admins']);
 
         $roleMember = Role::create(['name' => 'member']);
@@ -42,7 +42,7 @@ class RoleSeeder extends Seeder
             'validate members',
             'manage events',
             'moderate content',
-            'create posts', 
+            'create posts',
             'edit own posts',
             'delete own posts',
             'create comments',
@@ -52,7 +52,6 @@ class RoleSeeder extends Seeder
         $roleSuperadmin = Role::create(['name' => 'superadmin']);
         $roleSuperadmin->givePermissionTo(Permission::all());
 
-
         $superadmin = User::firstOrCreate([
             'email' => 'superadmin@wacanamuda.id',
         ], [
@@ -60,7 +59,7 @@ class RoleSeeder extends Seeder
             'username' => 'superadmin',
             'password' => Hash::make('password123'),
             'is_active' => true,
-            'phone' => '6281234567890'
+            'phone' => '6281234567890',
         ]);
         $superadmin->assignRole('superadmin');
 
@@ -71,7 +70,7 @@ class RoleSeeder extends Seeder
             'username' => 'admin1',
             'password' => Hash::make('password123'),
             'is_active' => true,
-            'phone' => '6281200000000'
+            'phone' => '6281200000000',
         ]);
         $admin->assignRole('admin');
     }
