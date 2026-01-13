@@ -123,17 +123,7 @@ class WritingCreate extends Component implements HasActions, HasSchemas
                                 ->required()
                                 ->searchable()
                                 ->columnSpanFull()
-                                ->preload()
-                                ->createOptionForm([
-                                    TextInput::make('name')
-                                        ->required()
-                                        ->maxLength(255),
-                                    TextInput::make('slug')
-                                        ->required()
-                                        ->maxLength(255),
-                                    Textarea::make('description')
-                                        ->rows(3),
-                                ]),
+                                ->preload(),
                             Select::make('series_id')
                                 ->label('Series')
                                 ->options(function () {
@@ -154,9 +144,9 @@ class WritingCreate extends Component implements HasActions, HasSchemas
                             Select::make('status')
                                 ->label('Status')
                                 ->options([
-                                    'draft' => 'Draft',
-                                    'published' => 'Published',
-                                    'archived' => 'Archived',
+                                    'Draft' => 'Draft',
+                                    'Published' => 'Published',
+                                    'Archived' => 'Archived',
                                 ])
                                 ->required()
                                 ->default('draft'),

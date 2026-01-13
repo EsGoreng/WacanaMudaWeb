@@ -1,12 +1,15 @@
 <?php
 
 use App\Livewire\WritingCreate;
+use App\Livewire\WritingDetail;
 use App\Livewire\WritingEdit;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('pages.welcome');
 })->name('welcome');
+
+Route::get('/writing/{writing:slug}', WritingDetail::class)->name('writing.show');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::view('/home', 'pages.home')->name('home');

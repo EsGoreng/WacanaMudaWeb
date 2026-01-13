@@ -36,7 +36,7 @@
 
                 <div class="mt-4">
                     <div x-show="activeTab === 'writing'" x-transition>
-                        @livewire('writing-crud')
+                        @livewire('writing-table')
                     </div>
 
                     <div x-show="activeTab === 'comment'" x-cloak x-transition>

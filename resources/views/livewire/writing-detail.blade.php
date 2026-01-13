@@ -1,0 +1,200 @@
+<div
+    class="min-h-screen font-sans antialiased transition-colors duration-100
+            bg-zinc-50
+            dark:bg-zinc-800">
+
+
+    {{-- HERO SECTION --}}
+    <div class="relative w-full h-[400px] md:h-[500px] lg:h-[600px] group">
+
+        {{-- Background Image --}}
+        <div class="absolute inset-0 w-full h-full">
+            <img alt="{{ $writing->title }}" class="w-full h-full object-cover" src="{{ $writing->image_url }}" />
+            <div class="absolute inset-0 bg-zinc-900/40"></div>
+        </div>
+
+        <div class="absolute top-6 left-4 lg:left-8 z-20">
+            <a href="{{ route('writing') }}"
+                class="flex items-center gap-2 px-4 py-2 bg-black/20 hover:bg-black/40 backdrop-blur-sm text-white rounded-lg transition-all border border-white/10 group/btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="transition-transform group-hover/btn:-translate-x-1">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+                <span class="text-sm font-medium">Back</span>
+            </a>
+        </div>
+
+        {{-- Gradient Overlay (Bottom Fade) --}}
+        <div
+            class="absolute inset-0
+       bg-gradient-to-t
+       from-zinc-300/90  to-transparent
+       dark:from-zinc-800 dark:to-transparent">
+        </div>
+
+        {{-- Title Container --}}
+        <div class="absolute inset-0 flex items-end justify-center pb-12 md:pb-16">
+            <div class="max-w-screen-xl w-full mx-auto px-4 lg:px-6">
+                <div class="max-w-4xl">
+                    {{-- Category --}}
+                    @if ($writing->category)
+                        <div class="flex items-center gap-2 mb-4">
+                            <span
+                                class="px-3 py-1 text-xs font-bold uppercase tracking-wider text-white {{ $writing->category->badge_class }} rounded-full">
+                                {{ $writing->category->name }}
+                            </span>
+                        </div>
+                    @endif
+
+                    {{-- Title --}}
+                    <h1
+                        class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-zinc-900 dark:text-white leading-tight tracking-tight mb-4 drop-shadow-sm">
+                        {{ $writing->title }}
+                    </h1>
+
+                    {{-- Description --}}
+                    @if ($writing->description)
+                        <p
+                            class="text-lg md:text-xl text-zinc-700 dark:text-zinc-300 font-light leading-relaxed max-w-2xl">
+                            {{ $writing->description }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- MAIN CONTENT WRAPPER --}}
+    <div class="max-w-screen-xl mx-auto px-4 lg:px-6 py-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+            {{-- LEFT COLUMN: ARTICLE CONTENT (Span 8) --}}
+            <div class="lg:col-span-8">
+
+                {{-- Author & Social Bar --}}
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center justify-between py-6 border-b border-t border-zinc-200 dark:border-zinc-700 mb-10">
+
+                    {{-- Author Info --}}
+                    <div class="flex items-center space-x-4 mb-4 sm:mb-0">
+                        <img alt="{{ $writing->author_display_name }}"
+                            class="w-12 h-12 rounded-full border-2 border-zinc-100 dark:border-zinc-700 object-cover"
+                            src="{{ $writing->author_avatar_url }}" />
+                        <div class="flex flex-col">
+                            <span class="font-bold text-lg text-zinc-900 dark:text-white">
+                                By {{ $writing->author_display_name }}
+                            </span>
+                            <div class="text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
+                                <time
+                                    datetime="{{ $writing->published_at }}">{{ $writing->published_at->format('M d, Y') }}</time>
+                                <span>•</span>
+                                <span>{{ $writing->reading_time }} min read</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Social Icons --}}
+                    <div class="flex items-center space-x-3 text-zinc-500 dark:text-zinc-400">
+                        <button class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                            title="Share on Facebook">
+                            <x-bi-facebook />
+                        </button>
+                        <button class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                            title="Tweet">
+                            <x-bi-share />
+                        </button>
+                        <button class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                            title="Copy Link">
+                            <x-bi-link />
+                        </button>
+                        <button class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                            title="Bookmark">
+                            <x-bi-bookmark />
+                        </button>
+                    </div>
+                </div>
+
+                {{-- The Content --}}
+                <div
+                    class="prose prose-lg prose-slate dark:prose-invert max-w-none 
+            prose-headings:font-bold prose-headings:text-zinc-900 dark:prose-headings:text-white
+            prose-img:rounded-xl prose-img:shadow-lg [&_.fi-in-text-item]:text-zinc-700 dark:[&_.fi-in-text-item]:text-zinc-300">
+
+                    {{ $this->articleInfolist }}
+
+                </div>
+
+            </div>
+
+            {{-- RIGHT COLUMN: SIDEBAR (Span 4) --}}
+            <aside class="lg:col-span-4 space-y-8 lg:pt-0 sticky top-6 self-start">
+                <div
+                    class="bg-zinc-50 dark:bg-[#1f2937] p-6 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-sm">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-2">
+                        Newsletter
+                    </h3>
+                    <h4 class="text-xl font-bold text-zinc-900 dark:text-white mb-2">
+                        Get the latest updates
+                    </h4>
+                    <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
+                        Get all the stories you need-to-know from the most powerful name in news delivered first thing
+                        every morning to your inbox.
+                    </p>
+                    <button
+                        class="w-full bg-brand-hover hover:bg-accent text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2">
+                        Subscribe
+                    </button>
+                </div>
+
+                {{-- Latest News --}}
+                <div>
+                    <h3
+                        class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-white mb-5 border-b border-zinc-200 dark:border-zinc-700 pb-2">
+                        Latest News
+                    </h3>
+                    <div class="space-y-6">
+                        @forelse($latestPosts as $post)
+                            <div class="flex gap-4 group cursor-pointer"
+                                onclick="window.location='{{ route('writing.show', $post->slug) }}'">
+                                {{-- Thumbnail --}}
+                                <div class="shrink-0 overflow-hidden rounded-lg">
+                                    <img alt="{{ $post->title }}"
+                                        class="w-24 h-24 object-cover transition-transform duration-300 group-hover:scale-110"
+                                        src="{{ $post->image_url }}" />
+                                </div>
+                                {{-- Text --}}
+                                <div class="flex flex-col justify-center">
+                                    <h4
+                                        class="font-bold text-base text-zinc-900 dark:text-white mb-1 leading-snug group-hover:text-blue-500 transition-colors line-clamp-2">
+                                        <a href="{{ route('writing.show', $post->slug) }}">
+                                            {{ $post->title }}
+                                        </a>
+                                    </h4>
+                                    <div class="flex items-center text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                                        <span>{{ $post->reading_time }} min read</span>
+                                    </div>
+                                    <a href="{{ route('writing.show', $post->slug) }}"
+                                        class="text-sm font-medium text-blue-600 dark:text-blue-500 mt-2 hover:underline">
+                                        Read story
+                                    </a>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-zinc-500 dark:text-zinc-400 text-sm italic">No other posts available.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                {{-- Advertisement (Optional) --}}
+                <div
+                    class="bg-zinc-100 dark:bg-zinc-800 h-[300px] rounded-xl flex flex-col items-center justify-center text-center p-4">
+                    <span
+                        class="text-zinc-400 dark:text-zinc-500 text-xs font-semibold uppercase tracking-widest mb-2">Advertisement</span>
+                    <div class="w-16 h-1 border-t-2 border-zinc-300 dark:border-zinc-600"></div>
+                </div>
+
+            </aside>
+        </div>
+    </div>
+</div>

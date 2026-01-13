@@ -21,6 +21,7 @@ class Writing extends Model
         'title',
         'slug',
         'content',
+        'description',
         'featured_image',
         'reading_time',
         'is_anonymous',

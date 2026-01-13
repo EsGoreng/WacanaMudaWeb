@@ -28,10 +28,11 @@ class WritingSeeder extends Seeder
 
         $catRuangKata = DB::table('categories')->where('slug', 'ruang-kata')->value('category_id');
         $catJelajahRasa = DB::table('categories')->where('slug', 'jelajah-rasa')->value('category_id');
+        $catJejakKarya = DB::table('categories')->where('slug', 'jejak-karya')->value('category_id');
 
         $seriesIds = DB::table('series')->pluck('series_id')->toArray();
 
-        $categoryIds = array_filter([$catRuangKata, $catJelajahRasa]);
+        $categoryIds = array_filter([$catRuangKata, $catJelajahRasa, $catJejakKarya]);
 
         if (empty($categoryIds)) {
             $this->command->warn('Kategori Ruang Kata atau Jelajah Rasa tidak ditemukan. Pastikan CategorySeeder dijalankan duluan.');
@@ -61,6 +62,7 @@ class WritingSeeder extends Seeder
                 'slug' => Str::slug($title).'-'.Str::random(6),
 
                 'content' => '<p>'.implode('</p><p>', $faker->paragraphs(mt_rand(3, 8))).'</p>',
+                'description' => $faker->sentence(10),
                 'featured_image' => null,
                 'reading_time' => mt_rand(2, 15),
                 'is_anonymous' => $faker->boolean(20),

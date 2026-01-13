@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-class WritingCrud extends Component implements HasActions, HasForms, HasTable
+class WritingTable extends Component implements HasActions, HasForms, HasTable
 {
     use InteractsWithActions;
     use InteractsWithForms;
@@ -314,6 +314,6 @@ class WritingCrud extends Component implements HasActions, HasForms, HasTable
 
     public function render()
     {
-        return view('livewire.writing-crud');
+        return view('livewire.writing-table');
     }
 }

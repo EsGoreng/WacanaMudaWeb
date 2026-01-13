@@ -126,17 +126,7 @@ class WritingEdit extends Component implements HasActions, HasSchemas
                                 ->required()
                                 ->searchable()
                                 ->preload()
-                                ->columnSpanFull()
-                                ->createOptionForm([
-                                    TextInput::make('name')
-                                        ->required()
-                                        ->maxLength(255),
-                                    TextInput::make('slug')
-                                        ->required()
-                                        ->maxLength(255),
-                                    Textarea::make('description')
-                                        ->rows(3),
-                                ]),
+                                ->columnSpanFull(),
 
                             Select::make('series_id')
                                 ->label('Series')
@@ -158,9 +148,9 @@ class WritingEdit extends Component implements HasActions, HasSchemas
                             Select::make('status')
                                 ->label('Status')
                                 ->options([
-                                    'draft' => 'Draft',
-                                    'published' => 'Published',
-                                    'archived' => 'Archived',
+                                    'Draft' => 'Draft',
+                                    'Published' => 'Published',
+                                    'Archived' => 'Archived',
                                 ])
                                 ->required()
                                 ->default('draft'),
