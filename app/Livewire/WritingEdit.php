@@ -37,7 +37,6 @@ class WritingEdit extends Component implements HasActions, HasSchemas
     {
         $this->writing = $writing;
 
-        // Check authorization
         if ($writing->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
@@ -54,6 +53,7 @@ class WritingEdit extends Component implements HasActions, HasSchemas
                         ->schema([
                             FileUpload::make('featured_image')
                                 ->label('Featured Image')
+                                ->disk('public')
                                 ->image()
                                 ->directory('writings/featured-images')
                                 ->maxSize(2048)

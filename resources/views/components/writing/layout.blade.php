@@ -1,5 +1,5 @@
-<x-layouts.app :title="__('Dashboard | WMB')">
-    <x-slot:secondary_nav>
+<x-layouts.app :title="__('Article & Blog | WMB')">
+    {{-- <x-slot:secondary_nav>
         @can(['create posts'])
             <flux:navbar.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Overview') }}
@@ -20,6 +20,6 @@
             </flux:navbar.item>
         @endcan
 
-    </x-slot:secondary_nav>
+    </x-slot:secondary_nav> --}}
     {{ $slot }}
 </x-layouts.app>

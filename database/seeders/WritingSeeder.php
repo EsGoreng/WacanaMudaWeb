@@ -2,88 +2,77 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use Carbon\Carbon;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
-use App\Models\User;
 
 class WritingSeeder extends Seeder
 {
     public function run(): void
     {
-        
-        $user = User::first();
-        $catRuangKata = DB::table('categories')->where('slug', 'ruang-kata')->first()->category_id;
-        $catJelajahRasa = DB::table('categories')->where('slug', 'jelajah-rasa')->first()->category_id;
-        $series = DB::table('series')->first();
+        $faker = Faker::create('id_ID');
+        $userIds = User::pluck('id')->toArray();
 
-        $writings = [
-            
-            [
-                'user_id' => $user->id,
-                'category_id' => $catRuangKata,
-                'series_id' => null,
-                'title' => 'Pentingnya Literasi di Era Digital',
-                'content' => '<p>Ini adalah contoh konten artikel tentang literasi...</p>',
-                'reading_time' => 3, 
-                'is_anonymous' => false,
-                'status' => 'published',
-                'published_at' => Carbon::now()->subDays(2),
-            ],
-            
-            [
-                'user_id' => $user->id,
-                'category_id' => $catJelajahRasa,
-                'series_id' => null,
-                'title' => 'Sebuah Refleksi Tengah Malam',
-                'content' => '<p>Terkadang kita perlu diam untuk mendengar...</p>',
-                'reading_time' => 5,
-                'is_anonymous' => true, 
-                'status' => 'published',
-                'published_at' => Carbon::now()->subDay(),
-            ],
-            
-            [
-                'user_id' => $user->id,
-                'category_id' => $catRuangKata,
-                'series_id' => $series->series_id, 
-                'title' => 'Tutorial Menulis: Bagian 1',
-                'content' => '<p>Langkah pertama dalam menulis adalah membaca...</p>',
-                'reading_time' => 7,
-                'is_anonymous' => false,
-                'status' => 'published',
-                'published_at' => Carbon::now(),
-            ],
-            
-            [
-                'user_id' => $user->id,
-                'category_id' => $catRuangKata,
-                'series_id' => null,
-                'title' => 'Konsep Kegiatan Bulan Depan',
-                'content' => '<p>Draf kasar rencana kegiatan...</p>',
-                'reading_time' => 2,
-                'is_anonymous' => false,
-                'status' => 'draft', 
-                'published_at' => null,
-            ],
-        ];
-
-        foreach ($writings as $write) {
-            DB::table('writings')->insert([
-                'user_id' => $write['user_id'],
-                'category_id' => $write['category_id'],
-                'series_id' => $write['series_id'],
-                'title' => $write['title'],
-                'slug' => Str::slug($write['title']) . '-' . Str::random(5),
-                'content' => $write['content'], 
-                'reading_time' => $write['reading_time'], 
-                'is_anonymous' => $write['is_anonymous'], 
-                'status' => $write['status'], 
-                'published_at' => $write['published_at'],
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+        if (empty($userIds)) {
+            $userIds[] = DB::table('users')->insertGetId([
+                'name' => 'Admin Test',
+                'email' => 'admin@test.com',
+                'password' => bcrypt('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
+        }
+
+        $catRuangKata = DB::table('categories')->where('slug', 'ruang-kata')->value('category_id');
+        $catJelajahRasa = DB::table('categories')->where('slug', 'jelajah-rasa')->value('category_id');
+
+        $seriesIds = DB::table('series')->pluck('series_id')->toArray();
+
+        $categoryIds = array_filter([$catRuangKata, $catJelajahRasa]);
+
+        if (empty($categoryIds)) {
+            $this->command->warn('Kategori Ruang Kata atau Jelajah Rasa tidak ditemukan. Pastikan CategorySeeder dijalankan duluan.');
+
+            return;
+        }
+
+        $writings = [];
+
+        for ($i = 0; $i < 50; $i++) {
+
+            $status = $faker->randomElement(['published', 'published', 'published', 'draft']);
+
+            $publishedAt = ($status === 'published')
+                ? $faker->dateTimeBetween('-1 year', 'now')
+                : null;
+
+            $title = $faker->sentence(mt_rand(3, 7));
+            $title = rtrim($title, '.');
+
+            $writings[] = [
+                'user_id' => $faker->randomElement($userIds),
+                'category_id' => $faker->randomElement($categoryIds),
+                'series_id' => (! empty($seriesIds) && $faker->boolean(30)) ? $faker->randomElement($seriesIds) : null,
+                'title' => $title,
+
+                'slug' => Str::slug($title).'-'.Str::random(6),
+
+                'content' => '<p>'.implode('</p><p>', $faker->paragraphs(mt_rand(3, 8))).'</p>',
+                'featured_image' => null,
+                'reading_time' => mt_rand(2, 15),
+                'is_anonymous' => $faker->boolean(20),
+                'status' => $status,
+                'published_at' => $publishedAt,
+                'created_at' => $publishedAt ?? Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+        }
+
+        foreach (array_chunk($writings, 25) as $chunk) {
+            DB::table('writings')->insert($chunk);
         }
     }
 }

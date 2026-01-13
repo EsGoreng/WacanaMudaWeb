@@ -2,7 +2,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
         <div class="lg:col-span-3">
-            <div class="grid grid-cols-4 gap-4 mb-4">
+            <div class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 mb-4">
                 <div
                     class="aspect-square rounded-xl border border-neutral-200 dark:border-neutral-700 p-4 flex items-center justify-center">
                     Card A
@@ -21,34 +21,25 @@
                 </div>
             </div>
 
-            <div x-data="{ activeTab: 'all' }">
+            <div x-data="{ activeTab: 'writing' }">
                 <x-filament::tabs>
-                    <x-filament::tabs.item @click="activeTab = 'all'" :active="false" icon="heroicon-m-pencil"
-                        alpine-active="activeTab === 'all'">
-                        All
+                    <x-filament::tabs.item @click="activeTab = 'writing'" :active="false" icon="heroicon-m-pencil"
+                        alpine-active="activeTab === 'writing'">
+                        Writing
                     </x-filament::tabs.item>
 
-                    <x-filament::tabs.item @click="activeTab = 'published'" :active="false"
-                        icon="heroicon-m-globe-alt" alpine-active="activeTab === 'published'">
-                        Published
-                    </x-filament::tabs.item>
-                    <x-filament::tabs.item @click="activeTab = 'draft'" :active="false" icon="heroicon-m-clock"
-                        alpine-active="activeTab === 'draft'">
-                        Draft
-                    </x-filament::tabs.item>
-
-                    <x-filament::tabs.item @click="activeTab = 'archived'" :active="false"
-                        icon="heroicon-m-archive-box" alpine-active="activeTab === 'archived'">
-                        Archived
+                    <x-filament::tabs.item @click="activeTab = 'comment'" :active="false"
+                        icon="heroicon-m-chat-bubble-left-ellipsis" alpine-active="activeTab === 'comment'">
+                        Comment
                     </x-filament::tabs.item>
                 </x-filament::tabs>
 
                 <div class="mt-4">
-                    <div x-show="activeTab === 'all'" x-transition>
+                    <div x-show="activeTab === 'writing'" x-transition>
                         @livewire('writing-crud')
                     </div>
 
-                    <div x-show="activeTab === 'published'" x-cloak x-transition>
+                    <div x-show="activeTab === 'comment'" x-cloak x-transition>
                         <div class="flex flex-col gap-4">
                             <div
                                 class="aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700 p-6 flex items-center justify-center">
@@ -57,22 +48,6 @@
                         </div>
                     </div>
 
-                    <div x-show="activeTab === 'draft'" x-cloak x-transition>
-                        <div class="flex flex-col gap-4">
-                            <div
-                                class="aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700 p-6 flex items-center justify-center">
-                                Content Tab 3 - Coming Soon
-                            </div>
-                        </div>
-                    </div>
-                    <div x-show="activeTab === 'archived'" x-cloak x-transition>
-                        <div class="flex flex-col gap-4">
-                            <div
-                                class="aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700 p-6 flex items-center justify-center">
-                                Content Tab 4 - Coming Soon
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
