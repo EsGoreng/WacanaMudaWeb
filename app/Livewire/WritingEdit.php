@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Series;
 use App\Models\Writing;
+use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\DateTimePicker;
@@ -21,6 +22,8 @@ use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -58,7 +61,98 @@ class WritingEdit extends Component implements HasActions, HasSchemas
                                 ->directory('writings/featured-images')
                                 ->maxSize(2048)
                                 ->helperText('Max 2MB')
-                                ->columnSpanFull(),
+                                ->columnSpanFull()
+                                ->hintAction(
+                                    Action::make('unsplash')
+                                        ->icon('heroicon-o-camera')
+                                        ->label('Search at Unsplash')
+                                        ->form([
+                                            Select::make('unsplash_id')
+                                                ->label('Search Image')
+                                                ->getOptionLabelUsing(fn ($value) => $value)
+                                                ->searchable()
+                                                ->placeholder('Write a search keyword (example: technology...)')
+                                                ->getSearchResultsUsing(function (string $search) {
+                                                    $response = Http::withOptions([
+                                                        'verify' => false,
+                                                        'connect_timeout' => 30,
+                                                        'timeout' => 30,
+                                                        'curl' => [
+                                                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+                                                        ],
+                                                    ])->get('https://api.unsplash.com/search/photos', [
+                                                        'query' => $search,
+                                                        'per_page' => 10,
+                                                        'client_id' => env('UNSPLASH_ACCESS_KEY'),
+                                                    ]);
+
+                                                    if ($response->failed()) {
+                                                        return [];
+                                                    }
+
+                                                    return collect($response->json('results'))
+                                                        ->mapWithKeys(function ($result) {
+                                                            $url = $result['urls']['regular'];
+                                                            $thumb = $result['urls']['thumb'];
+                                                            $desc = Str::limit($result['alt_description'] ?? 'Unsplash Image', 30);
+                                                            $user = $result['user']['name'];
+
+                                                            return [$url => "
+                                                                            <div class='flex flex-row items-center gap-4' style='padding: 4px; width: 100%;'>
+                                                                                <div style='width: 80px; height: 80px; flex-shrink: 0;'>
+                                                                                    <img src='{$thumb}' style='
+                                                                                        width: 100%; 
+                                                                                        height: 100%; 
+                                                                                        object-fit: cover; 
+                                                                                        border-radius: 8px;
+                                                                                        border: 1px solid #e5e7eb;
+                                                                                    ' />
+                                                                                </div>
+                                                                                
+                                                                                <div class='flex flex-col justify-center' style='overflow: hidden;'>
+                                                                                    <span class='font-bold text-sm text-gray-800 dark:text-gray-200 truncate' style='display: block;'>
+                                                                                        {$desc}
+                                                                                    </span>
+                                                                                    <span class='text-xs text-gray-500 truncate'>
+                                                                                        by {$user}
+                                                                                    </span>
+                                                                                    <span class='text-[10px] text-gray-400 mt-1'>
+                                                                                        Click to select
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>"];
+                                                        });
+                                                })
+                                                ->allowHtml()
+                                                ->required(),
+                                        ])
+                                        ->action(function (array $data, Set $set) {
+                                            $imageUrl = $data['unsplash_id'];
+
+                                            try {
+                                                $imageContent = Http::get($imageUrl)->body();
+
+                                                $filename = 'unsplash-'.Str::random(10).'.jpg';
+                                                $path = 'writings/featured-images/'.$filename;
+
+                                                Storage::disk('public')->put($path, $imageContent);
+
+                                                $set('featured_image', $path);
+
+                                                Notification::make()
+                                                    ->title('The image was successfully taken from Unsplash.')
+                                                    ->success()
+                                                    ->send();
+
+                                            } catch (\Exception $e) {
+                                                Notification::make()
+                                                    ->title('Failed to download image, please try again.')
+                                                    ->body($e->getMessage())
+                                                    ->danger()
+                                                    ->send();
+                                            }
+                                        })
+                                ),
 
                             RichEditor::make('content')
                                 ->label('Content')
@@ -94,7 +188,7 @@ class WritingEdit extends Component implements HasActions, HasSchemas
                                 ->resizableImages()
                                 ->columns(1)
                                 ->extraInputAttributes([
-                                    'style' => 'min-height: 20rem; max-height: 60vh; overflow-y: auto;',
+                                    'style' => 'min-height: 20rem;',
                                 ]),
                         ]),
 
@@ -190,7 +284,7 @@ class WritingEdit extends Component implements HasActions, HasSchemas
             return;
         }
 
-        if ($data['status'] === 'published' && empty($data['published_at']) && $this->writing->status !== 'published') {
+        if ($data['status'] === 'Published' && empty($data['published_at']) && $this->writing->status !== 'Published') {
             $data['published_at'] = now();
         }
 

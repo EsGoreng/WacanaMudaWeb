@@ -23,6 +23,8 @@ class Writing extends Model
         'content',
         'description',
         'featured_image',
+        'image_credit',
+        'image_credit_url',
         'reading_time',
         'is_anonymous',
         'status',

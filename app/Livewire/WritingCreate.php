@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Series;
 use App\Models\Writing;
+use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\DateTimePicker;
@@ -21,6 +22,8 @@ use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -54,7 +57,109 @@ class WritingCreate extends Component implements HasActions, HasSchemas
                                 ->directory('writings/featured-images')
                                 ->maxSize(2048)
                                 ->helperText('Max 2MB')
-                                ->columnSpanFull(),
+                                ->columnSpanFull()
+                                ->hintAction(
+                                    Action::make('unsplash')
+                                        ->icon('heroicon-o-camera')
+                                        ->label('Search on Unsplash')
+                                        ->form([
+                                            Select::make('unsplash_data')
+                                                ->label('Search Photo')
+                                                ->getOptionLabelUsing(fn ($value) => 'Image Selected')
+                                                ->searchable()
+                                                ->placeholder('Type a keyword (e.g. technology)...')
+                                                ->getSearchResultsUsing(function (string $search) {
+                                                    $response = Http::withOptions([
+                                                        'verify' => false,
+                                                        'connect_timeout' => 30,
+                                                        'timeout' => 30,
+                                                        'curl' => [
+                                                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+                                                        ],
+                                                    ])->get('https://api.unsplash.com/search/photos', [
+                                                        'query' => $search,
+                                                        'per_page' => 10,
+                                                        'client_id' => env('UNSPLASH_ACCESS_KEY'),
+                                                    ]);
+
+                                                    if ($response->failed()) {
+                                                        return [];
+                                                    }
+
+                                                    return collect($response->json('results'))
+                                                        ->mapWithKeys(function ($result) {
+                                                            $thumb = $result['urls']['small'];
+                                                            $desc = Str::limit($result['alt_description'] ?? 'Unsplash Image', 40);
+                                                            $userName = $result['user']['name'];
+
+                                                            $attributionHtml = "
+                                                                                <div class='flex flex-row items-center gap-4' style='padding: 4px; width: 100%;'>
+                                                                                    <div style='width: 80px; height: 80px; flex-shrink: 0;'>
+                                                                                        <img src='{$thumb}' style='width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid #e5e7eb;' />
+                                                                                    </div>
+                                                                                    <div class='flex flex-col justify-center overflow-hidden'>
+                                                                                        <span class='font-bold text-sm truncate' style='display: block;'>{$desc}</span>
+                                                                                        <span class='text-xs text-gray-500 truncate'>
+                                                                                            by {$userName} on Unsplash
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>";
+
+                                                            $valueData = json_encode([
+                                                                'url' => $result['urls']['regular'],
+                                                                'download_location' => $result['links']['download_location'],
+                                                                'user_name' => $userName,
+                                                                'user_link' => $result['user']['links']['html'],
+                                                            ]);
+
+                                                            return [$valueData => $attributionHtml];
+                                                        });
+                                                })
+                                                ->allowHtml()
+                                                ->required(),
+                                        ])
+                                        ->action(function (array $data, Set $set) {
+                                            $imageData = json_decode($data['unsplash_data'], true);
+
+                                            if (! $imageData) {
+                                                return;
+                                            }
+
+                                            $imageUrl = $imageData['url'];
+                                            $downloadLocation = $imageData['download_location'];
+
+                                            try {
+                                                Http::withOptions(['verify' => false])
+                                                    ->get($downloadLocation, [
+                                                        'client_id' => env('UNSPLASH_ACCESS_KEY'),
+                                                    ]);
+
+                                                $imageContent = Http::get($imageUrl)->body();
+
+                                                $filename = 'unsplash-'.Str::random(10).'.jpg';
+                                                $path = 'writings/featured-images/'.$filename;
+
+                                                Storage::disk('public')->put($path, $imageContent);
+
+                                                $set('featured_image', $path);
+                                                $set('image_credit', $imageData['user_name']);
+                                                $set('image_credit_url', $imageData['user_link']);
+
+                                                Notification::make()
+                                                    ->title('Image imported successfully')
+                                                    ->body("Photo by {$imageData['user_name']}")
+                                                    ->success()
+                                                    ->send();
+
+                                            } catch (\Exception $e) {
+                                                Notification::make()
+                                                    ->title('Failed to download image')
+                                                    ->body($e->getMessage())
+                                                    ->danger()
+                                                    ->send();
+                                            }
+                                        })
+                                ),
 
                             RichEditor::make('content')
                                 ->label('Content')
@@ -90,7 +195,7 @@ class WritingCreate extends Component implements HasActions, HasSchemas
                                 ->resizableImages()
                                 ->columns(1)
                                 ->extraInputAttributes([
-                                    'style' => 'min-height: 20rem; max-height: 60vh; overflow-y: auto;',
+                                    'style' => 'min-height: 20rem;',
                                 ]),
                         ]),
 
@@ -160,6 +265,14 @@ class WritingCreate extends Component implements HasActions, HasSchemas
                                 ->label('Tanggal Publikasi')
                                 ->hidden()
                                 ->helperText('Kosongkan untuk auto-set saat status published'),
+
+                            TextInput::make('image_credit')
+                                ->hidden()
+                                ->dehydrated(),
+
+                            TextInput::make('image_credit_url')
+                                ->hidden()
+                                ->dehydrated(),
                         ])
                         ->grow(false)
                         ->columns(2),
@@ -188,7 +301,7 @@ class WritingCreate extends Component implements HasActions, HasSchemas
 
         $data['user_id'] = auth()->id();
 
-        if ($data['status'] === 'published' && empty($data['published_at'])) {
+        if ($data['status'] === 'Published' && empty($data['published_at'])) {
             $data['published_at'] = now();
         }
 
@@ -213,11 +326,6 @@ class WritingCreate extends Component implements HasActions, HasSchemas
                 ->danger()
                 ->send();
         }
-
-        Notification::make()
-            ->title('Artikel berhasil dibuat')
-            ->success()
-            ->send();
 
         redirect()->route('dashboard.writing');
     }

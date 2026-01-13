@@ -15,7 +15,7 @@ class WritingList extends Component
     public function posts()
     {
         return Writing::with(['user', 'category']) // Eager loading relasi user
-            ->where('status', 'published')         // Hanya yang published
+            ->where('status', 'Published')         // Hanya yang published
             ->whereNotNull('published_at')
             ->latest('published_at')
             ->paginate(9);

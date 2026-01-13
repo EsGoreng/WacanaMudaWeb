@@ -28,9 +28,13 @@
         {{-- Gradient Overlay (Bottom Fade) --}}
         <div
             class="absolute inset-0
-       bg-gradient-to-t
-       from-zinc-300/90  to-transparent
-       dark:from-zinc-800 dark:to-transparent">
+           bg-gradient-to-t
+           from-zinc-300/90
+           via-zinc-300/40
+           to-transparent
+           dark:from-zinc-800
+           dark:via-zinc-800/40
+           dark:to-transparent">
         </div>
 
         {{-- Title Container --}}
