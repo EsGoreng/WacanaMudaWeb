@@ -51,8 +51,4 @@
             @endif
         </div>
     </div>
-@else
-    <div class="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg mt-4">
-        <p class="text-sm text-yellow-800 dark:text-yellow-200">⚠️ ViewField rendered but imageUrl is empty</p>
-    </div>
 @endif

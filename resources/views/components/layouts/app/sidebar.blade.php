@@ -113,7 +113,7 @@
 
             </flux:header>
 
-            <main class="flex-1 overflow-y-auto overflow-x-hidden" @scroll="handleScroll($event)">
+            <main class=" flex-1 overflow-y-auto overflow-x-hidden" @scroll="handleScroll($event)">
                 <div class="min-h-full">
                     {{ $slot }}
                 </div>

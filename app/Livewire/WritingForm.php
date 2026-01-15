@@ -330,6 +330,12 @@ class WritingForm extends Component implements HasActions, HasSchemas
     {
         $data = $this->form->getState();
 
+        if (empty($data['featured_image']) && ! empty($data['unsplash_photo_id'])) {
+            if ($this->writing && $this->writing->unsplash_photo_id === $data['unsplash_photo_id']) {
+                $data['featured_image'] = $this->writing->featured_image;
+            }
+        }
+
         if (empty($data['slug'])) {
             $data['slug'] = Str::slug($data['title']);
         }

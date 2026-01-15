@@ -8,18 +8,9 @@ use Filament\Actions\BulkAction;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Set;
-use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -42,11 +33,18 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
 
     public function table(Table $table): Table
     {
+        $user = auth()->user();
+
         return $table
             ->striped()
             ->heading('Manage Writings')
             ->description('This table allows you to manage all of your created writings efficiently.')
-            ->query(Writing::query()->with(['user', 'category', 'series']))
+            ->query(Writing::query()
+                ->when(
+                    ! $user->hasRole('superadmin'),
+                    fn ($query) => $query->where('user_id', $user->id)
+                )
+                ->with(['user', 'category', 'series']))
             ->defaultSort('writing_id', 'desc')
             ->columns([
                 TextColumn::make('writing_id')
@@ -101,9 +99,9 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                     ->badge()
                     ->sortable()
                     ->color(fn (string $state): string => match ($state) {
-                        'published' => 'success',
-                        'draft' => 'warning',
-                        'archived' => 'danger',
+                        'Published' => 'success',
+                        'Draft' => 'warning',
+                        'Archived' => 'danger',
                         default => 'gray',
                     })
                     ->alignCenter()
@@ -113,6 +111,7 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                     ->label('Anonim')
                     ->onColor('success')
                     ->offColor('gray')
+                    ->hidden()
                     ->toggleable(),
 
                 TextColumn::make('published_at')
@@ -161,20 +160,6 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                     }),
             ])
             ->recordActions([
-                Action::make('view')
-                    ->label('View')
-                    ->color('success')
-                    ->icon('heroicon-o-eye')
-                    ->modalHeading('Article Detail')
-                    ->modalSubmitAction(false)
-                    ->modalCancelActionLabel('Tutup')
-                    ->modalWidth('7xl')
-                    ->schema(fn (Schema $schema) => $this->getWritingSchema($schema))
-                    ->mountUsing(function (Schema $schema, Writing $record) {
-                        $schema->fill($record->toArray());
-                    })
-                    ->disabledSchema(),
-
                 Action::make('edit')
                     ->label('Edit')
                     ->icon('heroicon-o-pencil')
@@ -220,95 +205,6 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                             ->danger()
                             ->send();
                     }),
-            ]);
-    }
-
-    protected function getWritingSchema(Schema $schema): Schema
-    {
-        return $schema
-            ->schema([
-                Section::make('Article Information')
-                    ->schema([
-                        TextInput::make('title')
-                            ->label('Title')
-                            ->required()
-                            ->maxLength(255)
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(function ($state, Set $set) {
-                                $set('slug', Str::slug($state));
-                            })
-                            ->columnSpanFull(),
-
-                        TextInput::make('slug')
-                            ->label('Slug')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique(Writing::class, 'slug', ignoreRecord: true)
-                            ->columnSpanFull(),
-
-                        Select::make('category_id')
-                            ->label('Category')
-                            ->relationship('category', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload()
-                            ->createOptionForm([
-                                TextInput::make('name')->required()->maxLength(255),
-                                TextInput::make('slug')->required()->maxLength(255),
-                                Textarea::make('description')->rows(3),
-                            ]),
-
-                        Select::make('series_id')
-                            ->label('Series')
-                            ->relationship('series', 'name', fn (Builder $query) => $query->where('user_id', auth()->id()))
-                            ->searchable()
-                            ->preload()
-                            ->createOptionForm([
-                                TextInput::make('name')->required()->maxLength(255),
-                                Textarea::make('description')->rows(3),
-                            ]),
-
-                        Select::make('status')
-                            ->label('Status')
-                            ->options([
-                                'draft' => 'Draft',
-                                'published' => 'Published',
-                                'archived' => 'Archived',
-                            ])
-                            ->required()
-                            ->default('draft'),
-
-                        Toggle::make('is_anonymous')
-                            ->label('Anonymous Post')
-                            ->inline(false)
-                            ->default(false),
-
-                        DateTimePicker::make('published_at')
-                            ->label('Publicaton Date'),
-
-                        TextInput::make('reading_time')
-                            ->label('Reading Time')
-                            ->numeric()
-                            ->helperText('(±200 word/minute)')
-                            ->disabled()
-                            ->dehydrated(false),
-                    ])->columns(2),
-
-                Section::make('Article Content')
-                    ->schema([
-                        FileUpload::make('featured_image')
-                            ->label('Featured Image')
-                            ->image()
-                            ->directory('writings/featured-images')
-                            ->maxSize(2048)
-                            ->helperText('Max 2MB')
-                            ->columnSpanFull(),
-
-                        RichEditor::make('content')
-                            ->label('Content')
-                            ->required()
-                            ->columnSpanFull(),
-                    ]),
             ]);
     }
 
