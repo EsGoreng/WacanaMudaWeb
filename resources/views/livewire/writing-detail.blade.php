@@ -6,12 +6,11 @@
     <div class="relative w-full h-[400px] md:h-[500px] lg:h-[600px] group">
 
         <div class="absolute inset-0 w-full h-full">
-            {{-- Hotlink to original Unsplash URL --}}
             <img alt="{{ $writing->title }}" class="w-full h-full object-cover" src="{{ $writing->image_url }}" />
             <div class="absolute inset-0 bg-zinc-900/40"></div>
         </div>
 
-        <div class="absolute top-6 left-4 lg:left-8 z-20">
+        <div class="absolute top-6 left-4 lg:left-8">
             <flux:button icon="arrow-left" :href="route('writing')"
                 class="!bg-black/20 hover:!bg-black/40 !border-white/10 !backdrop-blur-sm !text-white border transition-all">
                 Back
