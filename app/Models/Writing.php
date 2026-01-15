@@ -25,6 +25,9 @@ class Writing extends Model
         'featured_image',
         'image_credit',
         'image_credit_url',
+        'featured_image_url',
+        'unsplash_photo_id',
+        'unsplash_download_location',
         'reading_time',
         'is_anonymous',
         'status',
@@ -72,11 +75,32 @@ class Writing extends Model
             : 'https://ui-avatars.com/api/?name='.urlencode($this->user->name ?? 'U');
     }
 
-    public function getImageUrlAttribute()
+    public function getImageUrlAttribute(): string
     {
-        return $this->featured_image
-            ? Storage::url($this->featured_image)
-            : 'https://placehold.co/600x400/1e232e/FFF?text=No+Image';
+        if ($this->featured_image && str_starts_with($this->featured_image, 'https://images.unsplash.com')) {
+            return $this->featured_image;
+        }
+
+        if ($this->featured_image) {
+            return Storage::disk('public')->url($this->featured_image);
+        }
+
+        return asset('https://placehold.co/600x400/1e232e/FFF?text=No+Image');
+    }
+
+    public function getPhotographerNameAttribute(): ?string
+    {
+        return $this->image_credit;
+    }
+
+    public function getPhotographerUrlAttribute(): ?string
+    {
+        return $this->image_credit_url;
+    }
+
+    public function getUnsplashImageAttribute(): bool
+    {
+        return ! empty($this->unsplash_photo_id);
     }
 
     public function getExcerptAttribute()

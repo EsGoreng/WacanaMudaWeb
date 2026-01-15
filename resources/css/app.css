@@ -32,8 +32,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Re-assign Flux's gray of choice... */
-/* Re-assign Flux gray to blue-navy tone */
 @theme {
     --color-zinc-50: var(--color-slate-50);
     --color-zinc-100: var(--color-slate-100);
@@ -46,6 +44,18 @@
     --color-zinc-800: var(--color-slate-800);
     --color-zinc-900: var(--color-slate-900);
     --color-zinc-950: var(--color-slate-950);
+
+    --color-page-gray-50: oklch(0.98 0.004 255);
+    --color-page-gray-100: oklch(0.95 0.006 255);
+    --color-page-gray-200: oklch(0.9 0.008 255);
+    --color-page-gray-300: oklch(0.82 0.01 255);
+    --color-page-gray-400: oklch(0.72 0.012 255);
+    --color-page-gray-500: oklch(0.6 0.014 255);
+    --color-page-gray-600: oklch(0.48 0.016 255);
+    --color-page-gray-700: oklch(0.38 0.018 255);
+    --color-page-gray-800: oklch(0.28 0.02 255);
+    --color-page-gray-900: oklch(0.2 0.018 255);
+    --color-page-gray-950: oklch(0.14 0.016 255);
 }
 
 @theme {

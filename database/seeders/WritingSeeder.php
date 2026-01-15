@@ -42,7 +42,7 @@ class WritingSeeder extends Seeder
 
         $writings = [];
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 10; $i++) {
 
             $status = $faker->randomElement(['published', 'published', 'published', 'draft']);
 

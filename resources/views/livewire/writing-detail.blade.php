@@ -1,47 +1,37 @@
 <div
     class="min-h-screen font-sans antialiased transition-colors duration-100
             bg-zinc-50
-            dark:bg-zinc-800">
+            dark:bg-page-gray-800">
 
-
-    {{-- HERO SECTION --}}
     <div class="relative w-full h-[400px] md:h-[500px] lg:h-[600px] group">
 
-        {{-- Background Image --}}
         <div class="absolute inset-0 w-full h-full">
+            {{-- Hotlink to original Unsplash URL --}}
             <img alt="{{ $writing->title }}" class="w-full h-full object-cover" src="{{ $writing->image_url }}" />
             <div class="absolute inset-0 bg-zinc-900/40"></div>
         </div>
 
         <div class="absolute top-6 left-4 lg:left-8 z-20">
-            <a href="{{ route('writing') }}"
-                class="flex items-center gap-2 px-4 py-2 bg-black/20 hover:bg-black/40 backdrop-blur-sm text-white rounded-lg transition-all border border-white/10 group/btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="transition-transform group-hover/btn:-translate-x-1">
-                    <path d="m15 18-6-6 6-6" />
-                </svg>
-                <span class="text-sm font-medium">Back</span>
-            </a>
+            <flux:button icon="arrow-left" :href="route('writing')"
+                class="!bg-black/20 hover:!bg-black/40 !border-white/10 !backdrop-blur-sm !text-white border transition-all">
+                Back
+            </flux:button>
         </div>
 
-        {{-- Gradient Overlay (Bottom Fade) --}}
         <div
             class="absolute inset-0
            bg-gradient-to-t
-           from-zinc-300/90
-           via-zinc-300/40
+           from-page-gray-300/90
+           via-page-gray-300/40
            to-transparent
-           dark:from-zinc-800
-           dark:via-zinc-800/40
+           dark:from-page-gray-800
+           dark:via-page-gray-800/40
            dark:to-transparent">
         </div>
 
-        {{-- Title Container --}}
         <div class="absolute inset-0 flex items-end justify-center pb-12 md:pb-16">
             <div class="max-w-screen-xl w-full mx-auto px-4 lg:px-6">
                 <div class="max-w-4xl">
-                    {{-- Category --}}
                     @if ($writing->category)
                         <div class="flex items-center gap-2 mb-4">
                             <span
@@ -51,36 +41,53 @@
                         </div>
                     @endif
 
-                    {{-- Title --}}
                     <h1
                         class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-zinc-900 dark:text-white leading-tight tracking-tight mb-4 drop-shadow-sm">
                         {{ $writing->title }}
                     </h1>
 
-                    {{-- Description --}}
                     @if ($writing->description)
                         <p
                             class="text-lg md:text-xl text-zinc-700 dark:text-zinc-300 font-light leading-relaxed max-w-2xl">
                             {{ $writing->description }}
                         </p>
                     @endif
+
+                    {{-- Proper Unsplash Attribution --}}
+                    @if ($writing->image_credit && $writing->image_credit_url)
+                        <div class="mt-4 flex items-center gap-2">
+                            <div
+                                class="px-3 py-1.5 bg-black/20 dark:bg-black/40 backdrop-blur-md rounded-lg border border-white/10 text-xs text-zinc-800 dark:text-zinc-200 shadow-sm inline-flex items-center gap-1">
+                                <span class="opacity-70">Photo by</span>
+                                {{-- Link ke photographer dengan UTM tracking --}}
+                                <a href="{{ $writing->image_credit_url }}?utm_source={{ urlencode(config('app.name', 'WacanaMuda')) }}&utm_medium=referral"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="font-semibold hover:underline decoration-zinc-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                    {{ $writing->image_credit }}
+                                </a>
+                                <span class="opacity-70">on</span>
+                                {{-- Link ke Unsplash dengan UTM tracking --}}
+                                <a href="https://unsplash.com/?utm_source={{ urlencode(config('app.name', 'WacanaMuda')) }}&utm_medium=referral"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="font-semibold hover:underline decoration-zinc-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                    Unsplash
+                                </a>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- MAIN CONTENT WRAPPER --}}
     <div class="max-w-screen-xl mx-auto px-4 lg:px-6 py-8 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
-            {{-- LEFT COLUMN: ARTICLE CONTENT (Span 8) --}}
             <div class="lg:col-span-8">
 
-                {{-- Author & Social Bar --}}
                 <div
                     class="flex flex-col sm:flex-row sm:items-center justify-between py-6 border-b border-t border-zinc-200 dark:border-zinc-700 mb-10">
 
-                    {{-- Author Info --}}
                     <div class="flex items-center space-x-4 mb-4 sm:mb-0">
                         <img alt="{{ $writing->author_display_name }}"
                             class="w-12 h-12 rounded-full border-2 border-zinc-100 dark:border-zinc-700 object-cover"
@@ -98,7 +105,6 @@
                         </div>
                     </div>
 
-                    {{-- Social Icons --}}
                     <div class="flex items-center space-x-3 text-zinc-500 dark:text-zinc-400">
                         <button class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                             title="Share on Facebook">
@@ -119,19 +125,15 @@
                     </div>
                 </div>
 
-                {{-- The Content --}}
                 <div
-                    class="prose prose-lg prose-slate dark:prose-invert max-w-none 
-            prose-headings:font-bold prose-headings:text-zinc-900 dark:prose-headings:text-white
-            prose-img:rounded-xl prose-img:shadow-lg [&_.fi-in-text-item]:text-zinc-700 dark:[&_.fi-in-text-item]:text-zinc-300">
-
+                    class="prose prose-xl prose-slate dark:prose-invert max-w-none 
+    prose-headings:font-bold prose-headings:text-zinc-900 dark:prose-headings:text-white
+    prose-img:rounded-xl prose-img:shadow-lg [&_.fi-in-text-item]:text-zinc-700 dark:[&_.fi-in-text-item]:text-zinc-300">
                     {{ $this->articleInfolist }}
-
                 </div>
 
             </div>
 
-            {{-- RIGHT COLUMN: SIDEBAR (Span 4) --}}
             <aside class="lg:col-span-4 space-y-8 lg:pt-0 sticky top-6 self-start">
                 <div
                     class="bg-zinc-50 dark:bg-[#1f2937] p-6 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-sm">

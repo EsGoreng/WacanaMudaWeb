@@ -23,8 +23,12 @@ return new class extends Migration
             $table->longText('content');
             $table->string('description')->nullable();
             $table->string('featured_image')->nullable();
+
             $table->string('image_credit')->nullable();
             $table->string('image_credit_url')->nullable();
+
+            $table->string('unsplash_photo_id')->nullable();
+            $table->text('unsplash_download_location')->nullable();
 
             $table->integer('reading_time')->default(0);
             $table->boolean('is_anonymous')->default(false);
