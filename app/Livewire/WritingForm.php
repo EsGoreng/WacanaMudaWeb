@@ -14,6 +14,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ViewField;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -43,7 +44,25 @@ class WritingForm extends Component implements HasActions, HasSchemas
             }
 
             $this->writing = $writing;
-            $this->form->fill($writing->toArray());
+
+            $this->form->fill([
+                'title' => $writing->title,
+                'slug' => $writing->slug,
+                'description' => $writing->description,
+                'content' => $writing->content,
+                'featured_image' => $writing->featured_image,
+                'image_credit' => $writing->image_credit,
+                'image_credit_url' => $writing->image_credit_url,
+                'unsplash_photo_id' => $writing->unsplash_photo_id,
+                'unsplash_download_location' => $writing->unsplash_download_location,
+                'category_id' => $writing->category_id,
+                'series_id' => $writing->series_id,
+                'status' => $writing->status,
+                'is_anonymous' => $writing->is_anonymous,
+                'published_at' => $writing->published_at,
+                'user_id' => $writing->user_id,
+                'reading_time' => $writing->reading_time,
+            ]);
         } else {
             $this->form->fill([
                 'status' => 'draft',
@@ -69,10 +88,14 @@ class WritingForm extends Component implements HasActions, HasSchemas
                                     ->label('Featured Image')
                                     ->disk('public')
                                     ->image()
+                                    ->live()
                                     ->directory('writings/featured-images')
                                     ->maxSize(2048)
                                     ->helperText('Max 2MB')
                                     ->columnSpanFull()
+                                    ->afterStateUpdated(function ($state, Set $set) {
+                                        $set('featured_image', $state);
+                                    })
                                     ->hintAction(
                                         Action::make('unsplash')
                                             ->icon('heroicon-o-camera')
@@ -102,23 +125,50 @@ class WritingForm extends Component implements HasActions, HasSchemas
                                                         return collect($response->json('results'))
                                                             ->mapWithKeys(function ($result) {
                                                                 $thumb = $result['urls']['small'];
-                                                                $desc = Str::limit($result['alt_description'] ?? 'Unsplash Image', 40);
+                                                                $desc = Str::limit($result['alt_description'] ?? 'Unsplash Image', 50);
                                                                 $userName = $result['user']['name'];
+                                                                $likes = number_format($result['likes'] ?? 0);
 
                                                                 $attributionHtml = "
-                                                            <div class='flex flex-row items-center gap-4' style='padding: 4px; width: 100%;'>
-                                                                <div style='width: 80px; height: 80px; flex-shrink: 0;'>
-                                                                    <img src='{$thumb}' style='width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid #e5e7eb;' />
-                                                                </div>
-                                                                <div class='flex flex-col justify-center overflow-hidden'>
-                                                                    <span class='font-bold text-sm truncate' style='display: block;'>{$desc}</span>
-                                                                    <span class='text-xs text-gray-500 truncate'>by {$userName} on Unsplash</span>
-                                                                </div>
-                                                            </div>";
+<div class='group flex items-center gap-4 p-3 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800/50' style='width: 100%;'>
+    <div class='relative flex-shrink-0' style='width: 96px; height: 96px;'>
+        <img 
+            src='{$thumb}' 
+            alt='{$desc}'
+            class='w-full h-full object-cover rounded-xl shadow-md ring-1 ring-gray-200 dark:ring-gray-700 group-hover:ring-2 group-hover:ring-blue-400 transition-all'
+            loading='lazy'
+        />
+        <div class='absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity'></div>
+    </div>
+    <div class='flex-1 min-w-0 space-y-1.5'>
+        <h4 class='font-semibold text-sm text-gray-900 dark:text-gray-100 truncate leading-tight'>
+            {$desc}
+        </h4>
+        <div class='flex items-center gap-2 text-xs'>
+            <span class='text-gray-600 dark:text-gray-400'>
+                by <span class='font-medium text-gray-700 dark:text-gray-300'>{$userName}</span>
+            </span>
+            <span class='text-gray-400 dark:text-gray-600'>•</span>
+            <span class='inline-flex items-center gap-1 text-gray-500 dark:text-gray-400'>
+                <svg class='w-3.5 h-3.5' fill='currentColor' viewBox='0 0 20 20'>
+                    <path fill-rule='evenodd' d='M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z' clip-rule='evenodd'/>
+                </svg>
+                {$likes}
+            </span>
+        </div>
+        <div class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-xs text-gray-600 dark:text-gray-400'>
+            <svg class='w-3 h-3' fill='currentColor' viewBox='0 0 20 20'>
+                <path d='M10 12a2 2 0 100-4 2 2 0 000 4z'/>
+                <path fill-rule='evenodd' d='M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z' clip-rule='evenodd'/>
+            </svg>
+            Unsplash
+        </div>
+    </div>
+</div>";
 
                                                                 $valueData = json_encode([
                                                                     'id' => $result['id'],
-                                                                    'url' => $result['urls']['regular'], // Hotlink URL
+                                                                    'url' => $result['urls']['regular'],
                                                                     'download_location' => $result['links']['download_location'],
                                                                     'user_name' => $userName,
                                                                     'user_link' => $result['user']['links']['html'],
@@ -137,8 +187,7 @@ class WritingForm extends Component implements HasActions, HasSchemas
                                                 }
 
                                                 try {
-                                                    // Simpan data Unsplash untuk trigger download nanti
-                                                    $set('featured_image', $imageData['url']); // Hotlink URL
+                                                    $set('featured_image', $imageData['url']);
                                                     $set('image_credit', $imageData['user_name']);
                                                     $set('image_credit_url', $imageData['user_link']);
                                                     $set('unsplash_photo_id', $imageData['id']);
@@ -159,6 +208,46 @@ class WritingForm extends Component implements HasActions, HasSchemas
                                             })
                                     ),
 
+                                ViewField::make('image_preview')
+                                    ->view('components.image-preview')
+                                    ->columnSpanFull()
+                                    ->live()
+                                    ->viewData(function ($get) {
+                                        $imageUrl = null;
+                                        $imageCredit = null;
+                                        $imageCreditUrl = null;
+                                        $isUnsplash = false;
+
+                                        $featuredImage = $get('featured_image');
+                                        $imageCredit = $get('image_credit');
+                                        $imageCreditUrl = $get('image_credit_url');
+                                        $unsplashPhotoId = $get('unsplash_photo_id');
+
+                                        if (empty($featuredImage) && $this->writing && $this->writing->exists) {
+                                            $featuredImage = $this->writing->featured_image;
+                                            $imageCredit = $this->writing->image_credit;
+                                            $imageCreditUrl = $this->writing->image_credit_url;
+                                            $unsplashPhotoId = $this->writing->unsplash_photo_id;
+                                        }
+
+                                        if (! empty($featuredImage)) {
+                                            if (str_starts_with($featuredImage, 'http')) {
+                                                $imageUrl = $featuredImage;
+                                            } else {
+                                                $imageUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($featuredImage);
+                                            }
+                                        }
+
+                                        $isUnsplash = ! empty($unsplashPhotoId);
+
+                                        return [
+                                            'imageUrl' => $imageUrl,
+                                            'imageCredit' => $imageCredit,
+                                            'imageCreditUrl' => $imageCreditUrl,
+                                            'isUnsplash' => $isUnsplash,
+                                            'isUpload' => ! empty($imageUrl) && ! $isUnsplash,
+                                        ];
+                                    }),
                                 RichEditor::make('content')
                                     ->label('Content')
                                     ->columnSpanFull()
@@ -219,11 +308,17 @@ class WritingForm extends Component implements HasActions, HasSchemas
                                     ->label('Anonymous Post')
                                     ->default(false),
 
-                                Hidden::make('published_at'),
-                                Hidden::make('image_credit'),
-                                Hidden::make('image_credit_url'),
-                                Hidden::make('unsplash_photo_id'),
-                                Hidden::make('unsplash_download_location'),
+                                Hidden::make('image_credit')
+                                    ->live(),
+
+                                Hidden::make('image_credit_url')
+                                    ->live(),
+
+                                Hidden::make('unsplash_photo_id')
+                                    ->live(),
+
+                                Hidden::make('unsplash_download_location')
+                                    ->live(),
                             ])
                             ->columnSpan(4),
                     ]),
@@ -248,7 +343,6 @@ class WritingForm extends Component implements HasActions, HasSchemas
             if (! $this->writing || $this->writing->status !== 'Published') {
                 $data['published_at'] = now();
 
-                // Trigger Unsplash download saat artikel dipublish
                 if (! empty($data['unsplash_download_location'])) {
                     $this->triggerUnsplashDownload($data['unsplash_download_location']);
                 }
@@ -278,9 +372,6 @@ class WritingForm extends Component implements HasActions, HasSchemas
         }
     }
 
-    /**
-     * Trigger download event ke Unsplash API
-     */
     private function triggerUnsplashDownload(string $downloadLocation): void
     {
         try {

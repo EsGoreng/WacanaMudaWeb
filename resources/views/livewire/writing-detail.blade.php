@@ -10,7 +10,7 @@
             <div class="absolute inset-0 bg-zinc-900/40"></div>
         </div>
 
-        <div class="absolute top-6 left-4 lg:left-8">
+        <div class="absolute top-6 left-4 lg:left-8 z-10">
             <flux:button icon="arrow-left" :href="route('writing')"
                 class="!bg-black/20 hover:!bg-black/40 !border-white/10 !backdrop-blur-sm !text-white border transition-all">
                 Back

@@ -77,15 +77,28 @@ class Writing extends Model
 
     public function getImageUrlAttribute(): string
     {
+        \Log::info('getImageUrlAttribute called:', [
+            'featured_image' => $this->featured_image,
+            'starts_with_https' => $this->featured_image ? str_starts_with($this->featured_image, 'https://images.unsplash.com') : false,
+        ]);
+
         if ($this->featured_image && str_starts_with($this->featured_image, 'https://images.unsplash.com')) {
+            \Log::info('Returning Unsplash URL:', ['url' => $this->featured_image]);
+
             return $this->featured_image;
         }
 
         if ($this->featured_image) {
-            return Storage::disk('public')->url($this->featured_image);
+            $url = Storage::disk('public')->url($this->featured_image);
+            \Log::info('Returning Storage URL:', ['url' => $url]);
+
+            return $url;
         }
 
-        return asset('https://placehold.co/600x400/1e232e/FFF?text=No+Image');
+        $placeholder = asset('https://placehold.co/600x400/1e232e/FFF?text=No+Image');
+        \Log::info('Returning placeholder:', ['url' => $placeholder]);
+
+        return $placeholder;
     }
 
     public function getPhotographerNameAttribute(): ?string
