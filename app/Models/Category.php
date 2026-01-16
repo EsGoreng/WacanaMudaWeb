@@ -24,17 +24,49 @@ class Category extends Model
         return Attribute::make(
             get: function () {
                 return match ($this->name) {
-                    'Ruang Kata' => 'bg-blue-600',
-                    'Jelajah Rasa' => 'bg-pink-600',
-                    'Jejak Karya' => 'bg-emerald-600',
-                    default => 'bg-zinc-600',
+
+                    'Technology' => 'bg-blue-600 text-white',
+                    'Programming' => 'bg-indigo-600 text-white',
+                    'Web Development' => 'bg-sky-600 text-white',
+                    'Mobile Development' => 'bg-cyan-600 text-white',
+                    'Design' => 'bg-fuchsia-600 text-white',
+                    'Business' => 'bg-amber-600 text-white',
+                    'Finance' => 'bg-emerald-600 text-white',
+                    'Politics' => 'bg-red-600 text-white',
+                    'Education' => 'bg-teal-600 text-white',
+                    'Lifestyle' => 'bg-pink-500 text-white',
+                    'Productivity' => 'bg-lime-600 text-white',
+                    'Opinion' => 'bg-zinc-700 text-white',
+                    'Social' => 'bg-violet-600 text-white',
+                    'Career' => 'bg-orange-600 text-white',
+                    'Creative Writing' => 'bg-purple-600 text-white',
+                    'Tutorial' => 'bg-blue-500 text-white',
+                    'Review' => 'bg-rose-600 text-white',
+                    'News & Update' => 'bg-slate-700 text-white',
+
+                    'Romance' => 'bg-rose-500 text-white',
+                    'Poetry' => 'bg-purple-500 text-white',
+                    'Short Story' => 'bg-indigo-500 text-white',
+                    'Fiction' => 'bg-violet-700 text-white',
+                    'Slice of Life' => 'bg-emerald-500 text-white',
+                    'Diary' => 'bg-teal-500 text-white',
+                    'Personal Thoughts' => 'bg-zinc-600 text-white',
+                    'Healing' => 'bg-green-500 text-white',
+                    'Letters' => 'bg-amber-500 text-white',
+                    'Quotes' => 'bg-sky-500 text-white',
+                    'Fantasy' => 'bg-purple-700 text-white',
+                    'Drama' => 'bg-red-500 text-white',
+                    'Coming of Age' => 'bg-lime-500 text-white',
+                    'Random Thoughts' => 'bg-neutral-600 text-white',
+
+                    default => 'bg-zinc-500 text-white',
                 };
             }
         );
     }
 
-    public function articles(): HasMany
+    public function writings(): HasMany
     {
-        return $this->hasMany(Writing::class, 'category_id');
+        return $this->hasMany(Writing::class, 'category_id', 'category_id');
     }
 }

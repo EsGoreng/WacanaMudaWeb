@@ -14,35 +14,69 @@ class WritingSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('id_ID');
-        $userIds = User::pluck('id')->toArray();
 
-        if (empty($userIds)) {
-            $userIds[] = DB::table('users')->insertGetId([
-                'name' => 'Admin Test',
-                'email' => 'admin@test.com',
-                'password' => bcrypt('password'),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        $users = User::with('series')->get();
 
-        $catRuangKata = DB::table('categories')->where('slug', 'ruang-kata')->value('category_id');
-        $catJelajahRasa = DB::table('categories')->where('slug', 'jelajah-rasa')->value('category_id');
-        $catJejakKarya = DB::table('categories')->where('slug', 'jejak-karya')->value('category_id');
+        $categorySlugs = [
+            'technology',
+            'programming',
+            'web-development',
+            'mobile-development',
+            'design',
+            'business',
+            'finance',
+            'politics',
+            'education',
+            'lifestyle',
+            'productivity',
+            'opinion',
+            'social',
+            'career',
+            'creative-writing',
+            'tutorial',
+            'review',
+            'news-update',
 
-        $seriesIds = DB::table('series')->pluck('series_id')->toArray();
+            'romance',
+            'poetry',
+            'short-story',
+            'fiction',
+            'slice-of-life',
+            'diary',
+            'personal-thoughts',
+            'healing',
+            'letters',
+            'quotes',
+            'fantasy',
+            'drama',
+            'coming-of-age',
+            'random-thoughts',
+        ];
 
-        $categoryIds = array_filter([$catRuangKata, $catJelajahRasa, $catJejakKarya]);
+        $categoryIds = DB::table('categories')
+            ->whereIn('slug', $categorySlugs)
+            ->pluck('category_id', 'slug');
 
-        if (empty($categoryIds)) {
-            $this->command->warn('Kategori Ruang Kata atau Jelajah Rasa tidak ditemukan. Pastikan CategorySeeder dijalankan duluan.');
-
-            return;
-        }
+        $categoryIds = DB::table('categories')
+            ->whereIn('slug', $categorySlugs)
+            ->pluck('category_id');
 
         $writings = [];
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 25; $i++) {
+
+            $randomUser = $users->random();
+
+            $userSeriesIds = DB::table('series')
+                ->where('user_id', $randomUser->id)
+                ->pluck('series_id')
+                ->toArray();
+
+            $selectedSeriesId = null;
+
+            if (! empty($userSeriesIds) && $faker->boolean(30)) {
+                $selectedSeriesId = $faker->randomElement($userSeriesIds);
+            }
 
             $status = $faker->randomElement(['published', 'published', 'published', 'draft']);
 
@@ -54,13 +88,11 @@ class WritingSeeder extends Seeder
             $title = rtrim($title, '.');
 
             $writings[] = [
-                'user_id' => $faker->randomElement($userIds),
+                'user_id' => $randomUser->id,
                 'category_id' => $faker->randomElement($categoryIds),
-                'series_id' => (! empty($seriesIds) && $faker->boolean(30)) ? $faker->randomElement($seriesIds) : null,
+                'series_id' => $selectedSeriesId, // Series ini DIJAMIN milik user di atas
                 'title' => $title,
-
                 'slug' => Str::slug($title).'-'.Str::random(6),
-
                 'content' => '<p>'.implode('</p><p>', $faker->paragraphs(mt_rand(3, 8))).'</p>',
                 'description' => $faker->sentence(10),
                 'featured_image' => null,

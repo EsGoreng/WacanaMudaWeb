@@ -16,16 +16,132 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Ruang Kata',
-                'description' => 'Fokus pada diskusi, perawatan wacana, dan uji nalar.',
+                'name' => 'Technology',
+                'description' => 'Membahas perkembangan teknologi, software, hardware, dan inovasi digital.',
             ],
             [
-                'name' => 'Jejak Karya',
-                'description' => 'Fokus pada aksi pengabdian nyata dan dampak sosial.',
+                'name' => 'Programming',
+                'description' => 'Tutorial, tips, dan best practice seputar pemrograman dan pengembangan aplikasi.',
             ],
             [
-                'name' => 'Jelajah Rasa',
-                'description' => 'Fokus pada refleksi, perenungan, dan pembelajaran pengalaman.',
+                'name' => 'Web Development',
+                'description' => 'Topik seputar frontend, backend, framework, dan arsitektur web modern.',
+            ],
+            [
+                'name' => 'Mobile Development',
+                'description' => 'Pengembangan aplikasi Android, iOS, dan cross-platform.',
+            ],
+            [
+                'name' => 'Design',
+                'description' => 'UI/UX, desain grafis, visual branding, dan pengalaman pengguna.',
+            ],
+            [
+                'name' => 'Business',
+                'description' => 'Strategi bisnis, startup, manajemen, dan dunia profesional.',
+            ],
+            [
+                'name' => 'Finance',
+                'description' => 'Keuangan pribadi, investasi, ekonomi, dan literasi finansial.',
+            ],
+            [
+                'name' => 'Politics',
+                'description' => 'Analisis isu politik, kebijakan publik, dan dinamika pemerintahan.',
+            ],
+            [
+                'name' => 'Education',
+                'description' => 'Pembelajaran, akademik, pengembangan diri, dan dunia pendidikan.',
+            ],
+            [
+                'name' => 'Lifestyle',
+                'description' => 'Gaya hidup, kebiasaan, produktivitas, dan keseimbangan hidup.',
+            ],
+            [
+                'name' => 'Productivity',
+                'description' => 'Manajemen waktu, fokus kerja, dan peningkatan efektivitas.',
+            ],
+            [
+                'name' => 'Opinion',
+                'description' => 'Sudut pandang, pemikiran personal, dan refleksi penulis.',
+            ],
+            [
+                'name' => 'Social',
+                'description' => 'Isu sosial, budaya, komunitas, dan fenomena masyarakat.',
+            ],
+            [
+                'name' => 'Career',
+                'description' => 'Pengembangan karier, dunia kerja, dan pengalaman profesional.',
+            ],
+            [
+                'name' => 'Creative Writing',
+                'description' => 'Tulisan kreatif seperti esai, cerita pendek, dan narasi.',
+            ],
+            [
+                'name' => 'Tutorial',
+                'description' => 'Panduan langkah demi langkah untuk mempelajari suatu topik.',
+            ],
+            [
+                'name' => 'Review',
+                'description' => 'Ulasan produk, buku, aplikasi, atau layanan.',
+            ],
+            [
+                'name' => 'News & Update',
+                'description' => 'Informasi terbaru, pengumuman, dan pembaruan penting.',
+            ],
+            [
+                'name' => 'Romance',
+                'description' => 'Cerita cinta, perasaan, hubungan, dan dinamika emosi manusia.',
+            ],
+            [
+                'name' => 'Poetry',
+                'description' => 'Puisi bebas, sajak, dan ungkapan rasa dalam bentuk kata.',
+            ],
+            [
+                'name' => 'Short Story',
+                'description' => 'Cerita pendek fiksi dengan gaya naratif yang ringan dan personal.',
+            ],
+            [
+                'name' => 'Fiction',
+                'description' => 'Karya fiksi imajinatif, baik realistis maupun fantasi.',
+            ],
+            [
+                'name' => 'Slice of Life',
+                'description' => 'Kisah sederhana dari kehidupan sehari-hari yang dekat dan relevan.',
+            ],
+            [
+                'name' => 'Diary',
+                'description' => 'Catatan personal, refleksi harian, dan pengalaman pribadi.',
+            ],
+            [
+                'name' => 'Personal Thoughts',
+                'description' => 'Isi pikiran acak, keresahan, dan sudut pandang penulis.',
+            ],
+            [
+                'name' => 'Healing',
+                'description' => 'Tulisan yang menenangkan, menyembuhkan, dan memberi ruang jeda.',
+            ],
+            [
+                'name' => 'Letters',
+                'description' => 'Surat terbuka atau tertutup yang ditulis untuk seseorang atau sesuatu.',
+            ],
+            [
+                'name' => 'Quotes',
+                'description' => 'Kutipan singkat, reflektif, dan bermakna.',
+            ],
+            [
+                'name' => 'Fantasy',
+                'description' => 'Cerita imajinatif dengan dunia, karakter, dan alur rekaan.',
+            ],
+            [
+                'name' => 'Drama',
+                'description' => 'Cerita dengan konflik emosional dan dinamika karakter.',
+            ],
+            [
+                'name' => 'Coming of Age',
+                'description' => 'Kisah pertumbuhan, pencarian jati diri, dan proses pendewasaan.',
+            ],
+            [
+                'name' => 'Random Thoughts',
+                'description' => 'Tulisan bebas tanpa batas topik, spontan, dan apa adanya.',
             ],
         ];
 

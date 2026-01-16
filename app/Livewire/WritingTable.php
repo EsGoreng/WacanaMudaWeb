@@ -75,7 +75,6 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                 TextColumn::make('category.name')
                     ->label('Category')
                     ->badge()
-                    ->color('success')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),

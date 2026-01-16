@@ -42,17 +42,17 @@ class Writing extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
     public function series(): BelongsTo
     {
-        return $this->belongsTo(Series::class, 'series_id');
+        return $this->belongsTo(Series::class, 'series_id', 'series_id');
     }
 
     public function getAuthorDisplayNameAttribute()
@@ -71,34 +71,21 @@ class Writing extends Model
         }
 
         return $this->user && $this->user->avatar
-            ? Storage::url($this->avatar)
+            ? Storage::url($this->user->avatar)
             : 'https://ui-avatars.com/api/?name='.urlencode($this->user->name ?? 'U');
     }
 
     public function getImageUrlAttribute(): string
     {
-        \Log::info('getImageUrlAttribute called:', [
-            'featured_image' => $this->featured_image,
-            'starts_with_https' => $this->featured_image ? str_starts_with($this->featured_image, 'https://images.unsplash.com') : false,
-        ]);
-
         if ($this->featured_image && str_starts_with($this->featured_image, 'https://images.unsplash.com')) {
-            \Log::info('Returning Unsplash URL:', ['url' => $this->featured_image]);
-
             return $this->featured_image;
         }
 
         if ($this->featured_image) {
-            $url = Storage::disk('public')->url($this->featured_image);
-            \Log::info('Returning Storage URL:', ['url' => $url]);
-
-            return $url;
+            return Storage::disk('public')->url($this->featured_image);
         }
 
-        $placeholder = asset('https://placehold.co/600x400/1e232e/FFF?text=No+Image');
-        \Log::info('Returning placeholder:', ['url' => $placeholder]);
-
-        return $placeholder;
+        return 'https://placehold.co/600x400/1e232e/FFF?text=No+Image';
     }
 
     public function getPhotographerNameAttribute(): ?string

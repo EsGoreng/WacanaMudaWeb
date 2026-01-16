@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
 use App\Models\Series;
 use App\Models\Writing;
 use Filament\Actions\Action;
@@ -284,14 +285,28 @@ class WritingForm extends Component implements HasActions, HasSchemas
 
                                 Select::make('category_id')
                                     ->label('Category')
-                                    ->options(fn () => \App\Models\Category::pluck('name', 'category_id'))
+                                    ->options(fn () => Category::pluck('name', 'category_id'))
                                     ->required()
                                     ->preload()
                                     ->columnSpanFull(),
 
                                 Select::make('series_id')
                                     ->label('Series')
-                                    ->options(fn () => Series::where('user_id', auth()->id())->pluck('name', 'series_id'))
+                                    ->options(function () {
+                                        $user = auth()->user();
+
+                                        if ($user->hasRole('superadmin')) {
+
+                                            return Series::with('user')->get()->mapWithKeys(function ($series) {
+                                                $ownerName = $series->user->name ?? 'Unknown';
+
+                                                return [$series->series_id => $series->name.' - '.$ownerName];
+                                            });
+                                        }
+
+                                        return Series::where('user_id', $user->id)
+                                            ->pluck('name', 'series_id');
+                                    })
                                     ->searchable()
                                     ->preload()
                                     ->columnSpanFull()

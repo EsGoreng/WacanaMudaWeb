@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
 use App\Models\Writing;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -13,35 +14,64 @@ class WritingList extends Component
 
     public $search = '';
 
-    public $selectedCategory = '';
+    public $selectedCategories = [];
 
-    public function updatedSearch()
+    public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function updatedSelectedCategory()
+    public function updatingSelectedCategories()
     {
+        $this->resetPage();
+    }
+
+    public function clearFilters()
+    {
+        $this->reset(['search', 'selectedCategories']);
         $this->resetPage();
     }
 
     #[Computed]
     public function posts()
     {
-        return Writing::with(['user', 'category'])
+        $query = Writing::with(['user', 'category'])
             ->where('status', 'Published')
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('title', 'like', '%'.$this->search.'%')
-                        ->orWhere('description', 'like', '%'.$this->search.'%');
-                });
-            })
-            ->when($this->selectedCategory, function ($query) {
-                $query->where('category_id', $this->selectedCategory);
-            })
-            ->whereNotNull('published_at')
-            ->latest('published_at')
+            ->whereNotNull('published_at');
+
+        // Filter berdasarkan pencarian
+        if (! empty($this->search)) {
+            $query->where(function ($q) {
+                $searchTerm = '%'.$this->search.'%';
+                $q->where('title', 'like', $searchTerm)
+                    ->orWhere('description', 'like', $searchTerm)
+                    ->orWhere('content', 'like', $searchTerm);
+            });
+        }
+
+        // Filter berdasarkan kategori yang dipilih
+        if (! empty($this->selectedCategories) && count($this->selectedCategories) > 0) {
+            $query->whereIn('category_id', $this->selectedCategories);
+        }
+
+        return $query->latest('published_at')
             ->paginate(9);
+    }
+
+    #[Computed]
+    public function categories()
+    {
+        // Ambil hanya kategori yang memiliki artikel published
+        return Category::whereHas('writings', function ($query) {
+            $query->where('status', 'Published')
+                ->whereNotNull('published_at');
+        })
+            ->withCount(['writings' => function ($query) {
+                $query->where('status', 'Published')
+                    ->whereNotNull('published_at');
+            }])
+            ->orderBy('name')
+            ->get();
     }
 
     public function paginationView()
