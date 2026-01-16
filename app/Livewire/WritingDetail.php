@@ -8,7 +8,9 @@ use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Livewire\Component;
+use Spatie\Browsershot\Browsershot;
 
 class WritingDetail extends Component implements HasSchemas
 {
@@ -57,6 +59,24 @@ class WritingDetail extends Component implements HasSchemas
                     ->columnSpanFull(),
 
             ]);
+    }
+
+    public function generateInstagramStory()
+    {
+        $html = view('components.social-story', [
+            'writing' => $this->writing,
+        ])->render();
+
+        $fileName = Str::slug($this->writing->title).'-story.jpg';
+
+        $screenshot = Browsershot::html($html)
+            ->windowSize(1080, 1920)
+            ->noSandbox()
+            ->screenshot();
+
+        return response()->streamDownload(function () use ($screenshot) {
+            echo $screenshot;
+        }, $fileName);
     }
 
     public function render()
