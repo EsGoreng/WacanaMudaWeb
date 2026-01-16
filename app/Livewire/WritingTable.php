@@ -124,9 +124,9 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
             ->filters([
                 SelectFilter::make('status')
                     ->options([
-                        'draft' => 'Draft',
-                        'published' => 'Published',
-                        'archived' => 'Archived',
+                        'Draft' => 'Draft',
+                        'Published' => 'Published',
+                        'Archived' => 'Archived',
                     ]),
 
                 SelectFilter::make('category_id')
@@ -183,7 +183,6 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                 Action::make('add')
                     ->label('Write Something')
                     ->icon('heroicon-o-pencil')
-                    ->color('primary')
                     ->url(route('dashboard.writing.create')),
             ])
             ->bulkActions([

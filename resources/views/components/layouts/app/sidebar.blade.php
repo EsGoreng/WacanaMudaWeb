@@ -8,14 +8,14 @@
 <body class="bg-white dark:bg-zinc-800">
     <div class="flex h-screen overflow-hidden">
         <flux:sidebar sticky collapsible="mobile"
-            class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+            class="border-e border-zinc-200 from-slate-100 to-slate-200 dark:border-slate-800 antialiased bg-linear-to-t dark:bg-linear-to-t dark:from-slate-950 dark:to-slate-900">
             <flux:sidebar.header>
                 <x-app-logo :sidebar="true" href="{{ route('home') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
 
             <flux:sidebar.nav class="gap-3">
-                <flux:input kbd="⌘K" icon="magnifying-glass" placeholder="Search..." />
+                {{-- <flux:input kbd="⌘K" icon="magnifying-glass" placeholder="Search..." /> --}}
 
                 <flux:sidebar.group class="grid">
                     <flux:sidebar.item icon="home" :href="route('home')" :current="request()->routeIs('home')"
@@ -34,7 +34,7 @@
 
                 <flux:sidebar.group :heading="__('Main Menu')" class="grid">
                     <flux:sidebar.item icon="book-open" :href="route('writing')"
-                        :current="request()->routeIs('articles')" wire:navigate>
+                        :current="request()->routeIs('writing*')" wire:navigate>
                         {{ __('Article & Blog') }}
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="chat-bubble-left-right" :href="route('home')"
@@ -86,7 +86,7 @@
             }
         }">
             <flux:header
-                class="sticky top-0 z-10 block! border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 backdrop-blur-md lg:bg-zinc-50 transition-all duration-300">
+                class="sticky top-0 z-10 block! border-b border-zinc-200 dark:border-slate-800 bg-zinc-100 dark:bg-zinc-900 backdrop-blur-md transition-all duration-300">
 
                 <div class="overflow-hidden transition-all duration-300 ease-in-out lg:!h-auto lg:!opacity-100"
                     @if (isset($secondary_nav)) :class="showTopBar ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'" @endif>
@@ -114,7 +114,7 @@
             </flux:header>
 
             <main class=" flex-1 overflow-y-auto overflow-x-hidden" @scroll="handleScroll($event)">
-                <div class="min-h-full">
+                <div class="min-h-full bg-white dark:bg-page-gray-900">
                     {{ $slot }}
                 </div>
 

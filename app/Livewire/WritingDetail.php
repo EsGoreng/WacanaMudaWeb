@@ -55,6 +55,7 @@ class WritingDetail extends Component implements HasSchemas
                     ->prose()
                     ->html()
                     ->columnSpanFull(),
+
             ]);
     }
 

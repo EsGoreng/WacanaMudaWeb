@@ -39,9 +39,8 @@ class WritingForm extends Component implements HasActions, HasSchemas
     public function mount(?Writing $writing = null): void
     {
         if ($writing && $writing->exists) {
-            if ($writing->user_id !== auth()->id()) {
-                abort(403, 'Unauthorized action.');
-            }
+
+            $this->authorize('update', $writing);
 
             $this->writing = $writing;
 
@@ -64,6 +63,9 @@ class WritingForm extends Component implements HasActions, HasSchemas
                 'reading_time' => $writing->reading_time,
             ]);
         } else {
+
+            $this->authorize('create', Writing::class);
+
             $this->form->fill([
                 'status' => 'draft',
                 'is_anonymous' => false,
@@ -328,6 +330,12 @@ class WritingForm extends Component implements HasActions, HasSchemas
 
     public function save(): void
     {
+        if ($this->writing) {
+            $this->authorize('update', $this->writing);
+        } else {
+            $this->authorize('create', Writing::class);
+        }
+
         $data = $this->form->getState();
 
         if (empty($data['featured_image']) && ! empty($data['unsplash_photo_id'])) {

@@ -2,43 +2,42 @@
 
 namespace App\Providers;
 
+use App\Models\Writing;
+use App\Policies\WritingPolicy;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
+        Gate::policy(Writing::class, WritingPolicy::class);
+
         FilamentColor::register([
             'danger' => Color::Red,
             'gray' => Color::Slate,
-            'info' => Color::Blue,
+            'info' => Color::Zinc,
             'primary' => [
-                50 => '239, 246, 255',
-                100 => '219, 234, 254',
-                200 => '191, 219, 254',
-                300 => '147, 197, 253',
-                400 => '96, 165, 250',
+                50 => '240, 245, 254',
+                100 => '222, 232, 251',
+                200 => '196, 216, 249',
+                300 => '156, 190, 244',
+                400 => '109, 156, 237',
+
                 500 => '59, 130, 246',
-                600 => '37, 99, 235',
-                700 => '29, 78, 216',
-                800 => '30, 64, 175',
-                900 => '30, 58, 138',
-                950 => '8, 31, 77',
+                600 => '30, 58, 138',
+
+                700 => '30, 64, 175',
+                800 => '30, 41, 59',
+                900 => '15, 23, 42',
+                950 => '8, 15, 35',
             ],
-            'success' => Color::Green,
+            'secondary' => Color::Teal,
+            'success' => Color::Emerald,
             'warning' => Color::Amber,
         ]);
     }
