@@ -125,8 +125,8 @@
                                     $cleanContent = strip_tags($writing->content);
                                     $cleanContent = preg_replace('/\s+/', ' ', $cleanContent);
                                     $displayText = $displayText
-                                        ? $displayText . ' ' . Str::limit($cleanContent, 150 - strlen($displayText))
-                                        : Str::limit($cleanContent, 150);
+                                        ? $displayText . ' ' . Str::limit($cleanContent, 200 - strlen($displayText))
+                                        : Str::limit($cleanContent, 200);
                                 }
                             @endphp
                             {{ $displayText }}
