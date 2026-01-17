@@ -16,6 +16,16 @@ class WritingList extends Component
 
     public $selectedCategories = [];
 
+    public $sortBy = 'latest';
+
+    public $dateFrom = '';
+
+    public $dateTo = '';
+
+    public $readingTimeMin = '';
+
+    public $readingTimeMax = '';
+
     public function updatingSearch()
     {
         $this->resetPage();
@@ -26,9 +36,42 @@ class WritingList extends Component
         $this->resetPage();
     }
 
+    public function updatingSortBy()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingDateTo()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingReadingTimeMin()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingReadingTimeMax()
+    {
+        $this->resetPage();
+    }
+
     public function clearFilters()
     {
-        $this->reset(['search', 'selectedCategories']);
+        $this->reset([
+            'search',
+            'selectedCategories',
+            'sortBy',
+            'dateFrom',
+            'dateTo',
+            'readingTimeMin',
+            'readingTimeMax',
+        ]);
         $this->resetPage();
     }
 
@@ -39,7 +82,7 @@ class WritingList extends Component
             ->where('status', 'Published')
             ->whereNotNull('published_at');
 
-        // Filter berdasarkan pencarian
+        // Apply search filter
         if (! empty($this->search)) {
             $query->where(function ($q) {
                 $searchTerm = '%'.$this->search.'%';
@@ -49,29 +92,83 @@ class WritingList extends Component
             });
         }
 
-        // Filter berdasarkan kategori yang dipilih
+        // Apply category filter
         if (! empty($this->selectedCategories) && count($this->selectedCategories) > 0) {
             $query->whereIn('category_id', $this->selectedCategories);
         }
 
-        return $query->latest('published_at')
-            ->paginate(9);
+        // Apply date range filter
+        if (! empty($this->dateFrom)) {
+            $query->whereDate('published_at', '>=', $this->dateFrom);
+        }
+        if (! empty($this->dateTo)) {
+            $query->whereDate('published_at', '<=', $this->dateTo);
+        }
+
+        // Apply reading time filter
+        if (! empty($this->readingTimeMin)) {
+            $query->where('reading_time', '>=', $this->readingTimeMin);
+        }
+        if (! empty($this->readingTimeMax)) {
+            $query->where('reading_time', '<=', $this->readingTimeMax);
+        }
+
+        // Apply sorting
+        switch ($this->sortBy) {
+            case 'oldest':
+                $query->oldest('published_at');
+                break;
+            case 'title_asc':
+                $query->orderBy('title', 'asc');
+                break;
+            case 'title_desc':
+                $query->orderBy('title', 'desc');
+                break;
+            case 'popular':
+                // Assuming you have a views_count or similar field
+                // $query->orderBy('views_count', 'desc');
+                $query->latest('published_at'); // fallback to latest
+                break;
+            default: // latest
+                $query->latest('published_at');
+                break;
+        }
+
+        return $query->paginate(9);
     }
 
     #[Computed]
     public function categories()
     {
-        // Ambil hanya kategori yang memiliki artikel published
-        return Category::whereHas('writings', function ($query) {
-            $query->where('status', 'Published')
+        $query = Category::whereHas('writings', function ($q) {
+            $q->where('status', 'Published')
                 ->whereNotNull('published_at');
-        })
-            ->withCount(['writings' => function ($query) {
-                $query->where('status', 'Published')
-                    ->whereNotNull('published_at');
-            }])
-            ->orderBy('name')
-            ->get();
+
+            if (! empty($this->search)) {
+                $searchTerm = '%'.$this->search.'%';
+                $q->where(function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('title', 'like', $searchTerm)
+                        ->orWhere('description', 'like', $searchTerm)
+                        ->orWhere('content', 'like', $searchTerm);
+                });
+            }
+        });
+
+        $query->withCount(['writings' => function ($q) {
+            $q->where('status', 'Published')
+                ->whereNotNull('published_at');
+
+            if (! empty($this->search)) {
+                $searchTerm = '%'.$this->search.'%';
+                $q->where(function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('title', 'like', $searchTerm)
+                        ->orWhere('description', 'like', $searchTerm)
+                        ->orWhere('content', 'like', $searchTerm);
+                });
+            }
+        }]);
+
+        return $query->orderBy('name')->get();
     }
 
     public function paginationView()
