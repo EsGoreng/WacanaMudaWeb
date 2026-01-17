@@ -11,7 +11,8 @@
     'link' => '#',
 ])
 
-<article class="group flex gap-6 py-6 hover:opacity-90 transition-opacity duration-200">
+<article
+    class="group flex gap-6 py-6 hover:opacity-90 bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 transition-all duration-300 rounded-lg backdrop-blur-sm p-4 my-2 lg:p-8 lg:my-4">
 
     <div class="flex-1 flex flex-col justify-between min-w-0">
         {{-- Bagian Header User & Kategori --}}

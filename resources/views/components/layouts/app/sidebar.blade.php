@@ -5,8 +5,11 @@
     @include('partials.head')
 </head>
 
-<body class="bg-white dark:bg-zinc-800">
-    <div class="flex h-screen overflow-hidden">
+<body class="bg-white dark:bg-zinc-900">
+
+    <x-star-background />
+
+    <div class="flex h-screen overflow-hidden relative">
         <flux:sidebar sticky collapsible="mobile"
             class="border-e border-zinc-200 from-slate-100 to-slate-200 dark:border-slate-800 antialiased bg-linear-to-t dark:bg-linear-to-t dark:from-slate-950 dark:to-slate-900">
             <flux:sidebar.header>
@@ -15,8 +18,6 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav class="gap-3">
-                {{-- <flux:input kbd="⌘K" icon="magnifying-glass" placeholder="Search..." /> --}}
-
                 <flux:sidebar.group class="grid">
                     <flux:sidebar.item icon="home" :href="route('home')" :current="request()->routeIs('home')"
                         wire:navigate>
@@ -86,11 +87,12 @@
             }
         }">
             <flux:header
-                class="sticky top-0 z-10 block! border-b border-zinc-200 dark:border-slate-800 bg-zinc-100 dark:bg-zinc-900 backdrop-blur-md transition-all duration-300">
+                class="sticky top-0 z-10 block! border-b border-zinc-200 dark:border-slate-800 bg-zinc-100/90 dark:bg-zinc-900/80 backdrop-blur-md transition-all duration-300">
 
                 <div class="overflow-hidden transition-all duration-300 ease-in-out lg:!h-auto lg:!opacity-100"
                     @if (isset($secondary_nav)) :class="showTopBar ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'" @endif>
                     <flux:navbar class="lg:hidden w-full pt-3">
+                        {{-- ... navbar mobile ... --}}
                         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
                         <flux:spacer />
                         <flux:dropdown position="top" align="end">
@@ -113,10 +115,12 @@
 
             </flux:header>
 
-            <main class=" flex-1 overflow-y-auto overflow-x-hidden" @scroll="handleScroll($event)">
-                <div class="min-h-full bg-white dark:bg-page-gray-900">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden" @scroll="handleScroll($event)">
+                <div
+                    class="min-h-full bg-white dark:bg-transparent dark:bg-gradient-to-b dark:from-page-gray-950/50 dark:to-page-gray-950/90">
                     {{ $slot }}
                 </div>
+
 
                 @include('components.footer')
             </main>

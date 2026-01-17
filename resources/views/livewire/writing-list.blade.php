@@ -160,27 +160,6 @@
                                 {{ $this->categories->count() }}
                             </div>
                         </div>
-                        {{-- 
-                        <div
-                            class="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-xl md:rounded-2xl p-4 md:p-6 hover:border-yellow-500/30 transition-all group">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="text-xs text-zinc-500 uppercase tracking-wider font-medium">TOTAL
-                                    VIEWS</div>
-                                <div
-                                    class="p-2 md:p-2.5 bg-zinc-800/50 rounded-lg group-hover:bg-yellow-500/10 border border-zinc-700/50 group-hover:border-yellow-500/20 transition-all">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-zinc-400 group-hover:text-yellow-500 transition-colors"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="text-3xl md:text-4xl font-bold text-white">
-                                {{ number_format(rand(10, 50)) }}k
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
             @endif
@@ -188,9 +167,7 @@
 
         <flux:separator variant="subtle" />
 
-        {{-- CONTENT SECTION --}}
         @if ($this->posts->isEmpty())
-            {{-- EMPTY STATE --}}
             <div class="text-center py-12 md:py-16 px-4">
                 <div
                     class="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-zinc-800/50 rounded-full mb-4 md:mb-6 border border-zinc-700/50">
@@ -249,7 +226,7 @@
         <div class="sticky top-8 space-y-6">
 
             <div
-                class="group rounded-xl bg-gradient-to-br from-white to-zinc-50 dark:from-zinc-900 dark:to-zinc-900/50 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300">
+                class="group rounded-xl bg-gradient-to-br backdrop-blur-md from-white to-zinc-50 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300">
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
                         <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
