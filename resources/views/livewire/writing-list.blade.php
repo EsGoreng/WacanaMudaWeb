@@ -277,7 +277,7 @@
                             class="bg-zinc-900/20 backdrop-blur-xs border border-zinc-800/50 rounded-lg md:rounded-xl p-4 md:p-6 hover:border-page-gray-500/30 transition-all group">
                             <div class="flex items-start justify-between mb-3">
                                 <div class="text-xs text-zinc-500 uppercase tracking-wider font-medium">TOTAL
-                                    ARTICLES</div>
+                                    WRITINGS</div>
                                 <svg class="w-4 h-4 md:w-5 md:h-5 text-zinc-400 group-hover:text-page-gray-500 transition-colors"
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -293,7 +293,7 @@
                             class="bg-zinc-900/20 backdrop-blur-xs border border-zinc-800/50 rounded-lg md:rounded-xl p-4 md:p-6 hover:border-page-gray-500/30 transition-all group">
                             <div class="flex items-start justify-between mb-3">
                                 <div class="text-xs text-zinc-500 uppercase tracking-wider font-medium">
-                                    CATEGORIES</div>
+                                    TOPIC CATEGORIES</div>
                                 <svg class="w-4 h-4 md:w-5 md:h-5 text-zinc-400 group-hover:text-page-gray-500 transition-colors"
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -351,7 +351,7 @@
             <div>
                 @foreach ($this->posts as $post)
                     <div wire:key="post-{{ $post->writing_id }}">
-                        <x-writing-card :image="$post->image_url" :avatar="$post->author_avatar_url" :author="$post->author_display_name" :category="$post->category"
+                        <x-writing-card :image="$post->image_url" :avatar="$post->author_avatar_url" :author="$post->author_display_name" :categories="$post->categories"
                             :date="$post->published_at->format('M d, Y')" :read-time="$post->reading_time" :title="$post->title" :excerpt="$post->excerpt" :description="$post->description"
                             :link="route('writing.show', $post->slug ?? '#')" />
                         <flux:separator variant="subtle" />

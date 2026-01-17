@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -45,14 +47,39 @@ class Writing extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function category(): BelongsTo
+    public function categories(): BelongsToMany
     {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+        return $this->belongsToMany(
+            Category::class,
+            'category_writing',
+            'writing_id',
+            'category_id'
+        );
     }
 
     public function series(): BelongsTo
     {
         return $this->belongsTo(Series::class, 'series_id', 'series_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(WritingComment::class, 'writing_id', 'writing_id');
+    }
+
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'writing_likes',
+            'writing_id',
+            'user_id',
+        );
+    }
+
+    public function isLikedBy(User $user): bool
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
     }
 
     public function getAuthorDisplayNameAttribute()

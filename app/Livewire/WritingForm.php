@@ -55,7 +55,7 @@ class WritingForm extends Component implements HasActions, HasSchemas
                 'image_credit_url' => $writing->image_credit_url,
                 'unsplash_photo_id' => $writing->unsplash_photo_id,
                 'unsplash_download_location' => $writing->unsplash_download_location,
-                'category_id' => $writing->category_id,
+                'categories' => $writing->categories->pluck('category_id')->toArray(),
                 'series_id' => $writing->series_id,
                 'status' => $writing->status,
                 'is_anonymous' => $writing->is_anonymous,
@@ -283,11 +283,12 @@ class WritingForm extends Component implements HasActions, HasSchemas
 
                                 Hidden::make('slug'),
 
-                                Select::make('category_id')
+                                Select::make('categories')
                                     ->label('Category')
-                                    ->options(fn () => Category::pluck('name', 'category_id'))
+                                    ->multiple()
+                                    ->options(Category::all()->pluck('name', 'category_id'))
                                     ->required()
-                                    ->preload()
+                                    ->searchable()
                                     ->columnSpanFull(),
 
                                 Select::make('series_id')
@@ -353,6 +354,10 @@ class WritingForm extends Component implements HasActions, HasSchemas
 
         $data = $this->form->getState();
 
+        $categoryIds = $data['categories'] ?? [];
+
+        unset($data['categories']);
+
         if (empty($data['featured_image']) && ! empty($data['unsplash_photo_id'])) {
             if ($this->writing && $this->writing->unsplash_photo_id === $data['unsplash_photo_id']) {
                 $data['featured_image'] = $this->writing->featured_image;
@@ -386,10 +391,12 @@ class WritingForm extends Component implements HasActions, HasSchemas
         try {
             if ($this->writing) {
                 $this->writing->update($data);
+                $this->writing->categories()->sync($categoryIds);
                 $message = 'Article updated successfully';
             } else {
                 $data['user_id'] = auth()->id();
-                Writing::create($data);
+                $writing = Writing::create($data);
+                $writing->categories()->sync($categoryIds);
                 $message = 'Article created successfully';
             }
 

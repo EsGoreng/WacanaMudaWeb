@@ -44,7 +44,7 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                     ! $user->hasRole('superadmin'),
                     fn ($query) => $query->where('user_id', $user->id)
                 )
-                ->with(['user', 'category', 'series']))
+                ->with(['user', 'categories', 'series']))
             ->defaultSort('writing_id', 'desc')
             ->columns([
                 TextColumn::make('writing_id')
@@ -72,11 +72,12 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                     ->color(fn (Writing $record) => $record->is_anonymous ? 'gray' : 'primary')
                     ->toggleable(),
 
-                TextColumn::make('category.name')
-                    ->label('Category')
+                // PERBAIKAN 2: Ganti 'category.name' menjadi 'categories.name'
+                TextColumn::make('categories.name')
+                    ->label('Categories')
                     ->badge()
+                    ->separator(',') // Memisahkan kategori dengan koma jika lebih dari satu
                     ->searchable()
-                    ->sortable()
                     ->toggleable(),
 
                 TextColumn::make('series.name')
@@ -128,9 +129,11 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                         'Archived' => 'Archived',
                     ]),
 
-                SelectFilter::make('category_id')
-                    ->label('Category')
-                    ->relationship('category', 'name'),
+                SelectFilter::make('categories')
+                    ->label('Categories')
+                    ->relationship('categories', 'name')
+                    ->multiple()
+                    ->preload(),
 
                 SelectFilter::make('series_id')
                     ->label('Series')

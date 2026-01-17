@@ -99,7 +99,7 @@
                     <div class="flex items-center gap-4 mb-16">
                         <span class="h-4 w-4 rounded-full bg-primary shadow-[0_0_20px_rgba(59,130,246,0.8)]"></span>
                         <span class="text-2xl font-bold tracking-[0.25em] text-gray-500 dark:text-blue-300 uppercase">
-                            {{ $writing->category->name }}
+                            {{ $writing->category }}
                         </span>
                     </div>
 

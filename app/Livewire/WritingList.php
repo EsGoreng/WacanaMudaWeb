@@ -78,7 +78,8 @@ class WritingList extends Component
     #[Computed]
     public function posts()
     {
-        $query = Writing::with(['user', 'category'])
+        // PERUBAHAN 1: Ganti 'category' menjadi 'categories' untuk eager loading
+        $query = Writing::with(['user', 'categories'])
             ->where('status', 'Published')
             ->whereNotNull('published_at');
 
@@ -93,8 +94,12 @@ class WritingList extends Component
         }
 
         // Apply category filter
+        // PERUBAHAN 2: Menggunakan whereHas untuk relasi Many-to-Many
         if (! empty($this->selectedCategories) && count($this->selectedCategories) > 0) {
-            $query->whereIn('category_id', $this->selectedCategories);
+            $query->whereHas('categories', function ($q) {
+                // Kita filter berdasarkan ID kategori yang ada di tabel categories (via pivot)
+                $q->whereIn('categories.category_id', $this->selectedCategories);
+            });
         }
 
         // Apply date range filter
@@ -125,9 +130,7 @@ class WritingList extends Component
                 $query->orderBy('title', 'desc');
                 break;
             case 'popular':
-                // Assuming you have a views_count or similar field
-                // $query->orderBy('views_count', 'desc');
-                $query->latest('published_at'); // fallback to latest
+                $query->latest('published_at');
                 break;
             default: // latest
                 $query->latest('published_at');
@@ -140,6 +143,10 @@ class WritingList extends Component
     #[Computed]
     public function categories()
     {
+        // PERUBAHAN 3: Pastikan Model Category sudah memiliki relasi function writings()
+        // yang menggunakan belongsToMany. Logika di bawah ini akan otomatis
+        // menyesuaikan query ke tabel pivot jika Model Category sudah benar.
+
         $query = Category::whereHas('writings', function ($q) {
             $q->where('status', 'Published')
                 ->whereNotNull('published_at');

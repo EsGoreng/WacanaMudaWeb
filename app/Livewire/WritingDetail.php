@@ -3,10 +3,12 @@
 namespace App\Livewire;
 
 use App\Models\Writing;
+use App\Models\WritingComment;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -17,6 +19,12 @@ class WritingDetail extends Component implements HasSchemas
     use InteractsWithSchemas;
 
     public Writing $writing;
+
+    public $editingCommentId = null;
+
+    public $editingBody = '';
+
+    public $commentBody = '';
 
     public function mount(Writing $writing)
     {
@@ -79,6 +87,91 @@ class WritingDetail extends Component implements HasSchemas
         }, $fileName);
     }
 
+    public function toggleLike()
+    {
+        if (! Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $this->writing->likes()->toggle(Auth::id());
+
+        $this->writing->refresh();
+    }
+
+    public function postComment()
+    {
+        if (! Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $this->validate([
+            'commentBody' => 'required|min:3|max:1000',
+        ]);
+
+        WritingComment::create([
+            'user_id' => Auth::id(),
+            'writing_id' => $this->writing->writing_id,
+            'body' => $this->commentBody,
+        ]);
+
+        $this->commentBody = '';
+        $this->dispatch('comment-posted');
+        $this->writing->refresh();
+    }
+
+    public function editComment($commentId)
+    {
+        $comment = WritingComment::find($commentId);
+
+        if (! $comment || $comment->user_id !== Auth::id()) {
+            return;
+        }
+
+        $this->editingCommentId = $commentId;
+        $this->editingBody = $comment->body;
+    }
+
+    public function updateComment()
+    {
+        $this->validate([
+            'editingBody' => 'required|min:1|max:1000',
+        ]);
+
+        $comment = WritingComment::find($this->editingCommentId);
+
+        if ($comment && $comment->user_id === Auth::id()) {
+            $comment->update([
+                'body' => $this->editingBody,
+            ]);
+        }
+
+        $this->cancelEdit();
+        $this->writing->refresh();
+    }
+
+    public function cancelEdit()
+    {
+        $this->editingCommentId = null;
+        $this->editingBody = '';
+    }
+
+    public function deleteComment($commentId)
+    {
+        $comment = WritingComment::find($commentId);
+
+        if (! $comment) {
+            return;
+        }
+
+        $user = Auth::user();
+
+        if ($comment->user_id === $user->id || $user->hasAnyRole(['superadmin', 'admin'])) {
+            $comment->delete();
+        }
+
+        $this->writing->refresh();
+    }
+
     public function render()
     {
         $latestPosts = Writing::with('user')
@@ -90,6 +183,9 @@ class WritingDetail extends Component implements HasSchemas
 
         return view('livewire.writing-detail', [
             'latestPosts' => $latestPosts,
+            'comments' => $this->writing->comments()->with('user')->latest()->get(),
+            'likesCount' => $this->writing->likes()->count(),
+            'isLiked' => Auth::check() ? $this->writing->isLikedBy(Auth::user()) : false,
         ])->layoutData([
             'title' => $this->writing->title.' | WMB',
             'contentClass' => '!p-0 !max-w-none min-h-screen',

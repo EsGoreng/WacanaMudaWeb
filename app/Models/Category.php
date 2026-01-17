@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
@@ -43,7 +43,6 @@ class Category extends Model
                     'Tutorial' => 'bg-blue-500 text-white',
                     'Review' => 'bg-rose-600 text-white',
                     'News & Update' => 'bg-slate-700 text-white',
-
                     'Romance' => 'bg-rose-500 text-white',
                     'Poetry' => 'bg-purple-500 text-white',
                     'Short Story' => 'bg-indigo-500 text-white',
@@ -65,8 +64,13 @@ class Category extends Model
         );
     }
 
-    public function writings(): HasMany
+    public function writings(): BelongsToMany
     {
-        return $this->hasMany(Writing::class, 'category_id', 'category_id');
+        return $this->belongsToMany(
+            Writing::class,
+            'category_writing',
+            'category_id',
+            'writing_id'
+        );
     }
 }
