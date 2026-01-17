@@ -1,6 +1,149 @@
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
     <div class="lg:col-span-3">
         <div class="mb-6 md:mb-10">
+            @php
+                $literacyContent = \Illuminate\Support\Arr::random([
+                    [
+                        'heading' =>
+                            'Critical <span class="font-serif italic font-medium text-white ml-1">Minds</span>',
+                        'quote' =>
+                            'Encouraging analytical thinking and the power of reason to navigate through modern complexities.',
+                    ],
+                    [
+                        'heading' =>
+                            'The Sanctuary of <span class="font-serif italic font-medium text-white ml-1">Discourse</span>',
+                        'quote' =>
+                            'A dedicated space to nurture ideas, test logic, and maintain healthy intellectual debates.',
+                    ],
+                    [
+                        'heading' =>
+                            'Literacy as <span class="font-serif italic font-medium text-white ml-1">Foundation</span>',
+                        'quote' =>
+                            'Building deep awareness that reading and writing are the fundamental roots of all education.',
+                    ],
+                    [
+                        'heading' =>
+                            'Ink, Logic & <span class="font-serif italic font-medium text-white ml-1">Expression</span>',
+                        'quote' =>
+                            'Providing a canvas for every thought, turning abstract ideas into written masterpieces.',
+                    ],
+                    [
+                        'heading' =>
+                            'The Light of <span class="font-serif italic font-medium text-white ml-1">Wisdom</span>',
+                        'quote' => 'Illuminating the darkest corners of ignorance with the steady torch of knowledge.',
+                    ],
+                    [
+                        'heading' =>
+                            'Cultivating the <span class="font-serif italic font-medium text-white ml-1">Intellect</span>',
+                        'quote' => 'A mind stretched by a new idea never returns to its original dimensions.',
+                    ],
+                    [
+                        'heading' =>
+                            'The Alchemy of <span class="font-serif italic font-medium text-white ml-1">Words</span>',
+                        'quote' =>
+                            'Transforming the base metal of raw information into the gold of profound understanding.',
+                    ],
+                    [
+                        'heading' =>
+                            'Architects of the <span class="font-serif italic font-medium text-white ml-1">Future</span>',
+                        'quote' => 'Today’s readers are tomorrow’s leaders. We write the future one page at a time.',
+                    ],
+                    [
+                        'heading' =>
+                            'Bridging <span class="font-serif italic font-medium text-white ml-1">Perspectives</span>',
+                        'quote' =>
+                            'Literature allows us to live a thousand lives and view the world through a thousand eyes.',
+                    ],
+                    [
+                        'heading' =>
+                            'The Mirror of <span class="font-serif italic font-medium text-white ml-1">Humanity</span>',
+                        'quote' =>
+                            'Reading holds up a mirror to nature, reflecting our shared struggles, triumphs, and complexities.',
+                    ],
+                    [
+                        'heading' =>
+                            'Voices from the <span class="font-serif italic font-medium text-white ml-1">Past</span>',
+                        'quote' =>
+                            'Books are the legacy that a great genius leaves to mankind, delivered down from generation to generation.',
+                    ],
+                    [
+                        'heading' =>
+                            'Pathways to <span class="font-serif italic font-medium text-white ml-1">Liberty</span>',
+                        'quote' =>
+                            'Literacy is the road map to freedom; without it, we are lost in a maze of someone else’s making.',
+                    ],
+                    [
+                        'heading' =>
+                            'Sharper than <span class="font-serif italic font-medium text-white ml-1">Steel</span>',
+                        'quote' =>
+                            'The pen shapes history with a permanence that the sword can only envy but never emulate.',
+                    ],
+                    [
+                        'heading' =>
+                            'The Quiet <span class="font-serif italic font-medium text-white ml-1">Revolution</span>',
+                        'quote' => 'In the silence of reading, a loud revolution of ideas begins to take shape.',
+                    ],
+                    [
+                        'heading' =>
+                            'Vessels of <span class="font-serif italic font-medium text-white ml-1">Imagination</span>',
+                        'quote' =>
+                            'There is no frigate like a book to take us lands away, nor any coursers like a page of prancing poetry.',
+                    ],
+                    [
+                        'heading' =>
+                            'The Art of <span class="font-serif italic font-medium text-white ml-1">Inquiry</span>',
+                        'quote' =>
+                            'To question is to grow. Answers end the journey, but questions keep the path alive.',
+                    ],
+                    [
+                        'heading' =>
+                            'Unlocking <span class="font-serif italic font-medium text-white ml-1">Universes</span>',
+                        'quote' =>
+                            'Libraries are the only places where you can travel through time and space without leaving your seat.',
+                    ],
+                    [
+                        'heading' =>
+                            'Fueling the <span class="font-serif italic font-medium text-white ml-1">Spark</span>',
+                        'quote' =>
+                            'Curiosity is the wick in the candle of learning; literacy is the flame that lights it.',
+                    ],
+                    [
+                        'heading' =>
+                            'Guardians of <span class="font-serif italic font-medium text-white ml-1">Veracity</span>',
+                        'quote' => 'In a world of noise, literacy teaches us to listen for the whisper of truth.',
+                    ],
+                    [
+                        'heading' =>
+                            'The Symphony of <span class="font-serif italic font-medium text-white ml-1">Syntax</span>',
+                        'quote' =>
+                            'Finding the rhythm in structure and the melody in meaning, composing clarity out of chaos.',
+                    ],
+                    [
+                        'heading' =>
+                            'Decoding the <span class="font-serif italic font-medium text-white ml-1">World</span>',
+                        'quote' =>
+                            'To read is to empower oneself with the tools to decode the complex systems of our reality.',
+                    ],
+                    [
+                        'heading' =>
+                            'Beyond the <span class="font-serif italic font-medium text-white ml-1">Surface</span>',
+                        'quote' =>
+                            'True literacy is diving deep beneath the waves of text to find the pearls of meaning hidden below.',
+                    ],
+                    [
+                        'heading' =>
+                            'Weaving the <span class="font-serif italic font-medium text-white ml-1">Narrative</span>',
+                        'quote' =>
+                            'We are all stories in the end; literacy gives us the agency to write our own chapters.',
+                    ],
+                    [
+                        'heading' =>
+                            'Legacy of <span class="font-serif italic font-medium text-white ml-1">Letters</span>',
+                        'quote' =>
+                            'Writing is the painting of the voice, preserving our fleeting thoughts for eternity.',
+                    ],
+                ]);
+            @endphp
             @if (
                 $search ||
                     count($selectedCategories) > 0 ||
@@ -9,7 +152,7 @@
                     $dateTo ||
                     $readingTimeMin ||
                     $readingTimeMax)
-                <div class="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-6 md:p-8">
+                <div class="bg-zinc-900/20 backdrop-blur-xs border border-zinc-800/50 rounded-2xl p-6 md:p-8">
                     <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                         <div class="flex items-start gap-4">
                             <div class="p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
@@ -78,7 +221,6 @@
                             </span>
                         @endif
 
-                        {{-- Date Filter --}}
                         @if ($dateFrom || $dateTo)
                             <span
                                 class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-xs font-medium text-zinc-300">
@@ -97,7 +239,6 @@
                             </span>
                         @endif
 
-                        {{-- Reading Time Filter --}}
                         @if ($readingTimeMin || $readingTimeMax)
                             <span
                                 class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-xs font-medium text-zinc-300">
@@ -118,23 +259,26 @@
                 </div>
             @else
                 <div class="space-y-6 md:space-y-8">
-                    <div>
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3">
-                            Latest Writings
+                    <div class="group cursor-default">
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">
+                            {!! $literacyContent['heading'] !!}
                         </h1>
-                        <p class="text-sm md:text-base text-zinc-400 max-w-2xl">
-                            Curated articles exploring the intersection of code, aesthetic design, and digital
-                            innovation.
-                        </p>
+
+                        <div class="max-w-2xl">
+                            <p
+                                class="text-sm md:text-base text-zinc-400 leading-relaxed italic border-l-2 border-zinc-700 pl-4 mb-2">
+                                “{{ $literacyContent['quote'] }}”
+                            </p>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3 md:gap-4">
                         <div
-                            class="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-lg md:rounded-xl p-4 md:p-6 hover:border-yellow-500/30 transition-all group">
+                            class="bg-zinc-900/20 backdrop-blur-xs border border-zinc-800/50 rounded-lg md:rounded-xl p-4 md:p-6 hover:border-page-gray-500/30 transition-all group">
                             <div class="flex items-start justify-between mb-3">
                                 <div class="text-xs text-zinc-500 uppercase tracking-wider font-medium">TOTAL
                                     ARTICLES</div>
-                                <svg class="w-4 h-4 md:w-5 md:h-5 text-zinc-400 group-hover:text-yellow-500 transition-colors"
+                                <svg class="w-4 h-4 md:w-5 md:h-5 text-zinc-400 group-hover:text-page-gray-500 transition-colors"
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -146,11 +290,11 @@
                         </div>
 
                         <div
-                            class="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-lg md:rounded-xl p-4 md:p-6 hover:border-yellow-500/30 transition-all group">
+                            class="bg-zinc-900/20 backdrop-blur-xs border border-zinc-800/50 rounded-lg md:rounded-xl p-4 md:p-6 hover:border-page-gray-500/30 transition-all group">
                             <div class="flex items-start justify-between mb-3">
                                 <div class="text-xs text-zinc-500 uppercase tracking-wider font-medium">
                                     CATEGORIES</div>
-                                <svg class="w-4 h-4 md:w-5 md:h-5 text-zinc-400 group-hover:text-yellow-500 transition-colors"
+                                <svg class="w-4 h-4 md:w-5 md:h-5 text-zinc-400 group-hover:text-page-gray-500 transition-colors"
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />

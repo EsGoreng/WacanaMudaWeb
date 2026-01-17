@@ -79,8 +79,20 @@
         <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm text-zinc-700 dark:text-zinc-300 leading-5 mx-4">
-                    <span class="font-medium">{{ $paginator->total() }}</span>
-                    {{ Str::plural('writings', $paginator->total()) }} found
+                    Showing
+                    <span class="font-medium">
+                        {{ $paginator->firstItem() ?? 0 }}
+                    </span>
+                    article
+                    to
+                    <span class="font-medium">
+                        {{ $paginator->lastItem() ?? 0 }}
+                    </span>
+                    from
+                    <span class="font-medium">
+                        {{ $paginator->total() }}
+                    </span>
+                    {{ Str::plural('article', $paginator->total()) }}
                 </p>
             </div>
 

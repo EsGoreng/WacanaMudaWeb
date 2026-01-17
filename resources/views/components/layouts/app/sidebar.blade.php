@@ -33,7 +33,8 @@
 
                 <flux:separator variant="subtle" />
 
-                <flux:sidebar.group :heading="__('Main Menu')" class="grid">
+                <flux:heading>Main Menu</flux:heading>
+                <flux:sidebar.group class="grid">
                     <flux:sidebar.item icon="book-open" :href="route('writing')"
                         :current="request()->routeIs('writing*')" wire:navigate>
                         {{ __('Article & Blog') }}
