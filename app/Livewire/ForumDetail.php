@@ -4,42 +4,144 @@ namespace App\Livewire;
 
 use App\Models\Forum;
 use App\Models\Reply;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ForumDetail extends Component
+class ForumDetail extends Component implements HasForms
 {
+    use InteractsWithForms;
     use WithPagination;
 
     public Forum $forum;
 
-    public $replyBody = '';
+    public ?array $commentData = [];
+
+    public ?array $replyData = [];
 
     public $parentReplyId = null;
-
-    public $editingReplyId = null;
-
-    public $editingBody = '';
 
     public $userVoteType = null;
 
     public $score = 0;
 
-    public function mount(Forum $forum)
+    public $editingReplyId = null;
+
+    public $editingBody = '';
+
+    public function mount(Forum $forum): void
     {
         $this->forum = $forum;
-
         $this->forum->load(['user', 'category', 'votes']);
-
         $this->forum->increment('view_count');
         $this->calculateScore();
+
+        $this->commentForm->fill();
+        $this->replyForm->fill();
+    }
+
+    protected function getForms(): array
+    {
+        return [
+            'commentForm',
+            'replyForm',
+        ];
+    }
+
+    public function commentForm(Schema $form): Schema
+    {
+        return $form
+            ->schema([
+                RichEditor::make('body')
+                    ->label('Comment')
+                    ->placeholder('Write your comment...')
+                    ->toolbarButtons([
+                        'bold', 'italic', 'underline', 'strike',
+                        'blockquote', 'codeBlock',
+                        'bulletList',
+                        'orderedList',
+                    ])
+                    ->required(),
+            ])
+            ->statePath('commentData');
+    }
+
+    public function replyForm(Schema $form): Schema
+    {
+        return $form
+            ->schema([
+                RichEditor::make('body')
+                    ->label('Reply')
+                    ->toolbarButtons([
+                        'bold', 'italic', 'underline', 'strike',
+                        'blockquote', 'codeBlock',
+                        'bulletList',
+                        'orderedList',
+                    ])
+                    ->placeholder('Write reply...')
+                    ->required(),
+            ])
+            ->statePath('replyData');
+    }
+
+    public function createComment()
+    {
+        if (! Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $data = $this->commentForm->getState();
+
+        Reply::create([
+            'forum_id' => $this->forum->id,
+            'user_id' => Auth::id(),
+            'body' => $data['body'],
+            'parent_id' => null,
+        ]);
+
+        $this->commentForm->fill();
+        $this->dispatch('reply-posted');
+    }
+
+    public function createReply()
+    {
+        if (! Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $data = $this->replyForm->getState();
+
+        Reply::create([
+            'forum_id' => $this->forum->id,
+            'user_id' => Auth::id(),
+            'body' => $data['body'],
+            'parent_id' => $this->parentReplyId,
+        ]);
+
+        $this->replyForm->fill();
+        $this->parentReplyId = null;
+        $this->dispatch('reply-posted');
+    }
+
+    public function setReplyTo($id)
+    {
+        if ($this->parentReplyId === $id) {
+            $this->parentReplyId = null;
+            $this->replyData = [];
+        } else {
+            $this->parentReplyId = $id;
+            $this->replyForm->fill();
+        }
     }
 
     public function calculateScore()
     {
         $this->score = $this->forum->votes()->where('type', 'up')->count() -
-                       $this->forum->votes()->where('type', 'down')->count();
+                      $this->forum->votes()->where('type', 'down')->count();
 
         if (Auth::check()) {
             $vote = $this->forum->votes()->where('user_id', Auth::id())->first();
@@ -72,33 +174,6 @@ class ForumDetail extends Component
         }
 
         $this->calculateScore();
-    }
-
-    public function postReply()
-    {
-        if (! Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $this->validate([
-            'replyBody' => 'required|min:3|max:2000',
-        ]);
-
-        Reply::create([
-            'forum_id' => $this->forum->id,
-            'user_id' => Auth::id(),
-            'body' => $this->replyBody,
-            'parent_id' => $this->parentReplyId,
-        ]);
-
-        $this->replyBody = '';
-        $this->parentReplyId = null;
-        $this->dispatch('reply-posted');
-    }
-
-    public function setReplyTo($id)
-    {
-        $this->parentReplyId = ($this->parentReplyId === $id) ? null : $id;
     }
 
     public function editReply($replyId)
@@ -161,9 +236,7 @@ class ForumDetail extends Component
 
         $replies = $this->forum->replies()
             ->whereNull('parent_id')
-            ->with(['user', 'votes', 'children' => function ($query) {
-                $query->with(['user', 'votes']);
-            }])
+            ->with(['user', 'votes', 'children.user', 'children.votes'])
             ->latest()
             ->paginate(10);
 

@@ -1,40 +1,33 @@
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-    {{-- Kolom Utama (Feed forum) --}}
     <div class="lg:col-span-3">
         <div class="space-y-4">
             @livewire('forum-create')
             @forelse ($forums as $forum)
                 @php
-                    // Logika hitung skor vote di view (bisa dipindah ke Model untuk performa lebih baik)
                     $upvotes = $forum->votes->where('type', 'up')->count();
                     $downvotes = $forum->votes->where('type', 'down')->count();
                     $score = $upvotes - $downvotes;
 
-                    // Cek status vote user saat ini
                     $userVote = auth()->check() ? $forum->votes->where('user_id', auth()->id())->first() : null;
                 @endphp
 
                 <article
-                    class="bg-white dark:bg-zinc-900/40 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer group overflow-hidden">
+                    class="bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer group overflow-hidden">
                     <div class="flex">
-                        {{-- Vote Section --}}
                         <div
                             class="w-12 bg-zinc-50/50 dark:bg-black/20 flex flex-col items-center py-3 gap-1 border-r border-zinc-100 dark:border-zinc-800/50">
-                            {{-- Upvote --}}
-                            <button wire:click.prevent="vote({{ $forum->id }}, 'up')"
-                                class="p-1 rounded transition-colors {{ $userVote?->type === 'up' ? 'text-orange-500 bg-orange-500/10' : 'text-zinc-400 hover:text-orange-500 hover:bg-orange-500/10' }}">
+                            <button wire:click="vote('up')"
+                                class="p-1 rounded transition-colors {{ $userVote?->type === 'up' ? 'text-green-500 bg-green-500/10' : 'text-zinc-400 hover:text-green-500 hover:bg-green-500/10' }}">
                                 <x-bi-chevron-up class="w-5 h-5" />
                             </button>
 
-                            {{-- Score --}}
                             <span
-                                class="text-xs font-bold {{ $score > 0 ? 'text-orange-500' : ($score < 0 ? 'text-blue-500' : 'text-zinc-700 dark:text-zinc-300') }}">
+                                class="text-xs font-bold {{ $score > 0 ? 'text-green-500' : ($score < 0 ? 'text-red-500' : 'text-zinc-700 dark:text-zinc-300') }}">
                                 {{ \Illuminate\Support\Number::abbreviate($score) }}
                             </span>
 
-                            {{-- Downvote --}}
-                            <button wire:click.prevent="vote({{ $forum->id }}, 'down')"
-                                class="p-1 rounded transition-colors {{ $userVote?->type === 'down' ? 'text-blue-500 bg-blue-500/10' : 'text-zinc-400 hover:text-blue-500 hover:bg-blue-500/10' }}">
+                            <button wire:click="vote('down')"
+                                class="p-1 rounded transition-colors {{ $userVote?->type === 'down' ? 'text-red-500 bg-red-500/10' : 'text-zinc-400 hover:text-red-500 hover:bg-red-500/10' }}">
                                 <x-bi-chevron-down class="w-5 h-5" />
                             </button>
                         </div>
@@ -64,7 +57,6 @@
                                 </p>
                             </a>
 
-                            {{-- Footer Actions --}}
                             <div class="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-medium">
                                 <button
                                     class="flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-white/5 px-2.5 py-1.5 rounded-lg transition-colors">
@@ -122,11 +114,6 @@
 
     <div class="lg:col-span-1">
         <div class="sticky top-8 space-y-6">
-            {{-- Tombol Buat forum (Opsional) --}}
-            {{-- <a href="{{ route('forums.create') }}"
-                class="block w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-center rounded-xl transition shadow-lg shadow-blue-600/20">
-                + Buat Diskusi Baru
-            </a> --}}
 
             <div class="group rounded-xl bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 p-6">
                 <h3 class="font-bold text-zinc-900 dark:text-white mb-4">Trending Topik</h3>

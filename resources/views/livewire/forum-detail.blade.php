@@ -14,23 +14,23 @@
 
             {{-- ARTIKEL UTAMA --}}
             <article
-                class="flex flex-col rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm transition-colors duration-200">
+                class="flex flex-col rounded-xl bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm transition-colors duration-200">
                 <div class="flex">
                     {{-- Vote Sidebar --}}
                     <div
                         class="hidden sm:flex w-12 flex-col items-center bg-zinc-50 dark:bg-zinc-900/50 py-4 gap-1 border-r border-zinc-100 dark:border-zinc-800/50">
                         <button wire:click="vote('up')"
-                            class="p-1 rounded transition-colors {{ $userVoteType === 'up' ? 'text-orange-500 bg-orange-500/10' : 'text-zinc-400 hover:text-orange-500 hover:bg-orange-500/10' }}">
+                            class="p-1 rounded transition-colors {{ $userVoteType === 'up' ? 'text-green-500 bg-green-500/10' : 'text-zinc-400 hover:text-green-500 hover:bg-green-500/10' }}">
                             <x-bi-arrow-up class="w-6 h-6 font-bold" />
                         </button>
 
                         <span
-                            class="text-sm font-bold {{ $score > 0 ? 'text-orange-500' : ($score < 0 ? 'text-blue-500' : 'text-zinc-900 dark:text-white') }}">
+                            class="text-sm font-bold {{ $score > 0 ? 'text-green-500' : ($score < 0 ? 'text-orange-500' : 'text-zinc-900 dark:text-white') }}">
                             {{ \Illuminate\Support\Number::abbreviate($score) }}
                         </span>
 
                         <button wire:click="vote('down')"
-                            class="p-1 rounded transition-colors {{ $userVoteType === 'down' ? 'text-blue-500 bg-blue-500/10' : 'text-zinc-400 hover:text-blue-500 hover:bg-blue-500/10' }}">
+                            class="p-1 rounded transition-colors {{ $userVoteType === 'down' ? 'text-orange-500 bg-blue-500/10' : 'text-zinc-400 hover:text-orange-500 hover:bg-blue-500/10' }}">
                             <x-bi-arrow-down class="w-6 h-6 font-bold" />
                         </button>
                     </div>
@@ -66,9 +66,11 @@
                             </div>
                         </div>
 
+                        {{-- Body Artikel Utama --}}
+                        {{-- Menggunakan RichContentRenderer sesuai request --}}
                         <div
                             class="prose dark:prose-invert max-w-none text-zinc-800 dark:text-zinc-300 text-base leading-relaxed space-y-4">
-                            {!! nl2br(e($forum->body)) !!}
+                            {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($forum->body) }}
                         </div>
 
                         {{-- Mobile Vote --}}
@@ -76,11 +78,11 @@
                             class="flex sm:hidden items-center gap-4 mt-6 border-t border-zinc-100 dark:border-zinc-700 pt-4">
                             <div class="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-full px-2">
                                 <button wire:click="vote('up')"
-                                    class="p-2 {{ $userVoteType === 'up' ? 'text-orange-500' : 'text-zinc-500' }}">
+                                    class="p-2 {{ $userVoteType === 'up' ? 'text-green-500' : 'text-zinc-500' }}">
                                     <x-bi-arrow-up class="w-5 h-5" />
                                 </button>
                                 <span
-                                    class="text-sm font-bold px-1 {{ $score > 0 ? 'text-orange-500' : ($score < 0 ? 'text-blue-500' : 'text-zinc-700 dark:text-zinc-300') }}">
+                                    class="text-sm font-bold px-1 {{ $score > 0 ? 'text-green-500' : ($score < 0 ? 'text-blue-500' : 'text-zinc-700 dark:text-zinc-300') }}">
                                     {{ \Illuminate\Support\Number::abbreviate($score) }}
                                 </span>
                                 <button wire:click="vote('down')"
@@ -108,106 +110,93 @@
                 </div>
             </article>
 
-            {{-- BAGIAN SECTION KOMENTAR SAJA --}}
-            <div class="mt-8 bg-[#0B1416] min-h-screen text-slate-300 p-4 md:p-6 rounded-xl">
+            <div
+                class="mt-4 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 backdrop-blur-xs text-slate-300 p-4 md:p-6 rounded-xl">
 
                 <h3 class="text-lg font-medium text-slate-100 mb-6 border-b border-slate-800 pb-2">
                     Comments <span class="text-slate-500 text-sm ml-1">({{ $replies->total() }})</span>
                 </h3>
 
-                {{-- FORM UTAMA (HANYA UNTUK KOMENTAR BARU / ROOT) --}}
                 @auth
-                    <div class="mb-8 flex gap-3">
+                    <div class="mb-4     flex gap-3">
                         <div class="shrink-0">
                             <img src="{{ auth()->user()->avatar ? Storage::url(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
                                 class="w-8 h-8 rounded-full">
                         </div>
                         <div class="w-full">
-                            {{-- Saat fokus form utama, pastikan parentReplyId NULL agar jadi root --}}
-                            <form wire:submit.prevent="postReply" wire:click="$set('parentReplyId', null)" class="relative">
-                                <div
-                                    class="bg-[#1A282D] border border-slate-700 rounded-md overflow-hidden focus-within:border-slate-500">
-                                    <textarea wire:model="replyBody"
-                                        class="w-full bg-transparent border-none text-slate-200 text-sm p-3 focus:ring-0 min-h-[80px]"
-                                        placeholder="Add a comment..."></textarea>
-                                    <div class="flex justify-end bg-[#1A282D] px-2 py-1.5 border-t border-slate-700/50">
-                                        <button type="submit"
-                                            class="bg-slate-100 hover:bg-white text-slate-900 px-4 py-1 rounded-full text-xs font-bold">Post</button>
-                                    </div>
+                            <form wire:submit="createComment">
+                                {{ $this->commentForm }}
+
+                                <div class="flex justify-end mt-4">
+                                    <button type="submit" wire:loading.attr="disabled"
+                                        class="bg-brand-hover hover:bg-accent text-white font-semibold py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm">
+                                        <span wire:loading.remove wire:target="createComment">Post Comment</span>
+                                        <span wire:loading wire:target="createComment">Posting...</span>
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 @endauth
 
-                {{-- LOOPING KOMENTAR --}}
                 <div class="space-y-6">
                     @forelse($replies as $reply)
 
-                        {{-- WRAPPER SATU UTAS (PARENT + CHILDREN) --}}
-                        <div class="flex flex-col">
+                        <div class="flex flex-col" wire:key="reply-{{ $reply->id }}">
 
-                            {{-- ===================== --}}
-                            {{-- 1. TAMPILAN PARENT    --}}
-                            {{-- ===================== --}}
                             <div class="flex gap-3 relative group">
-                                {{-- Parent Avatar --}}
                                 <div class="flex flex-col items-center shrink-0 w-8">
                                     <img src="{{ $reply->user->avatar ? Storage::url($reply->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($reply->user->name) }}"
                                         class="w-8 h-8 rounded-full object-cover ring-2 ring-[#0B1416] z-10 relative">
-                                    {{-- Garis vertikal panjang jika punya anak --}}
                                     @if ($reply->children->count() > 0 || $parentReplyId === $reply->id)
-                                        <div class="w-0.5 h-full bg-slate-800 absolute top-8 left-4 -ml-[1px]"></div>
+                                        <div class="w-0.5 h-full bg-slate-800 absolute left-4 -ml-[2px]"></div>
                                     @endif
                                 </div>
 
                                 <div class="flex-1 min-w-0 pb-2">
-                                    {{-- Parent Header --}}
                                     <div class="flex items-center gap-2 text-xs mb-1">
                                         <span class="font-bold text-slate-200">{{ $reply->user->username }}</span>
                                         <span class="text-slate-500">•
                                             {{ $reply->created_at->diffForHumans(null, true) }}</span>
                                     </div>
 
-                                    {{-- Parent Body --}}
-                                    <div class="text-sm text-slate-300 whitespace-pre-line mb-1">
-                                        {{ trim($reply->body) }}
+                                    {{-- Body Reply --}}
+                                    <div
+                                        class="text-sm text-slate-300 fi-prose prose prose-sm prose-invert max-w-none mb-1 prose-p:leading-relaxed prose-a:text-blue-400">
+                                        {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($reply->body) }}
                                     </div>
 
-                                    {{-- Parent Actions --}}
-                                    <div class="flex items-center gap-4 mt-1">
-                                        {{-- Vote --}}
-                                        <div class="flex items-center gap-1 text-slate-500">
-                                            <button wire:click="voteReply({{ $reply->id }}, 'up')"
-                                                class="hover:text-orange-500"><x-bi-arrow-up class="w-4 h-4" /></button>
-                                            <span class="text-xs font-bold">{{ $reply->score }}</span>
-                                            <button wire:click="voteReply({{ $reply->id }}, 'down')"
-                                                class="hover:text-blue-500"><x-bi-arrow-down class="w-4 h-4" /></button>
-                                        </div>
+                                    <div class="flex items-center gap-2 mt-1">
 
-                                        {{-- Reply Button --}}
                                         <button wire:click="setReplyTo({{ $reply->id }})"
-                                            class="flex items-center gap-1 text-xs font-bold text-slate-500 hover:bg-slate-800 px-2 py-1 rounded">
-                                            <x-bi-chat-left class="w-3.5 h-3.5" /> Reply
+                                            class="flex items-center gap-1 text-xs font-bold text-slate-500 hover:bg-slate-800 px-2 py-2 rounded">
+                                            <x-bi-chat-left class="w-4 h-4" /> Reply
                                         </button>
+
+                                        @if (auth()->id() === $reply->user_id || auth()->user()?->hasRole('admin') || auth()->user()?->hasRole('superadmin'))
+                                            <button wire:click="deleteReply({{ $reply->id }})"
+                                                wire:confirm="Are you sure you want to delete this comment?"
+                                                class="flex items-center gap-1 text-xs text-orange-500 hover:text-orange-400 hover:bg-slate-800 px-2 py-2 rounded">
+                                                <x-bi-trash class="w-4 h-4" />Delete
+                                            </button>
+                                        @endif
                                     </div>
 
-                                    {{-- FORM REPLY INLINE (Muncul di bawah Parent) --}}
                                     @if ($parentReplyId === $reply->id)
-                                        <div class="mt-3 animate-in fade-in slide-in-from-top-1">
-                                            <form wire:submit.prevent="postReply">
-                                                <div class="bg-[#1A282D] border border-slate-700 rounded-md">
-                                                    <textarea wire:model="replyBody" rows="3"
-                                                        class="w-full bg-transparent border-none text-slate-200 text-sm p-2 focus:ring-0"
-                                                        placeholder="Replying to {{ $reply->user->username }}..."></textarea>
-                                                    <div
-                                                        class="flex justify-end gap-2 p-2 border-t border-slate-700/50">
-                                                        <button type="button"
-                                                            wire:click="setReplyTo({{ $reply->id }})"
-                                                            class="text-xs text-slate-400 hover:text-white px-2">Cancel</button>
-                                                        <button type="submit"
-                                                            class="bg-slate-100 hover:bg-white text-slate-900 text-xs font-bold px-3 py-1 rounded-full">Reply</button>
-                                                    </div>
+                                        <div class="mt-3 animate-in fade-in slide-in-from-top-1 pl-0">
+                                            <form wire:submit="createReply">
+                                                {{ $this->replyForm }}
+
+                                                <div class="flex justify-end gap-2 mt-4">
+                                                    <button type="button" wire:click="setReplyTo({{ $reply->id }})"
+                                                        class="text-xs text-slate-400 hover:text-white px-2">
+                                                        Cancel
+                                                    </button>
+                                                    <button type="submit" wire:loading.attr="disabled"
+                                                        class="bg-brand-hover hover:bg-accent text-white font-semibold py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm">
+                                                        <span wire:loading.remove wire:target="createReply">Reply</span>
+                                                        <span wire:loading wire:target="createReply">Posting...</span>
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -215,34 +204,21 @@
                                 </div>
                             </div>
 
-                            {{-- ===================== --}}
-                            {{-- 2. TAMPILAN CHILDREN  --}}
-                            {{-- ===================== --}}
                             @if ($reply->children->count() > 0)
                                 <div class="flex flex-col w-full">
                                     @foreach ($reply->children as $child)
-                                        <div class="flex w-full relative">
+                                        <div class="flex w-full relative" wire:key="child-{{ $child->id }}">
 
-                                            {{-- KOLOM KIRI: Spacer / Indentasi --}}
-                                            {{-- w-8 (sama dengan lebar avatar parent) + jarak --}}
                                             <div class="w-8 shrink-0 flex justify-center relative">
-                                                {{-- Garis vertikal lanjutan dari parent --}}
-                                                <div class="w-0.5 h-full bg-slate-800 absolute left-4 -ml-[1px]"></div>
-                                                {{-- Garis lengkung/horizontal ke anak --}}
-                                                <div
-                                                    class="w-4 h-4 border-b-2 border-l-2 border-slate-800 rounded-bl-xl absolute top-0 left-4">
-                                                </div>
+                                                <div class="w-0.5 bg-slate-800 absolute left-4 -ml-[2px] h-full"></div>
                                             </div>
 
-                                            {{-- KONTEN ANAK (Digeser ke kanan oleh div di atas) --}}
                                             <div class="flex-1 pl-4 pt-2">
                                                 <div class="flex gap-3 mb-4">
-                                                    {{-- Child Avatar --}}
                                                     <img src="{{ $child->user->avatar ? Storage::url($child->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($child->user->name) }}"
                                                         class="w-6 h-6 rounded-full mt-1 bg-slate-800">
 
                                                     <div class="flex-1">
-                                                        {{-- Child Header --}}
                                                         <div class="flex items-center gap-2 text-xs mb-0.5">
                                                             <span
                                                                 class="font-bold text-slate-200">{{ $child->user->username }}</span>
@@ -250,29 +226,19 @@
                                                                 class="text-slate-500 text-[10px]">{{ $child->created_at->diffForHumans(null, true) }}</span>
                                                         </div>
 
-                                                        {{-- Child Body --}}
-                                                        <div class="text-sm text-slate-300">
-                                                            {{ trim($child->body) }}
+                                                        {{-- Body Child Reply --}}
+                                                        <div
+                                                            class="text-sm text-slate-300 prose fi-prose prose-sm prose-invert max-w-none prose-p:leading-relaxed prose-a:text-blue-400">
+                                                            {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($child->body) }}
                                                         </div>
 
-                                                        {{-- Child Actions --}}
                                                         <div
                                                             class="flex items-center gap-3 mt-1 opacity-70 hover:opacity-100 transition-opacity">
-                                                            <div
-                                                                class="flex items-center gap-1 text-slate-500 text-xs">
-                                                                <button
-                                                                    wire:click="voteReply({{ $child->id }}, 'up')"
-                                                                    class="hover:text-orange-500"><x-bi-arrow-up
-                                                                        class="w-3 h-3" /></button>
-                                                                <span>{{ $child->score }}</span>
-                                                                <button
-                                                                    wire:click="voteReply({{ $child->id }}, 'down')"
-                                                                    class="hover:text-blue-500"><x-bi-arrow-down
-                                                                        class="w-3 h-3" /></button>
-                                                            </div>
+
                                                             @if (auth()->id() === $child->user_id || auth()->user()?->hasRole('admin'))
                                                                 <button wire:click="deleteReply({{ $child->id }})"
-                                                                    class="text-[10px] text-red-500 hover:text-red-400">Delete</button>
+                                                                    wire:confirm="Are you sure you want to delete this reply?"
+                                                                    class="text-[12px] text-orange-500 hover:text-orange-400">Delete</button>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -283,10 +249,12 @@
                                 </div>
                             @endif
 
-                        </div> {{-- End Wrapper --}}
+                        </div>
 
                     @empty
-                        <div class="text-center text-slate-500 py-10">No comments yet.</div>
+                        <div
+                            class="text-center text-slate-500 py-10 border rounded-xl border-slate-200 zinc-200 dark:border-zinc-700">
+                            No comments yet.</div>
                     @endforelse
                 </div>
 
@@ -297,9 +265,7 @@
 
         </div>
 
-        {{-- KOLOM KANAN (SIDEBAR) --}}
         <aside class="lg:col-span-4 space-y-8 lg:pt-0 sticky top-6 self-start">
-            {{-- Community Widget --}}
             <div
                 class="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm transition-colors duration-200">
                 <div class="flex flex-col gap-3">
@@ -338,7 +304,6 @@
                 </div>
             </div>
 
-            {{-- Latest Discussions --}}
             <div
                 class="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm transition-colors duration-200">
                 <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-4">Latest Discussions</h3>
@@ -356,7 +321,6 @@
                 </div>
             </div>
 
-            {{-- Rules --}}
             <div
                 class="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm transition-colors duration-200">
                 <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Topic Rules</h3>

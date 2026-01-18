@@ -282,14 +282,14 @@
                                     @else
                                         <div
                                             class="relative px-4 py-2 shadow-md transition-all duration-200 hover:shadow-lg group/bubble
-                    {{ $isCurrentUser
-                        ? 'bg-zinc-700 text-white rounded-2xl rounded-tr-sm ' . ($canManage ? 'pr-9' : '')
-                        : 'bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700/50 text-zinc-800 dark:text-zinc-200 rounded-2xl rounded-tl-sm ' .
-                            ($canManage ? 'pr-9' : '') }}">
+                                            {{ $isCurrentUser
+                                                ? 'bg-zinc-700 text-white rounded-2xl rounded-tr-sm ' . ($canManage ? 'pr-9' : '')
+                                                : 'bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700/50 text-zinc-800 dark:text-zinc-200 rounded-2xl rounded-tl-sm ' .
+                                                    ($canManage ? 'pr-9' : '') }}">
 
                                             {{-- blade-formatter-disable --}}
-                    <p class="text-sm md:text-[15px] leading-normal whitespace-pre-line tracking-wide break-words">{{ trim($comment->body) }}</p>
-                    {{-- blade-formatter-enable --}}
+                                            <p class="text-sm md:text-[15px] leading-normal whitespace-pre-line tracking-wide break-words">{{ trim($comment->body) }}</p>
+                                            {{-- blade-formatter-enable --}}
                                             @if ($canManage)
                                                 <div x-data="{ open: false }" class="absolute top-2 right-1">
 
