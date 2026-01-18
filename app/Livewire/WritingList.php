@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Category;
 use App\Models\Writing;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,18 +13,25 @@ class WritingList extends Component
 {
     use WithPagination;
 
+    #[Url(except: '')]
     public $search = '';
 
+    #[Url(except: [])]
     public $selectedCategories = [];
 
+    #[Url(except: 'latest')]
     public $sortBy = 'latest';
 
+    #[Url(except: '')]
     public $dateFrom = '';
 
+    #[Url(except: '')]
     public $dateTo = '';
 
+    #[Url(except: '')]
     public $readingTimeMin = '';
 
+    #[Url(except: '')]
     public $readingTimeMax = '';
 
     public function updatingSearch()
@@ -61,6 +69,20 @@ class WritingList extends Component
         $this->resetPage();
     }
 
+    public function mount()
+    {
+        $categorySlug = request()->query('category');
+
+        if ($categorySlug) {
+            $category = Category::where('slug', $categorySlug)->first();
+
+            if ($category) {
+                $this->selectedCategories = [$category->category_id];
+                $this->category = '';
+            }
+        }
+    }
+
     public function clearFilters()
     {
         $this->reset([
@@ -78,12 +100,11 @@ class WritingList extends Component
     #[Computed]
     public function posts()
     {
-        // PERUBAHAN 1: Ganti 'category' menjadi 'categories' untuk eager loading
+
         $query = Writing::with(['user', 'categories'])
             ->where('status', 'Published')
             ->whereNotNull('published_at');
 
-        // Apply search filter
         if (! empty($this->search)) {
             $query->where(function ($q) {
                 $searchTerm = '%'.$this->search.'%';
@@ -93,16 +114,13 @@ class WritingList extends Component
             });
         }
 
-        // Apply category filter
-        // PERUBAHAN 2: Menggunakan whereHas untuk relasi Many-to-Many
         if (! empty($this->selectedCategories) && count($this->selectedCategories) > 0) {
             $query->whereHas('categories', function ($q) {
-                // Kita filter berdasarkan ID kategori yang ada di tabel categories (via pivot)
+
                 $q->whereIn('categories.category_id', $this->selectedCategories);
             });
         }
 
-        // Apply date range filter
         if (! empty($this->dateFrom)) {
             $query->whereDate('published_at', '>=', $this->dateFrom);
         }
@@ -110,7 +128,6 @@ class WritingList extends Component
             $query->whereDate('published_at', '<=', $this->dateTo);
         }
 
-        // Apply reading time filter
         if (! empty($this->readingTimeMin)) {
             $query->where('reading_time', '>=', $this->readingTimeMin);
         }
@@ -118,7 +135,6 @@ class WritingList extends Component
             $query->where('reading_time', '<=', $this->readingTimeMax);
         }
 
-        // Apply sorting
         switch ($this->sortBy) {
             case 'oldest':
                 $query->oldest('published_at');
@@ -132,7 +148,7 @@ class WritingList extends Component
             case 'popular':
                 $query->latest('published_at');
                 break;
-            default: // latest
+            default:
                 $query->latest('published_at');
                 break;
         }
@@ -143,9 +159,6 @@ class WritingList extends Component
     #[Computed]
     public function categories()
     {
-        // PERUBAHAN 3: Pastikan Model Category sudah memiliki relasi function writings()
-        // yang menggunakan belongsToMany. Logika di bawah ini akan otomatis
-        // menyesuaikan query ke tabel pivot jika Model Category sudah benar.
 
         $query = Category::whereHas('writings', function ($q) {
             $q->where('status', 'Published')

@@ -35,11 +35,11 @@
                         class="inline-flex items-center px-4 py-2 mb-4 rounded-lg bg-black/20 backdrop-blur-md border border-white/10 shadow-sm">
 
                         <flux:breadcrumbs>
-                            <flux:breadcrumbs.item icon="home" :href="route('home')"
+                            <flux:breadcrumbs.item icon="home" :href="route('writing')"
                                 class="[&_a]:!text-white [&_.text-zinc-300]:!text-white" />
 
-                            <flux:breadcrumbs.item :href="route('writing')"
-                                class="[&_a]:!text-white [&_.text-zinc-300]:!text-white">
+                            <flux:breadcrumbs.item
+                                :href="route('writing', ['category' => $writing->categories->first()?->slug])">
                                 {{ $writing->categories->first()?->name ?? 'General' }}
                             </flux:breadcrumbs.item>
 
@@ -139,9 +139,47 @@
                                 </path>
                             </svg>
                         </button>
-                        <button class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
-                            title="Copy Link">
-                            <x-bi-link />
+                        <button x-data="{
+                            copied: false,
+                            shareData: {
+                                title: '{{ $writing->title }}',
+                                text: 'Baca tulisan dari {{ $writing->author_display_name }}: {{ $writing->title }}',
+                                url: window.location.href
+                            },
+                            async share() {
+                                if (navigator.share) {
+                                    try {
+                                        await navigator.share(this.shareData);
+                                    } catch (err) {
+                                        console.log('Share cancelled');
+                                    }
+                                } else {
+                                    try {
+                                        await navigator.clipboard.writeText(`${this.shareData.text}\n\n${this.shareData.url}`);
+                                        this.copied = true;
+                                        setTimeout(() => this.copied = false, 2000);
+                                    } catch (err) {
+                                        console.error('Gagal menyalin', err);
+                                    }
+                                }
+                            }
+                        }" @click="share()"
+                            class="p-2 rounded-lg transition-all duration-200 flex items-center gap-2 relative
+                            {{ 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500' }}"
+                            :class="copied ? 'bg-green-50 dark:bg-green-900/20 text-green-600' : ''" title="Share Link">
+                            <template x-if="!copied">
+                                <x-bi-link class="w-4 h-4" />
+                            </template>
+
+                            <template x-if="copied">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                </svg>
+                            </template>
+
+                            <span x-show="copied" x-transition
+                                class="text-[10px] font-bold uppercase tracking-wider">Copied</span>
                         </button>
                         <button class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                             title="Bookmark">
