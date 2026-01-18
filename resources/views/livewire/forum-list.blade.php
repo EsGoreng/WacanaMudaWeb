@@ -39,12 +39,9 @@
                             </button>
                         </div>
 
-                        {{-- Content Section --}}
                         <div class="flex-1 p-4 md:p-5">
-                            {{-- Meta Header --}}
                             <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 mb-3">
                                 <div class="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-200">
-                                    {{-- Menggunakan accessor badge_class dari model Category --}}
                                     <span
                                         class="px-2 py-0.5 rounded shadow-sm text-[10px] {{ $forum->category->badge_class }}">
                                         {{ $forum->category->name }}
@@ -57,8 +54,7 @@
                                 <span>{{ $forum->created_at->diffForHumans() }}</span>
                             </div>
 
-                            {{-- Title & Body --}}
-                            <a href="#" class="block">
+                            <a href="{{ route('forums.show', $forum->slug) }}" class="block">
                                 <h2
                                     class="text-xl font-extrabold text-zinc-900 dark:text-white mb-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                     {{ $forum->title }}

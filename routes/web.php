@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\ForumDetail;
 use App\Livewire\WritingDetail;
 use App\Livewire\WritingForm;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,7 @@ Route::middleware(['guest'])->group(function () {
 Route::get('/writing/{writing:slug}', WritingDetail::class)->name('writing.show');
 Route::view('/writing', 'pages.writing.main')->name('writing');
 
+Route::get('/forum/{forum:slug}', ForumDetail::class)->name('forums.show');
 Route::view('/forum', 'pages.forum.main')->name('forum');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {

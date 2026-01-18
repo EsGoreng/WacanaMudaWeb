@@ -4,8 +4,9 @@
             {{ __('For you') }}
         </flux:navbar.item>
     </x-slot:secondary_nav>
-
-    <flux:heading size="xl" level="1">{{ __('Good afternoon') }}, {{ auth()->user()->name }}</flux:heading>
+    @auth
+        <flux:heading size="xl" level="1">{{ __('Good afternoon') }}, {{ auth()->user()->name }}</flux:heading>
+    @endauth
     <flux:text class="mb-6 mt-2 text-base">{{ __("Here's what's new today") }}</flux:text>
     <flux:separator variant="subtle" />
     <div class="flex flex-col gap-4 mt-6">

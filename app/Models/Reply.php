@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Reply extends Model
@@ -13,9 +14,20 @@ class Reply extends Model
 
     protected $fillable = [
         'forum_id',
+        'parent_id',
         'user_id',
         'body',
     ];
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Reply::class, 'parent_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(Reply::class, 'parent_id');
+    }
 
     public function user(): BelongsTo
     {

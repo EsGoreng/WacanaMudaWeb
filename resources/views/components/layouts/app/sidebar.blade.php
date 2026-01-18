@@ -40,7 +40,7 @@
                         {{ __('Article & Blog') }}
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="chat-bubble-left-right" :href="route('forum')"
-                        :current="request()->routeIs('forum')" wire:navigate>
+                        :current="request()->routeIs('forum*')" wire:navigate>
                         {{ __('Forum') }}
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="calendar" :href="route('home')" :current="request()->routeIs('events')"
