@@ -5,140 +5,140 @@
                 $literacyContent = \Illuminate\Support\Arr::random([
                     [
                         'heading' =>
-                            'Critical <span class="font-serif italic font-medium text-white ml-1">Minds</span>',
+                            'Critical <span class="font-serif italic font-medium text-black dark:text-white ml-1">Minds</span>',
                         'quote' =>
                             'Encouraging analytical thinking and the power of reason to navigate through modern complexities.',
                     ],
                     [
                         'heading' =>
-                            'The Sanctuary of <span class="font-serif italic font-medium text-white ml-1">Discourse</span>',
+                            'The Sanctuary of <span class="font-serif italic font-medium text-black dark:text-white ml-1">Discourse</span>',
                         'quote' =>
                             'A dedicated space to nurture ideas, test logic, and maintain healthy intellectual debates.',
                     ],
                     [
                         'heading' =>
-                            'Literacy as <span class="font-serif italic font-medium text-white ml-1">Foundation</span>',
+                            'Literacy as <span class="font-serif italic font-medium text-black dark:text-white ml-1">Foundation</span>',
                         'quote' =>
                             'Building deep awareness that reading and writing are the fundamental roots of all education.',
                     ],
                     [
                         'heading' =>
-                            'Ink, Logic & <span class="font-serif italic font-medium text-white ml-1">Expression</span>',
+                            'Ink, Logic & <span class="font-serif italic font-medium text-black dark:text-white ml-1">Expression</span>',
                         'quote' =>
                             'Providing a canvas for every thought, turning abstract ideas into written masterpieces.',
                     ],
                     [
                         'heading' =>
-                            'The Light of <span class="font-serif italic font-medium text-white ml-1">Wisdom</span>',
+                            'The Light of <span class="font-serif italic font-medium text-black dark:text-white ml-1">Wisdom</span>',
                         'quote' => 'Illuminating the darkest corners of ignorance with the steady torch of knowledge.',
                     ],
                     [
                         'heading' =>
-                            'Cultivating the <span class="font-serif italic font-medium text-white ml-1">Intellect</span>',
+                            'Cultivating the <span class="font-serif italic font-medium text-black dark:text-white ml-1">Intellect</span>',
                         'quote' => 'A mind stretched by a new idea never returns to its original dimensions.',
                     ],
                     [
                         'heading' =>
-                            'The Alchemy of <span class="font-serif italic font-medium text-white ml-1">Words</span>',
+                            'The Alchemy of <span class="font-serif italic font-medium text-black dark:text-white ml-1">Words</span>',
                         'quote' =>
                             'Transforming the base metal of raw information into the gold of profound understanding.',
                     ],
                     [
                         'heading' =>
-                            'Architects of the <span class="font-serif italic font-medium text-white ml-1">Future</span>',
+                            'Architects of the <span class="font-serif italic font-medium text-black dark:text-white ml-1">Future</span>',
                         'quote' => 'Today’s readers are tomorrow’s leaders. We write the future one page at a time.',
                     ],
                     [
                         'heading' =>
-                            'Bridging <span class="font-serif italic font-medium text-white ml-1">Perspectives</span>',
+                            'Bridging <span class="font-serif italic font-medium text-black dark:text-white ml-1">Perspectives</span>',
                         'quote' =>
                             'Literature allows us to live a thousand lives and view the world through a thousand eyes.',
                     ],
                     [
                         'heading' =>
-                            'The Mirror of <span class="font-serif italic font-medium text-white ml-1">Humanity</span>',
+                            'The Mirror of <span class="font-serif italic font-medium text-black dark:text-white ml-1">Humanity</span>',
                         'quote' =>
                             'Reading holds up a mirror to nature, reflecting our shared struggles, triumphs, and complexities.',
                     ],
                     [
                         'heading' =>
-                            'Voices from the <span class="font-serif italic font-medium text-white ml-1">Past</span>',
+                            'Voices from the <span class="font-serif italic font-medium text-black dark:text-white ml-1">Past</span>',
                         'quote' =>
                             'Books are the legacy that a great genius leaves to mankind, delivered down from generation to generation.',
                     ],
                     [
                         'heading' =>
-                            'Pathways to <span class="font-serif italic font-medium text-white ml-1">Liberty</span>',
+                            'Pathways to <span class="font-serif italic font-medium text-black dark:text-white ml-1">Liberty</span>',
                         'quote' =>
                             'Literacy is the road map to freedom; without it, we are lost in a maze of someone else’s making.',
                     ],
                     [
                         'heading' =>
-                            'Sharper than <span class="font-serif italic font-medium text-white ml-1">Steel</span>',
+                            'Sharper than <span class="font-serif italic font-medium text-black dark:text-white ml-1">Steel</span>',
                         'quote' =>
                             'The pen shapes history with a permanence that the sword can only envy but never emulate.',
                     ],
                     [
                         'heading' =>
-                            'The Quiet <span class="font-serif italic font-medium text-white ml-1">Revolution</span>',
+                            'The Quiet <span class="font-serif italic font-medium text-black dark:text-white ml-1">Revolution</span>',
                         'quote' => 'In the silence of reading, a loud revolution of ideas begins to take shape.',
                     ],
                     [
                         'heading' =>
-                            'Vessels of <span class="font-serif italic font-medium text-white ml-1">Imagination</span>',
+                            'Vessels of <span class="font-serif italic font-medium text-black dark:text-white ml-1">Imagination</span>',
                         'quote' =>
                             'There is no frigate like a book to take us lands away, nor any coursers like a page of prancing poetry.',
                     ],
                     [
                         'heading' =>
-                            'The Art of <span class="font-serif italic font-medium text-white ml-1">Inquiry</span>',
+                            'The Art of <span class="font-serif italic font-medium text-black dark:text-white ml-1">Inquiry</span>',
                         'quote' =>
                             'To question is to grow. Answers end the journey, but questions keep the path alive.',
                     ],
                     [
                         'heading' =>
-                            'Unlocking <span class="font-serif italic font-medium text-white ml-1">Universes</span>',
+                            'Unlocking <span class="font-serif italic font-medium text-black dark:text-white ml-1">Universes</span>',
                         'quote' =>
                             'Libraries are the only places where you can travel through time and space without leaving your seat.',
                     ],
                     [
                         'heading' =>
-                            'Fueling the <span class="font-serif italic font-medium text-white ml-1">Spark</span>',
+                            'Fueling the <span class="font-serif italic font-medium text-black dark:text-white ml-1">Spark</span>',
                         'quote' =>
                             'Curiosity is the wick in the candle of learning; literacy is the flame that lights it.',
                     ],
                     [
                         'heading' =>
-                            'Guardians of <span class="font-serif italic font-medium text-white ml-1">Veracity</span>',
+                            'Guardians of <span class="font-serif italic font-medium text-black dark:text-white ml-1">Veracity</span>',
                         'quote' => 'In a world of noise, literacy teaches us to listen for the whisper of truth.',
                     ],
                     [
                         'heading' =>
-                            'The Symphony of <span class="font-serif italic font-medium text-white ml-1">Syntax</span>',
+                            'The Symphony of <span class="font-serif italic font-medium text-black dark:text-white ml-1">Syntax</span>',
                         'quote' =>
                             'Finding the rhythm in structure and the melody in meaning, composing clarity out of chaos.',
                     ],
                     [
                         'heading' =>
-                            'Decoding the <span class="font-serif italic font-medium text-white ml-1">World</span>',
+                            'Decoding the <span class="font-serif italic font-medium text-black dark:text-white ml-1">World</span>',
                         'quote' =>
                             'To read is to empower oneself with the tools to decode the complex systems of our reality.',
                     ],
                     [
                         'heading' =>
-                            'Beyond the <span class="font-serif italic font-medium text-white ml-1">Surface</span>',
+                            'Beyond the <span class="font-serif italic font-medium text-black dark:text-white ml-1">Surface</span>',
                         'quote' =>
                             'True literacy is diving deep beneath the waves of text to find the pearls of meaning hidden below.',
                     ],
                     [
                         'heading' =>
-                            'Weaving the <span class="font-serif italic font-medium text-white ml-1">Narrative</span>',
+                            'Weaving the <span class="font-serif italic font-medium text-black dark:text-white ml-1">Narrative</span>',
                         'quote' =>
                             'We are all stories in the end; literacy gives us the agency to write our own chapters.',
                     ],
                     [
                         'heading' =>
-                            'Legacy of <span class="font-serif italic font-medium text-white ml-1">Letters</span>',
+                            'Legacy of <span class="font-serif italic font-medium text-black dark:text-white ml-1">Letters</span>',
                         'quote' =>
                             'Writing is the painting of the voice, preserving our fleeting thoughts for eternity.',
                     ],
@@ -152,27 +152,30 @@
                     $dateTo ||
                     $readingTimeMin ||
                     $readingTimeMax)
-                <div class="bg-zinc-900/20 backdrop-blur-xs border border-zinc-800/50 rounded-2xl p-6 md:p-8">
+                <div
+                    class="bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 backdrop-blur-xs border-zinc-200/50 dark:border-zinc-800/50 border rounded-2xl p-6 md:p-8">
                     <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                         <div class="flex items-start gap-4">
-                            <div class="p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
-                                <svg class="w-5 h-5 text-zinc-400" fill="none" viewBox="0 0 24 24"
+                            <div
+                                class="p-3 bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 rounded-xl border border-zinc-400/50 dark:border-zinc-800/50">
+                                <svg class="w-5 h-5 text-zinc-900 dark:text-zinc-500" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                                 </svg>
                             </div>
                             <div>
-                                <div class="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-1">
+                                <div
+                                    class="text-xs font-medium text-zinc-950 dark:text-zinc-500 uppercase tracking-wider mb-1">
                                     @if ($search)
                                         SEARCH RESULTS
                                     @elseif(count($selectedCategories) > 0)
-                                        CATEGORY SELECTION
+                                        FILTER BY
                                     @else
                                         REFINED VIEW
                                     @endif
                                 </div>
-                                <h2 class="text-2xl md:text-3xl font-bold text-white mb-1">
+                                <h2 class="text-2xl md:text-3xl font-bold text-black dark:text-white mb-1">
                                     @if ($search)
                                         Search: "{{ $search }}"
                                     @elseif(count($selectedCategories) > 0)
@@ -185,7 +188,7 @@
                         </div>
 
                         <button wire:click="clearFilters"
-                            class="flex items-center gap-2 px-4 py-2 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 rounded-lg text-sm font-medium text-zinc-300 hover:text-white transition-colors">
+                            class="flex items-center gap-2 px-4 py-2 bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 rounded-xl border border-zinc-400/50 dark:border-zinc-800/50 text-sm font-medium text-zinc-900 dark:text-zinc-50 hover:text-zinc-400 transition-colors">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M6 18L18 6M6 6l12 12" />
@@ -196,15 +199,14 @@
 
                     <div class="flex flex-wrap gap-2">
                         <span
-                            class="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-500/10 border border-yellow-500/20 rounded-lg text-xs font-medium text-yellow-500">
+                            class="inline-flex items-center gap-2 px-3 py-1.5 bg-page-gray-500/10 border border-page-gray-500/20 rounded-lg text-xs font-medium text-zinc-950 dark:text-zinc-50">
                             {{ $this->posts->total() }} RESULTS
                         </span>
 
                         @if (count($selectedCategories) > 0)
                             @foreach ($this->categories->whereIn('category_id', $selectedCategories) as $category)
                                 <span
-                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-lg text-xs font-medium text-blue-400">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-blue-500/20 {{ $category->badgeClass }} rounded-lg text-xs font-medium ">
                                     {{ strtoupper($category->name) }}
                                 </span>
                             @endforeach
@@ -212,7 +214,7 @@
 
                         @if ($sortBy !== 'latest')
                             <span
-                                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-xs font-medium text-zinc-300">
+                                class="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/90 border border-page-gray-500/20 rounded-lg text-xs font-medium text-zinc-50 dark:text-zinc-950">
                                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
@@ -223,7 +225,7 @@
 
                         @if ($dateFrom || $dateTo)
                             <span
-                                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-xs font-medium text-zinc-300">
+                                class="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/90 border border-page-gray-500/20 rounded-lg text-xs font-medium text-zinc-50 dark:text-zinc-950">
                                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -241,7 +243,7 @@
 
                         @if ($readingTimeMin || $readingTimeMax)
                             <span
-                                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-xs font-medium text-zinc-300">
+                                class="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/90 border border-page-gray-500/20 rounded-lg text-xs font-medium text-zinc-50 dark:text-zinc-950">
                                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -260,13 +262,14 @@
             @else
                 <div class="space-y-6 md:space-y-8">
                     <div class="group cursor-default">
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">
+                        <h1
+                            class="text-4xl md:text-5xl lg:text-6xl font-bold text-black dark:text-white mb-4 tracking-tight">
                             {!! $literacyContent['heading'] !!}
                         </h1>
 
                         <div class="max-w-2xl">
                             <p
-                                class="text-sm md:text-base text-zinc-400 leading-relaxed italic border-l-2 border-zinc-700 pl-4 mb-2">
+                                class="text-sm md:text-base text-zinc-800 dark:text-zinc-400 leading-relaxed italic border-l-2 border-zinc-700 pl-4 mb-2">
                                 “{{ $literacyContent['quote'] }}”
                             </p>
                         </div>
@@ -274,33 +277,36 @@
 
                     <div class="grid grid-cols-2 gap-3 md:gap-4">
                         <div
-                            class="bg-zinc-900/20 backdrop-blur-xs border border-zinc-800/50 rounded-lg md:rounded-xl p-4 md:p-6 hover:border-page-gray-500/30 transition-all group">
+                            class="bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-xs border rounded-lg md:rounded-xl p-4 md:p-6 hover:border-page-gray-500/30 transition-all group">
                             <div class="flex items-start justify-between mb-3">
-                                <div class="text-xs text-zinc-500 uppercase tracking-wider font-medium">TOTAL
+                                <div
+                                    class="text-xs text-zinc-950 dark:text-zinc-500 uppercase tracking-wider font-medium">
+                                    TOTAL
                                     WRITINGS</div>
-                                <svg class="w-4 h-4 md:w-5 md:h-5 text-zinc-400 group-hover:text-page-gray-500 transition-colors"
+                                <svg class="w-4 h-4 md:w-5 md:h-5 dark:text-zinc-400 text-zinc-800 group-hover:text-page-gray-500 transition-colors"
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </div>
-                            <div class="text-3xl md:text-4xl font-bold text-white">
+                            <div class="text-3xl md:text-4xl font-bold dark:text-whitetext-black">
                                 {{ $this->posts->total() }}
                             </div>
                         </div>
 
                         <div
-                            class="bg-zinc-900/20 backdrop-blur-xs border border-zinc-800/50 rounded-lg md:rounded-xl p-4 md:p-6 hover:border-page-gray-500/30 transition-all group">
+                            class=" bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-xs border rounded-lg md:rounded-xl p-4 md:p-6 hover:border-page-gray-500/30 transition-all group">
                             <div class="flex items-start justify-between mb-3">
-                                <div class="text-xs text-zinc-500 uppercase tracking-wider font-medium">
+                                <div
+                                    class="text-xs text-zinc-950 dark:text-zinc-500 uppercase tracking-wider font-medium">
                                     TOPIC CATEGORIES</div>
-                                <svg class="w-4 h-4 md:w-5 md:h-5 text-zinc-400 group-hover:text-page-gray-500 transition-colors"
+                                <svg class="w-4 h-4 md:w-5 md:h-5 dark:text-zinc-400 text-zinc-800 group-hover:text-page-gray-500 transition-colors"
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                 </svg>
                             </div>
-                            <div class="text-3xl md:text-4xl font-bold text-white">
+                            <div class="text-3xl md:text-4xl font-bold dark:text-white text-black">
                                 {{ $this->categories->count() }}
                             </div>
                         </div>
@@ -314,17 +320,17 @@
         @if ($this->posts->isEmpty())
             <div class="text-center py-12 md:py-16 px-4">
                 <div
-                    class="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-zinc-800/50 rounded-full mb-4 md:mb-6 border border-zinc-700/50">
-                    <svg class="w-10 h-10 md:w-12 md:h-12 text-zinc-500" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
+                    class="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-zinc-50 dark:bg-zinc-800/50 rounded-full mb-4 md:mb-6 border border-zinc-200/50 dark:border-zinc-700/50">
+                    <svg class="w-10 h-10 md:w-12 md:h-12 text-zinc-950 dark:text-zinc-500" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                             d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
 
-                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">No articles found</h3>
-                <p class="text-sm md:text-base text-zinc-400 mb-6 max-w-md mx-auto">
-                    We couldn't find any articles matching your criteria. Try adjusting your filters.
+                <h3 class="text-xl md:text-2xl font-bold dark:text-white text-black mb-2">No writings found</h3>
+                <p class="text-sm md:text-base dark:text-zinc-400 text-zinc-7   00 mb-6 max-w-md mx-auto">
+                    We couldn't find any writings matching your criteria. Try adjusting your filters.
                 </p>
 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -337,13 +343,13 @@
                             $readingTimeMin ||
                             $readingTimeMax)
                         <button wire:click="clearFilters"
-                            class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors text-sm">
+                            class="w-full sm:w-auto px-6 py-3 bg-accent hover:bg-zinc-700 text-white rounded-xl font-medium transition-colors text-sm">
                             Clear All Filters
                         </button>
                     @endif
                     <a href="{{ route('writing') }}"
-                        class="w-full sm:w-auto px-6 py-3 border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-600 rounded-lg font-medium transition-colors text-sm">
-                        Browse All Articles
+                        class="bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 rounded-xl border border-zinc-400/50 dark:border-zinc-800/50 text-sm font-medium text-zinc-900 dark:text-zinc-500 hover:text-zinc-400 transition-colors w-full sm:w-auto px-6 py-3 bg-page-gray-100 dark:hover:text-white">
+                        Browse All Writings
                     </a>
                 </div>
             </div>
@@ -370,7 +376,7 @@
         <div class="sticky top-8 space-y-6">
 
             <div
-                class="group rounded-xl bg-gradient-to-br backdrop-blur-md from-white to-zinc-50 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300">
+                class="group rounded-xl bg-gradient-to-br backdrop-blur-md from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300">
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
                         <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
