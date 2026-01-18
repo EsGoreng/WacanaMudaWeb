@@ -4,16 +4,17 @@ use App\Livewire\WritingDetail;
 use App\Livewire\WritingForm;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('pages.welcome');
-})->name('welcome');
+Route::middleware(['guest'])->group(function () {
+    Route::view('/', 'pages.welcome')->name('welcome');
+    Route::view('/home', 'pages.home')->name('home');
+});
+
+Route::get('/writing/{writing:slug}', WritingDetail::class)->name('writing.show');
+Route::view('/writing', 'pages.writing.main')->name('writing');
+
+Route::view('/forum', 'pages.forum.main')->name('forum');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-
-    Route::get('/writing/{writing:slug}', WritingDetail::class)->name('writing.show');
-    Route::view('/writing', 'pages.writing.main')->name('writing');
-    Route::view('/home', 'pages.home')->name('home');
-
     Route::view('/dashboard', 'pages.dashboard.overview')->name('dashboard');
 
     Route::view('/dashboard/writing', 'pages.dashboard.writing')->name('dashboard.writing');

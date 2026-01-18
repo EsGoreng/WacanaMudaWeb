@@ -37,10 +37,32 @@ return new class extends Migration
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('writing_likes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('writing_id')->constrained('writings', 'writing_id')->onDelete('cascade');
+            $table->timestamps();
+
+            $table->unique(['user_id', 'writing_id']);
+        });
+
+        Schema::create('writing_comments', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('writing_id')->constrained('writings', 'writing_id')->onDelete('cascade');
+            $table->text('body');
+            $table->timestamps();
+        });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void {}
+    public function down(): void
+    {
+        Schema::dropIfExists('writings');
+        Schema::dropIfExists('writing_likes');
+        Schema::dropIfExists('writing_comments');
+    }
 };

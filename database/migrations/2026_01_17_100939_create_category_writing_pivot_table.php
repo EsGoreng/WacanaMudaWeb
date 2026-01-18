@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // 1. Buat Tabel Pivot
         Schema::create('category_writing', function (Blueprint $table) {
             $table->id();
             $table->foreignId('writing_id')

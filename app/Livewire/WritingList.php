@@ -191,10 +191,10 @@ class WritingList extends Component
         return $query->orderBy('name')->get();
     }
 
-    public function paginationView()
-    {
-        return 'pagination.flux-theme';
-    }
+    // public function paginationView()
+    // {
+    //     return 'pagination.flux-theme';
+    // }
 
     public function render()
     {

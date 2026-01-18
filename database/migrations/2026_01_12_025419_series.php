@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('series', function (Blueprint $table) {
             $table->id('series_id');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); 
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('series');
     }
 };

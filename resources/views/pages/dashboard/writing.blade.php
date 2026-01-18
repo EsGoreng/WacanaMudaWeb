@@ -41,10 +41,7 @@
 
                     <div x-show="activeTab === 'thread'" x-cloak x-transition>
                         <div class="flex flex-col gap-4">
-                            <div
-                                class="aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700 p-6 flex items-center justify-center">
-                                Content Tab 2 - Coming Soon
-                            </div>
+                            @livewire('forum-table')
                         </div>
                     </div>
 

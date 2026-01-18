@@ -39,8 +39,8 @@
                         :current="request()->routeIs('writing*')" wire:navigate>
                         {{ __('Article & Blog') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="chat-bubble-left-right" :href="route('home')"
-                        :current="request()->routeIs('forums')" wire:navigate>
+                    <flux:sidebar.item icon="chat-bubble-left-right" :href="route('forum')"
+                        :current="request()->routeIs('forum')" wire:navigate>
                         {{ __('Forum') }}
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="calendar" :href="route('home')" :current="request()->routeIs('events')"
@@ -70,7 +70,16 @@
                 </flux:sidebar.nav>
             </flux:sidebar.group>
 
-            <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
+            @auth
+                <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
+            @endauth
+
+            @guest
+                <div class="grid grid-cols-2 gap-3 w-full">
+                    <flux:button href="{{ route('login') }}" variant="subtle">Login</flux:button>
+                    <flux:button href="{{ route('register') }}" variant="subtle">Register</flux:button>
+                </div>
+            @endguest
         </flux:sidebar>
 
         <div class="min-h-screen flex flex-1 flex-col overflow-x-hidden" x-data="{
@@ -93,16 +102,27 @@
                 <div class="overflow-hidden transition-all duration-300 ease-in-out lg:!h-auto lg:!opacity-100"
                     @if (isset($secondary_nav)) :class="showTopBar ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'" @endif>
                     <flux:navbar class="lg:hidden w-full pt-3">
-                        {{-- ... navbar mobile ... --}}
                         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
                         <flux:spacer />
                         <flux:dropdown position="top" align="end">
-                            <flux:profile :initials="auth()->user()->initials()" />
+                            <flux:profile :initials="auth()->user() ? auth()->user()->initials() : 'G'" />
                             <flux:menu>
-                                <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
-                                    class="w-full cursor-pointer">
-                                    {{ __('Log Out') }}
-                                </flux:menu.item>
+                                @auth
+                                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
+                                        class="w-full cursor-pointer">
+                                        {{ __('Log Out') }}
+                                    </flux:menu.item>
+                                @endauth
+                                @guest
+                                    <flux:menu.item as="button" type="submit" href="{{ route('login') }}"
+                                        icon="arrow-left-start-on-rectangle" class="w-full cursor-pointer">
+                                        {{ __('Log In') }}
+                                    </flux:menu.item>
+                                    <flux:menu.item as="button" type="submit" href="{{ route('register') }}"
+                                        icon="clipboard-document-list" class="w-full cursor-pointer">
+                                        {{ __('Register') }}
+                                    </flux:menu.item>
+                                @endguest
                             </flux:menu>
                         </flux:dropdown>
                     </flux:navbar>

@@ -365,7 +365,7 @@
                 @endforeach
             </div>
 
-            <div class="mt-8 md:mt-12 flex justify-center">
+            <div class="mt-8 md:mt-12">
                 {{ $this->posts->links() }}
             </div>
         @endif

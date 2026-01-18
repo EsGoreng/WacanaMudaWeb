@@ -69,6 +69,21 @@ class User extends Authenticatable
             ->implode('');
     }
 
+    public function forums(): HasMany
+    {
+        return $this->hasMany(Forum::class);
+    }
+
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
+    }
+
     public function series(): HasMany
     {
         return $this->hasMany(Series::class);
