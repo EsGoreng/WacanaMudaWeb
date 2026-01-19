@@ -1,6 +1,5 @@
 <div class="min-h-screen font-sans antialiased transition-colors duration-100 overflow-x-hidden">
 
-    {{-- HEADER / BACK BUTTON --}}
     <div class="relative w-full h-[50px] group">
         <flux:button icon="arrow-left" :href="route('forum')"
             class="!bg-black/20 hover:!bg-black/40 !border-white/10 !backdrop-blur-sm !text-white border transition-all">
@@ -9,14 +8,11 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {{-- KOLOM KIRI (KONTEN UTAMA) --}}
         <div class="lg:col-span-8 min-w-0">
 
-            {{-- ARTIKEL UTAMA --}}
             <article
                 class="flex flex-col rounded-xl bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm transition-colors duration-200">
                 <div class="flex">
-                    {{-- Vote Sidebar --}}
                     <div
                         class="hidden sm:flex w-12 flex-col items-center bg-zinc-50 dark:bg-zinc-900/50 py-4 gap-1 border-r border-zinc-100 dark:border-zinc-800/50">
                         <button wire:click="vote('up')"
@@ -35,7 +31,6 @@
                         </button>
                     </div>
 
-                    {{-- Konten Forum --}}
                     <div class="flex-1 p-4 md:p-6">
                         <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 mb-3">
                             <div class="flex items-center gap-2">
@@ -67,7 +62,7 @@
                         </div>
 
                         <div
-                            class="fi-prose dark:prose-invert max-w-none text-zinc-800 dark:text-zinc-300 text-base leading-relaxed space-y-4">
+                            class="fi-prose dark:prose-invert text-base leading-relaxed space-y-4 dark:prose-invert max-w-none text-zinc-700 dark:text-slate-300">
                             {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($forum->body) }}
                         </div>
 
@@ -89,7 +84,6 @@
                             </div>
                         </div>
 
-                        {{-- Footer Action --}}
                         <div
                             class="flex items-center gap-1 md:gap-6 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 text-sm font-medium">
                             <button
@@ -110,7 +104,8 @@
             <div
                 class="mt-4 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 backdrop-blur-xs text-slate-300 p-4 md:p-6 rounded-xl">
 
-                <h3 class="text-lg font-medium text-slate-100 mb-6 border-b border-slate-800 pb-2">
+                <h3
+                    class="text-lg font-medium text-zinc-900 dark:text-slate-100 mb-6 border-b border-zinc-200 dark:border-slate-800 pb-2">
                     Comments <span class="text-slate-500 text-sm ml-1">({{ $replies->total() }})</span>
                 </h3>
 
@@ -118,7 +113,7 @@
                     <div class="mb-4 flex gap-3">
                         <div class="shrink-0">
                             <img src="{{ auth()->user()->avatar ? Storage::url(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
-                                class="w-8 h-8 rounded-full">
+                                class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700">
                         </div>
                         <div class="w-full max-w-full">
                             <form wire:submit="createComment">
@@ -144,20 +139,24 @@
                             <div class="flex gap-3 relative group">
                                 <div class="flex flex-col items-center shrink-0 w-8">
                                     <img src="{{ $reply->user->avatar ? Storage::url($reply->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($reply->user->name) }}"
-                                        class="w-8 h-8 rounded-full object-cover ring-2 ring-[#0B1416] z-10 relative">
+                                        class="w-8 h-8 rounded-full object-cover ring-2 ring-white dark:ring-[#0B1416] z-10 relative bg-zinc-100 dark:bg-zinc-800">
                                     @if ($reply->children->count() > 0 || $parentReplyId === $reply->id)
-                                        <div class="w-0.5 h-full bg-slate-800 absolute left-4 -ml-[2px]"></div>
+                                        <div
+                                            class="w-0.5 h-full bg-zinc-200 dark:bg-slate-800 absolute left-4 -ml-[2px]">
+                                        </div>
                                     @endif
                                 </div>
 
                                 <div class="flex-1 min-w-0 pb-2">
                                     <div class="flex items-center gap-2 text-xs mb-1">
-                                        <span class="font-bold text-slate-200">{{ $reply->user->username }}</span>
-                                        <span class="text-slate-500">•
+                                        <span
+                                            class="font-bold text-zinc-900 dark:text-slate-200">{{ $reply->user->name }}</span>
+                                        <span class="text-zinc-500 dark:text-slate-500">•
                                             {{ $reply->created_at->diffForHumans(null, true) }}</span>
                                     </div>
 
-                                    <div class="prose prose-sm dark:prose-invert max-w-none text-slate-300">
+                                    <div
+                                        class="fi-prose prose-sm dark:prose-invert dark:prose-invert max-w-none text-zinc-700 dark:text-slate-300">
                                         {!! str($reply->body)->sanitizeHtml() !!}
                                     </div>
 
@@ -205,25 +204,26 @@
                                         <div class="flex w-full relative" wire:key="child-{{ $child->id }}">
 
                                             <div class="w-8 shrink-0 flex justify-center relative">
-                                                <div class="w-0.5 bg-slate-800 absolute left-4 -ml-[2px] h-full"></div>
+                                                <div
+                                                    class="w-0.5 h-full bg-zinc-200 dark:bg-slate-800 absolute left-4 -ml-[2px]">
+                                                </div>
                                             </div>
 
                                             <div class="flex-1 pl-4 pt-2">
                                                 <div class="flex gap-3 mb-4">
                                                     <img src="{{ $child->user->avatar ? Storage::url($child->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($child->user->name) }}"
-                                                        class="w-6 h-6 rounded-full mt-1 bg-slate-800">
+                                                        class="w-6 h-6 rounded-full mt-1 bg-zinc-100 dark:bg-slate-800 object-cover">
 
                                                     <div class="flex-1">
                                                         <div class="flex items-center gap-2 text-xs mb-0.5">
                                                             <span
-                                                                class="font-bold text-slate-200">{{ $child->user->username }}</span>
+                                                                class="font-bold text-zinc-900 dark:text-slate-200">{{ $child->user->name }}</span>
                                                             <span
-                                                                class="text-slate-500 text-[10px]">{{ $child->created_at->diffForHumans(null, true) }}</span>
+                                                                class="text-zinc-500 dark:text-slate-500">{{ $child->created_at->diffForHumans(null, true) }}</span>
                                                         </div>
 
-                                                        {{-- Body Child Reply --}}
                                                         <div
-                                                            class="text-sm text-slate-300 prose fi-prose prose-sm prose-invert max-w-none prose-p:leading-relaxed prose-a:text-blue-400">
+                                                            class="text-sm prose fi-prose prose-sm prose-invert prose-p:leading-relaxed prose-a:text-blue-400 dark:prose-invert max-w-none text-zinc-700 dark:text-slate-300">
                                                             {!! str($child->body)->sanitizeHtml() !!}
                                                         </div>
 

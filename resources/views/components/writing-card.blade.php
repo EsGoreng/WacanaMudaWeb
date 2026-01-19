@@ -12,7 +12,7 @@
 ])
 
 <article
-    class="group flex flex-col-reverse lg:flex-row gap-6 py-6 hover:opacity-90 bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 transition-all duration-300 rounded-lg backdrop-blur-xs p-4 my-2 lg:p-8 lg:my-4">
+    class="group flex flex-col-reverse lg:flex-row gap-6 py-6 hover:opacity-90 bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 duration-300 p-4 my-2 lg:p-8 lg:my-4 bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer group overflow-hidden">
 
     <div class="flex-1 flex flex-col justify-between min-w-0">
         <div class="flex items-center mb-4">
@@ -23,7 +23,7 @@
         <div class="flex items-center gap-2 mb-2 flex-wrap">
             @foreach ($categories as $category)
                 <span
-                    class="px-3 py-1 text-xs font-bold uppercase tracking-wider text-white {{ $category->badge_class }} rounded-full">
+                    class="px-3 py-1 text-xs font-bold uppercase tracking-wider text-white {{ $category->badge_class }} rounded">
                     {{ $category->name }}
                 </span>
             @endforeach

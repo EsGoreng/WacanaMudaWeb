@@ -12,7 +12,7 @@
                 @endphp
 
                 <article
-                    class="bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer group overflow-hidden">
+                    class="bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer group overflow-hidden">
                     <div class="flex">
                         <div
                             class="w-12 bg-zinc-50/50 dark:bg-black/20 flex flex-col items-center py-3 gap-1 border-r border-zinc-100 dark:border-zinc-800/50">
@@ -49,7 +49,7 @@
 
                             <a href="{{ route('forums.show', $forum->slug) }}" class="block">
                                 <h2
-                                    class="text-xl font-extrabold text-zinc-900 dark:text-white mb-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                    class="text-xl font-bold text-black dark:text-zinc-100 leading-tight group-hover:text-gray-500 line-clamp-2 mb-2 transition-colors">
                                     {{ $forum->title }}
                                 </h2>
                                 <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed mb-4 line-clamp-3">

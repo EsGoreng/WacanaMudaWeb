@@ -39,7 +39,8 @@
                                 class="[&_a]:!text-white [&_.text-zinc-300]:!text-white" />
 
                             <flux:breadcrumbs.item
-                                :href="route('writing', ['category' => $writing->categories->first()?->slug])">
+                                :href="route('writing', ['category' => $writing->categories->first()?->slug])"
+                                class="truncate max-w-[120px] sm:max-w-[200px] md:max-w-none [&_.text-gray-500]:!text-white [&_.text-zinc-800]:!text-white []">
                                 {{ $writing->categories->first()?->name ?? 'General' }}
                             </flux:breadcrumbs.item>
 
@@ -262,7 +263,7 @@
                                         </div>
 
                                         <div
-                                            class="prose prose-sm dark:prose-invert max-w-none text-zinc-700 dark:text-slate-300">
+                                            class="fi-prose prose-sm dark:prose-invert dark:prose-invert max-w-none text-zinc-700 dark:text-slate-300">
                                             {!! str($comment->body)->sanitizeHtml() !!}
                                         </div>
 
@@ -334,7 +335,7 @@
                                                             </div>
 
                                                             <div
-                                                                class="text-sm text-zinc-700 dark:text-slate-300 prose prose-sm dark:prose-invert max-w-none">
+                                                                class="text-sm prose fi-prose prose-sm prose-invert prose-p:leading-relaxed prose-a:text-blue-400 dark:prose-invert max-w-none text-zinc-700 dark:text-slate-300">
                                                                 {!! str($child->body)->sanitizeHtml() !!}
                                                             </div>
 

@@ -234,7 +234,7 @@ class ForumDetail extends Component implements HasForms
             'replies' => $replies,
             'latestForums' => $latestForums,
         ])->layoutData([
-            'title' => $this->forum->title,
+            'title' => $this->forum->title.' | WMB',
         ]);
     }
 }
