@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Forum;
 use App\Models\Reply;
-use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Schema;
@@ -56,15 +56,12 @@ class ForumDetail extends Component implements HasForms
     {
         return $form
             ->schema([
-                RichEditor::make('body')
+                Textarea::make('comment')
                     ->label('Comment')
                     ->placeholder('Write your comment...')
-                    ->toolbarButtons([
-                        'bold', 'italic', 'underline', 'strike',
-                        'blockquote', 'codeBlock',
-                        'bulletList',
-                        'orderedList',
-                    ])
+                    ->autosize()
+                    ->minLength(1)
+                    ->maxLength(1024)
                     ->required(),
             ])
             ->statePath('commentData');
@@ -74,15 +71,12 @@ class ForumDetail extends Component implements HasForms
     {
         return $form
             ->schema([
-                RichEditor::make('body')
+                Textarea::make('reply')
                     ->label('Reply')
-                    ->toolbarButtons([
-                        'bold', 'italic', 'underline', 'strike',
-                        'blockquote', 'codeBlock',
-                        'bulletList',
-                        'orderedList',
-                    ])
                     ->placeholder('Write reply...')
+                    ->autosize()
+                    ->minLength(1)
+                    ->maxLength(1024)
                     ->required(),
             ])
             ->statePath('replyData');
@@ -99,7 +93,7 @@ class ForumDetail extends Component implements HasForms
         Reply::create([
             'forum_id' => $this->forum->id,
             'user_id' => Auth::id(),
-            'body' => $data['body'],
+            'body' => $data['comment'],
             'parent_id' => null,
         ]);
 
@@ -118,7 +112,7 @@ class ForumDetail extends Component implements HasForms
         Reply::create([
             'forum_id' => $this->forum->id,
             'user_id' => Auth::id(),
-            'body' => $data['body'],
+            'body' => $data['reply'],
             'parent_id' => $this->parentReplyId,
         ]);
 
@@ -190,10 +184,6 @@ class ForumDetail extends Component implements HasForms
 
     public function updateReply()
     {
-        $this->validate([
-            'editingBody' => 'required|min:1|max:2000',
-        ]);
-
         $reply = Reply::find($this->editingReplyId);
 
         if ($reply && $reply->user_id === Auth::id()) {

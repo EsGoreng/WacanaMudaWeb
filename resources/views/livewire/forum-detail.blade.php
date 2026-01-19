@@ -1,4 +1,4 @@
-<div class="min-h-screen font-sans antialiased transition-colors duration-100">
+<div class="min-h-screen font-sans antialiased transition-colors duration-100 overflow-x-hidden">
 
     {{-- HEADER / BACK BUTTON --}}
     <div class="relative w-full h-[50px] group">
@@ -25,12 +25,12 @@
                         </button>
 
                         <span
-                            class="text-sm font-bold {{ $score > 0 ? 'text-green-500' : ($score < 0 ? 'text-orange-500' : 'text-zinc-900 dark:text-white') }}">
+                            class="text-sm font-bold {{ $score > 0 ? 'text-green-500' : ($score < 0 ? 'text-red-500' : 'text-zinc-900 dark:text-white') }}">
                             {{ \Illuminate\Support\Number::abbreviate($score) }}
                         </span>
 
                         <button wire:click="vote('down')"
-                            class="p-1 rounded transition-colors {{ $userVoteType === 'down' ? 'text-orange-500 bg-blue-500/10' : 'text-zinc-400 hover:text-orange-500 hover:bg-blue-500/10' }}">
+                            class="p-1 rounded transition-colors {{ $userVoteType === 'down' ? 'text-red-500 bg-blue-500/10' : 'text-zinc-400 hover:text-red-500 hover:bg-blue-500/10' }}">
                             <x-bi-arrow-down class="w-6 h-6 font-bold" />
                         </button>
                     </div>
@@ -66,14 +66,11 @@
                             </div>
                         </div>
 
-                        {{-- Body Artikel Utama --}}
-                        {{-- Menggunakan RichContentRenderer sesuai request --}}
                         <div
-                            class="prose dark:prose-invert max-w-none text-zinc-800 dark:text-zinc-300 text-base leading-relaxed space-y-4">
+                            class="fi-prose dark:prose-invert max-w-none text-zinc-800 dark:text-zinc-300 text-base leading-relaxed space-y-4">
                             {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($forum->body) }}
                         </div>
 
-                        {{-- Mobile Vote --}}
                         <div
                             class="flex sm:hidden items-center gap-4 mt-6 border-t border-zinc-100 dark:border-zinc-700 pt-4">
                             <div class="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-full px-2">
@@ -118,12 +115,12 @@
                 </h3>
 
                 @auth
-                    <div class="mb-4     flex gap-3">
+                    <div class="mb-4 flex gap-3">
                         <div class="shrink-0">
                             <img src="{{ auth()->user()->avatar ? Storage::url(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
                                 class="w-8 h-8 rounded-full">
                         </div>
-                        <div class="w-full">
+                        <div class="w-full max-w-full">
                             <form wire:submit="createComment">
                                 {{ $this->commentForm }}
 
@@ -160,10 +157,8 @@
                                             {{ $reply->created_at->diffForHumans(null, true) }}</span>
                                     </div>
 
-                                    {{-- Body Reply --}}
-                                    <div
-                                        class="text-sm text-slate-300 fi-prose prose prose-sm prose-invert max-w-none mb-1 prose-p:leading-relaxed prose-a:text-blue-400">
-                                        {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($reply->body) }}
+                                    <div class="prose prose-sm dark:prose-invert max-w-none text-slate-300">
+                                        {!! str($reply->body)->sanitizeHtml() !!}
                                     </div>
 
                                     <div class="flex items-center gap-2 mt-1">
@@ -176,7 +171,7 @@
                                         @if (auth()->id() === $reply->user_id || auth()->user()?->hasRole('admin') || auth()->user()?->hasRole('superadmin'))
                                             <button wire:click="deleteReply({{ $reply->id }})"
                                                 wire:confirm="Are you sure you want to delete this comment?"
-                                                class="flex items-center gap-1 text-xs text-orange-500 hover:text-orange-400 hover:bg-slate-800 px-2 py-2 rounded">
+                                                class="flex items-center gap-1 text-xs text-red-500 hover:text-red-400 hover:bg-slate-800 px-2 py-2 rounded">
                                                 <x-bi-trash class="w-4 h-4" />Delete
                                             </button>
                                         @endif
@@ -229,7 +224,7 @@
                                                         {{-- Body Child Reply --}}
                                                         <div
                                                             class="text-sm text-slate-300 prose fi-prose prose-sm prose-invert max-w-none prose-p:leading-relaxed prose-a:text-blue-400">
-                                                            {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($child->body) }}
+                                                            {!! str($child->body)->sanitizeHtml() !!}
                                                         </div>
 
                                                         <div
@@ -238,7 +233,7 @@
                                                             @if (auth()->id() === $child->user_id || auth()->user()?->hasRole('admin'))
                                                                 <button wire:click="deleteReply({{ $child->id }})"
                                                                     wire:confirm="Are you sure you want to delete this reply?"
-                                                                    class="text-[12px] text-orange-500 hover:text-orange-400">Delete</button>
+                                                                    class="text-[12px] text-red-500 hover:text-red-400">Delete</button>
                                                             @endif
                                                         </div>
                                                     </div>

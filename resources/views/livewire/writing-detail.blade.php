@@ -207,142 +207,168 @@
 
                 <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">
 
-                    <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-6">
-                        Comments ({{ $comments->count() }})
+                    <h3
+                        class="text-lg font-medium text-zinc-900 dark:text-slate-100 mb-6 border-b border-zinc-200 dark:border-slate-800 pb-2">
+                        Comments <span
+                            class="text-zinc-500 dark:text-slate-500 text-sm ml-1">({{ $comments->total() }})</span>
                     </h3>
 
                     @auth
-                        <form wire:submit.prevent="postComment" class="mb-8">
-                            <div class="mb-4">
-                                <textarea wire:model="commentBody"
-                                    class="w-full p-4 rounded-xl border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:ring-blue-500 focus:border-blue-500"
-                                    rows="3" placeholder="What are your thoughts?"></textarea>
-                                @error('commentBody')
-                                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
+                        <div class="mb-8 flex gap-3">
+                            <div class="shrink-0">
+                                <img src="{{ auth()->user()->avatar ? Storage::url(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
+                                    class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700">
                             </div>
-                            <div class="flex justify-end">
-                                <button type="submit"
-                                    class="px-4 py-2 bg-brand-hover hover:bg-accent text-white font-semibold rounded-lg transition-colors">
-                                    Post Comment
-                                </button>
+                            <div class="w-full max-w-full">
+                                <form wire:submit="createComment">
+
+                                    {{ $this->commentForm }}
+
+                                    <div class="flex justify-end mt-4">
+                                        <button type="submit" wire:loading.attr="disabled"
+                                            class="bg-brand-hover hover:bg-accent text-white font-semibold py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm">
+                                            <span wire:loading.remove wire:target="createComment">Post Comment</span>
+                                            <span wire:loading wire:target="createComment">Posting...</span>
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
-                    @else
-                        <div class="mb-8 p-4 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-center">
-                            <p class="text-zinc-600 dark:text-zinc-400">Please <a href="{{ route('login') }}"
-                                    class="text-blue-600 hover:underline">login</a> to leave a comment.</p>
                         </div>
                     @endauth
 
-                    <div class="space-y-2">
+                    <div class="space-y-6">
                         @forelse($comments as $comment)
-                            @php
-                                $user = auth()->user();
-                                $isCurrentUser = $user->id === $comment->user_id;
-                                $isAdmin = $user->hasAnyRole(['superadmin', 'admin']);
-                                $canManage = $isCurrentUser || $isAdmin;
-                            @endphp
 
-                            <div
-                                class="group flex gap-3 md:gap-4 w-full {{ $isCurrentUser ? 'flex-row-reverse' : 'flex-row' }}">
+                            <div class="flex flex-col" wire:key="comment-{{ $comment->id }}">
 
-                                <div class="shrink-0 flex flex-col justify-start mt-5">
-                                    <img src="{{ $comment->user->avatar ? Storage::url($comment->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name) }}"
-                                        alt="{{ $comment->user->name }}"
-                                        class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shadow-sm ring-2 ring-white dark:ring-zinc-800">
-                                </div>
-                                <div
-                                    class="flex flex-col max-w-[85%] sm:max-w-[70%] {{ $isCurrentUser ? 'items-end' : 'items-start' }}">
+                                <div class="flex gap-3 relative group">
+                                    <div class="flex flex-col items-center shrink-0 w-8">
+                                        <img src="{{ $comment->user->avatar ? Storage::url($comment->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name) }}"
+                                            class="w-8 h-8 rounded-full object-cover ring-2 ring-white dark:ring-[#0B1416] z-10 relative bg-zinc-100 dark:bg-zinc-800">
 
-                                    <div
-                                        class="flex items-center gap-2 mb-1 px-1 opacity-90 {{ $isCurrentUser ? 'flex-row-reverse' : 'flex-row' }}">
-                                        <span class="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-                                            {{ $isCurrentUser ? 'You' : $comment->user->name }}
-                                        </span>
-                                        <span class="text-[10px] text-zinc-400 dark:text-zinc-500">
-                                            {{ $comment->created_at->format('H:i') }}
-                                        </span>
+                                        @if ($comment->children->count() > 0 || $parentCommentId === $comment->id)
+                                            <div
+                                                class="w-0.5 h-full bg-zinc-200 dark:bg-slate-800 absolute left-4 -ml-[2px]">
+                                            </div>
+                                        @endif
                                     </div>
 
-                                    @if ($editingCommentId === $comment->id)
-                                        <div
-                                            class="w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-3 shadow-lg relative z-20">
-                                            <textarea wire:model="editingBody"
-                                                class="w-full bg-transparent border-0 focus:ring-0 p-0 text-sm text-zinc-900 dark:text-white resize-none placeholder:text-zinc-400"
-                                                rows="3"></textarea>
-
-                                            <div class="flex justify-end gap-2 mt-2">
-                                                <button wire:click="cancelEdit"
-                                                    class="text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 font-medium px-2 py-1">Cancel</button>
-                                                <button wire:click="updateComment"
-                                                    class="text-xs bg-zinc-700 hover:bg-zinc-600 text-white font-medium px-3 py-1 rounded-md transition-colors">Save</button>
-                                            </div>
+                                    <div class="flex-1 min-w-0 pb-2">
+                                        <div class="flex items-center gap-2 text-xs mb-1">
+                                            <span
+                                                class="font-bold text-zinc-900 dark:text-slate-200">{{ $comment->user->name }}</span>
+                                            <span class="text-zinc-500 dark:text-slate-500">•
+                                                {{ $comment->created_at->diffForHumans(null, true) }}</span>
                                         </div>
-                                    @else
+
                                         <div
-                                            class="relative px-4 py-2 shadow-md transition-all duration-200 hover:shadow-lg group/bubble
-                                            {{ $isCurrentUser
-                                                ? 'bg-zinc-700 text-white rounded-2xl rounded-tr-sm ' . ($canManage ? 'pr-9' : '')
-                                                : 'bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700/50 text-zinc-800 dark:text-zinc-200 rounded-2xl rounded-tl-sm ' .
-                                                    ($canManage ? 'pr-9' : '') }}">
+                                            class="prose prose-sm dark:prose-invert max-w-none text-zinc-700 dark:text-slate-300">
+                                            {!! str($comment->body)->sanitizeHtml() !!}
+                                        </div>
 
-                                            {{-- blade-formatter-disable --}}
-                                            <p class="text-sm md:text-[15px] leading-normal whitespace-pre-line tracking-wide break-words">{{ trim($comment->body) }}</p>
-                                            {{-- blade-formatter-enable --}}
-                                            @if ($canManage)
-                                                <div x-data="{ open: false }" class="absolute top-2 right-1">
+                                        <div class="flex items-center gap-2 mt-1">
+                                            @auth
+                                                <button wire:click="setReplyTo({{ $comment->id }})"
+                                                    class="flex items-center gap-1 text-xs font-bold text-zinc-500 dark:text-slate-500 hover:bg-zinc-100 dark:hover:bg-slate-800 px-2 py-2 rounded transition-colors">
+                                                    <x-bi-chat-left class="w-4 h-4" /> Reply
+                                                </button>
 
-                                                    <button @click="open = !open" @click.outside="open = false"
-                                                        class="p-1 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-all opacity-0 group-hover/bubble:opacity-100 focus:opacity-100 {{ $isCurrentUser ? 'text-zinc-300 hover:text-white' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200' }}"
-                                                        title="Options">
-                                                        <x-bi-three-dots-vertical class="w-3.5 h-3.5" />
+                                                @if (auth()->id() === $comment->user_id || auth()->user()?->hasRole('admin'))
+                                                    <button wire:click="deleteComment({{ $comment->id }})"
+                                                        wire:confirm="Are you sure you want to delete this comment?"
+                                                        class="flex items-center gap-1 text-xs text-red-500 hover:text-red-400 hover:bg-zinc-100 dark:hover:bg-slate-800 px-2 py-2 rounded transition-colors">
+                                                        <x-bi-trash class="w-4 h-4" /> Delete
                                                     </button>
+                                                @endif
+                                            @endauth
+                                        </div>
 
-                                                    <div x-show="open" x-transition.origin.top.right
-                                                        style="display: none;"
-                                                        class="absolute right-0 mt-1 w-28 bg-white dark:bg-zinc-900 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 py-1 z-50 overflow-hidden text-left">
+                                        @if ($parentCommentId === $comment->id)
+                                            <div class="mt-3 animate-in fade-in slide-in-from-top-1 pl-0">
+                                                <form wire:submit="createReply">
 
-                                                        @if ($isCurrentUser)
-                                                            <button wire:click="editComment({{ $comment->id }})"
-                                                                @click="open = false"
-                                                                class="w-full text-left px-3 py-2 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-2">
-                                                                <x-bi-pencil class="w-3 h-3" /> Edit
-                                                            </button>
-                                                        @endif
+                                                    {{ $this->replyForm }}
 
-                                                        <button wire:click="deleteComment({{ $comment->id }})"
-                                                            @click="open = false"
-                                                            class="w-full text-left px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2">
-                                                            <x-bi-trash class="w-3 h-3" /> Delete
+                                                    <div class="flex justify-end gap-2 mt-4">
+                                                        <button type="button"
+                                                            wire:click="setReplyTo({{ $comment->id }})"
+                                                            class="text-xs text-zinc-500 dark:text-slate-400 hover:text-zinc-900 dark:hover:text-white px-2">
+                                                            Cancel
+                                                        </button>
+                                                        <button type="submit" wire:loading.attr="disabled"
+                                                            class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm">
+                                                            <span wire:loading.remove
+                                                                wire:target="createReply">Reply</span>
+                                                            <span wire:loading
+                                                                wire:target="createReply">Posting...</span>
                                                         </button>
                                                     </div>
-                                                </div>
-                                            @endif
-
-                                        </div>
-                                    @endif
-
-                                    <div
-                                        class="flex items-center gap-3 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 {{ $isCurrentUser ? 'flex-row-reverse' : 'flex-row' }}">
-                                        <span class="text-[10px] text-zinc-300 dark:text-zinc-600">
-                                            {{ $comment->created_at->diffForHumans() }}
-                                        </span>
+                                                </form>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
+
+                                @if ($comment->children->count() > 0)
+                                    <div class="flex flex-col w-full">
+                                        @foreach ($comment->children as $child)
+                                            <div class="flex w-full relative" wire:key="child-{{ $child->id }}">
+
+                                                <div class="w-8 shrink-0 flex justify-center relative">
+                                                    <div
+                                                        class="w-0.5 bg-zinc-200 dark:bg-slate-800 absolute left-4 -ml-[2px] h-full">
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex-1 pl-4 pt-2">
+                                                    <div class="flex gap-3 mb-4">
+                                                        <img src="{{ $child->user->avatar ? Storage::url($child->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($child->user->name) }}"
+                                                            class="w-6 h-6 rounded-full mt-1 bg-zinc-100 dark:bg-slate-800 object-cover">
+
+                                                        <div class="flex-1">
+                                                            <div class="flex items-center gap-2 text-xs mb-0.5">
+                                                                <span
+                                                                    class="font-bold text-zinc-900 dark:text-slate-200">{{ $child->user->name }}</span>
+                                                                <span
+                                                                    class="text-zinc-500 dark:text-slate-500 text-[10px]">{{ $child->created_at->diffForHumans(null, true) }}</span>
+                                                            </div>
+
+                                                            <div
+                                                                class="text-sm text-zinc-700 dark:text-slate-300 prose prose-sm dark:prose-invert max-w-none">
+                                                                {!! str($child->body)->sanitizeHtml() !!}
+                                                            </div>
+
+                                                            <div
+                                                                class="flex items-center gap-3 mt-1 opacity-70 hover:opacity-100 transition-opacity">
+                                                                @if (auth()->id() === $child->user_id || auth()->user()?->hasRole('admin'))
+                                                                    <button
+                                                                        wire:click="deleteComment({{ $child->id }})"
+                                                                        wire:confirm="Are you sure you want to delete this reply?"
+                                                                        class="text-[10px] text-red-500 hover:text-red-400 font-medium">Delete</button>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
+
                             </div>
+
                         @empty
                             <div
-                                class="flex flex-col items-center justify-center py-12 px-4 border-2 border-dashed border-zinc-200 dark:border-zinc-700 rounded-2xl bg-zinc-50/50 dark:bg-zinc-800/20">
-                                <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-full mb-4">
-                                    <x-bi-chat-quote class="w-8 h-8 text-blue-500 dark:text-blue-400" />
-                                </div>
-                                <h3 class="text-zinc-900 dark:text-white font-bold mb-1">No comments yet</h3>
-                                <p class="text-zinc-500 dark:text-zinc-400 text-sm text-center max-w-xs">
-                                    Be the first to share your thoughts and start the conversation.
-                                </p>
+                                class="text-center text-zinc-500 dark:text-slate-500 py-10 border rounded-xl border-zinc-200 dark:border-zinc-700">
+                                No comments yet. Be the first to start the conversation!
                             </div>
                         @endforelse
+                    </div>
+
+                    <div class="mt-6">
+                        @if ($comments instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                            {{ $comments->links() }}
+                        @endif
                     </div>
                 </div>
 

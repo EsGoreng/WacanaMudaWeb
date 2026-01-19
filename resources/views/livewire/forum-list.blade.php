@@ -16,7 +16,7 @@
                     <div class="flex">
                         <div
                             class="w-12 bg-zinc-50/50 dark:bg-black/20 flex flex-col items-center py-3 gap-1 border-r border-zinc-100 dark:border-zinc-800/50">
-                            <button wire:click="vote('up')"
+                            <button wire:click.prevent="vote({{ $forum->id }}, 'up')"
                                 class="p-1 rounded transition-colors {{ $userVote?->type === 'up' ? 'text-green-500 bg-green-500/10' : 'text-zinc-400 hover:text-green-500 hover:bg-green-500/10' }}">
                                 <x-bi-chevron-up class="w-5 h-5" />
                             </button>
@@ -26,7 +26,7 @@
                                 {{ \Illuminate\Support\Number::abbreviate($score) }}
                             </span>
 
-                            <button wire:click="vote('down')"
+                            <button wire:click.prevent="vote({{ $forum->id }}, 'down')"
                                 class="p-1 rounded transition-colors {{ $userVote?->type === 'down' ? 'text-red-500 bg-red-500/10' : 'text-zinc-400 hover:text-red-500 hover:bg-red-500/10' }}">
                                 <x-bi-chevron-down class="w-5 h-5" />
                             </button>

@@ -5,7 +5,7 @@
     @include('partials.head')
 </head>
 
-<body class="bg-white dark:bg-zinc-900">
+<body class="bg-white dark:bg-zinc-900 overflow-x-hidden">
 
     <x-star-background />
 

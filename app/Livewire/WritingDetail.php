@@ -4,27 +4,38 @@ namespace App\Livewire;
 
 use App\Models\Writing;
 use App\Models\WritingComment;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Schemas\Concerns\InteractsWithSchemas;
-use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Spatie\Browsershot\Browsershot;
 
-class WritingDetail extends Component implements HasSchemas
+class WritingDetail extends Component implements HasForms
 {
-    use InteractsWithSchemas;
+    use InteractsWithForms;
+    use WithPagination;
 
     public Writing $writing;
 
+    public ?array $commentData = [];
+
+    public ?array $replyData = [];
+
     public $editingCommentId = null;
 
-    public $editingBody = '';
+    public $parentCommentId = null;
 
     public $commentBody = '';
+
+    public $replyBody = '';
+
+    public $editingBody = '';
 
     public function mount(Writing $writing)
     {
@@ -37,6 +48,9 @@ class WritingDetail extends Component implements HasSchemas
         if (! empty($this->writing->unsplash_download_location)) {
             $this->triggerUnsplashDownload($this->writing->unsplash_download_location);
         }
+
+        $this->commentForm->fill();
+        $this->replyForm->fill();
     }
 
     private function triggerUnsplashDownload(string $downloadLocation): void
@@ -98,25 +112,106 @@ class WritingDetail extends Component implements HasSchemas
         $this->writing->refresh();
     }
 
-    public function postComment()
+    protected function getForms(): array
+    {
+        return [
+            'commentForm',
+            'replyForm',
+        ];
+    }
+
+    public function commentForm(Schema $form): Schema
+    {
+        return $form
+            ->schema([
+                Textarea::make('comment')
+                    ->label('Comment')
+                    ->placeholder('What are your thoughts?')
+                    ->autosize()
+                    ->minLength(3)
+                    ->maxLength(1000)
+                    ->required(),
+            ])
+            ->statePath('commentData');
+    }
+
+    public function replyForm(Schema $form): Schema
+    {
+        return $form
+            ->schema([
+                Textarea::make('reply')
+                    ->label('Reply')
+                    ->placeholder('Write a reply...')
+                    ->autosize()
+                    ->minLength(1)
+                    ->maxLength(1000)
+                    ->required(),
+            ])
+            ->statePath('replyData');
+    }
+
+    public function createComment()
     {
         if (! Auth::check()) {
             return redirect()->route('login');
         }
 
-        $this->validate([
-            'commentBody' => 'required|min:3|max:1000',
-        ]);
+        // Ambil data dari State Filament Form
+        $data = $this->commentForm->getState();
 
         WritingComment::create([
             'user_id' => Auth::id(),
             'writing_id' => $this->writing->writing_id,
-            'body' => $this->commentBody,
+            'body' => $data['comment'],
+            'parent_id' => null,
         ]);
 
-        $this->commentBody = '';
+        $this->commentForm->fill();
         $this->dispatch('comment-posted');
-        $this->writing->refresh();
+    }
+
+    public function createReply()
+    {
+        if (! Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $data = $this->replyForm->getState();
+
+        WritingComment::create([
+            'user_id' => Auth::id(),
+            'writing_id' => $this->writing->writing_id,
+            'body' => $data['reply'],
+            'parent_id' => $this->parentCommentId,
+        ]);
+
+        $this->replyForm->fill();
+        $this->parentCommentId = null;
+        $this->dispatch('comment-posted');
+    }
+
+    public function setReplyTo($id)
+    {
+        if ($this->parentCommentId === $id) {
+            $this->parentCommentId = null;
+            $this->replyData = [];
+        } else {
+            $this->parentCommentId = $id;
+            $this->replyForm->fill();
+        }
+    }
+
+    public function deleteComment($commentId)
+    {
+        $comment = WritingComment::find($commentId);
+        if (! $comment) {
+            return;
+        }
+
+        $user = Auth::user();
+        if ($comment->user_id === $user->id || $user->hasAnyRole(['superadmin', 'admin'])) {
+            $comment->delete();
+        }
     }
 
     public function editComment($commentId)
@@ -155,23 +250,6 @@ class WritingDetail extends Component implements HasSchemas
         $this->editingBody = '';
     }
 
-    public function deleteComment($commentId)
-    {
-        $comment = WritingComment::find($commentId);
-
-        if (! $comment) {
-            return;
-        }
-
-        $user = Auth::user();
-
-        if ($comment->user_id === $user->id || $user->hasAnyRole(['superadmin', 'admin'])) {
-            $comment->delete();
-        }
-
-        $this->writing->refresh();
-    }
-
     public function render()
     {
         $latestPosts = Writing::with('user')
@@ -181,9 +259,15 @@ class WritingDetail extends Component implements HasSchemas
             ->take(3)
             ->get();
 
+        $comments = WritingComment::where('writing_id', $this->writing->writing_id)
+            ->whereNull('parent_id')
+            ->with(['user', 'children.user'])
+            ->latest()
+            ->paginate(10);
+
         return view('livewire.writing-detail', [
             'latestPosts' => $latestPosts,
-            'comments' => $this->writing->comments()->with('user')->latest()->get(),
+            'comments' => $comments,
             'likesCount' => $this->writing->likes()->count(),
             'isLiked' => Auth::check() ? $this->writing->isLikedBy(Auth::user()) : false,
         ])->layoutData([
