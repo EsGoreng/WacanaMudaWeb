@@ -43,7 +43,7 @@
                         :current="request()->routeIs('forum*')" wire:navigate>
                         {{ __('Forum') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="calendar" :href="route('home')" :current="request()->routeIs('events')"
+                    <flux:sidebar.item icon="calendar" :href="route('event')" :current="request()->routeIs('event*')"
                         wire:navigate>
                         {{ __('Event') }}
                     </flux:sidebar.item>

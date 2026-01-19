@@ -16,6 +16,9 @@ Route::view('/writing', 'pages.writing.main')->name('writing');
 Route::get('/forum/{forum:slug}', ForumDetail::class)->name('forums.show');
 Route::view('/forum', 'pages.forum.main')->name('forum');
 
+// Route::get('/event/{event:slug}', ForumDetail::class)->name('forums.show');
+Route::view('/event', 'pages.event.main')->name('event');
+
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::view('/dashboard', 'pages.dashboard.overview')->name('dashboard');
 
