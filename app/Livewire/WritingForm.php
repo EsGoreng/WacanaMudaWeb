@@ -364,15 +364,6 @@ class WritingForm extends Component implements HasActions, HasSchemas
             }
         }
 
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
-        }
-        if (empty($data['slug'])) {
-            Notification::make()->title('Error: Slug cannot be generated')->danger()->send();
-
-            return;
-        }
-
         if ($data['status'] === 'Published' && empty($data['published_at'])) {
             if (! $this->writing || $this->writing->status !== 'Published') {
                 $data['published_at'] = now();

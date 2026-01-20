@@ -79,4 +79,14 @@ class Category extends Model
             'writing_id'
         );
     }
+
+    public function events(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Event::class,
+            'category_event',
+            'category_id',
+            'event_id'
+        );
+    }
 }

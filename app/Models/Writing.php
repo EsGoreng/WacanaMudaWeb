@@ -42,6 +42,23 @@ class Writing extends Model
         'reading_time' => 'integer',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($writing) {
+            if (empty($writing->slug)) {
+                $writing->slug = Str::slug($writing->title);
+            }
+        });
+
+        static::updating(function ($writing) {
+            if ($writing->isDirty('title') && empty($writing->slug)) {
+                $writing->slug = Str::slug($writing->title);
+            }
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

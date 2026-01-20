@@ -72,11 +72,10 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
                     ->color(fn (Writing $record) => $record->is_anonymous ? 'gray' : 'primary')
                     ->toggleable(),
 
-                // PERBAIKAN 2: Ganti 'category.name' menjadi 'categories.name'
                 TextColumn::make('categories.name')
                     ->label('Categories')
                     ->badge()
-                    ->separator(',') // Memisahkan kategori dengan koma jika lebih dari satu
+                    ->separator(',')
                     ->searchable()
                     ->toggleable(),
 
