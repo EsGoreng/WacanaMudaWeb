@@ -32,7 +32,7 @@
             <div class="max-w-screen-xl w-full mx-auto px-4 lg:px-6">
                 <div class="max-w-4xl">
                     <div
-                        class="inline-flex items-center px-4 py-2 mb-4 rounded-lg bg-black/20 backdrop-blur-md border border-white/10 shadow-sm">
+                        class="inline-flex items-center px-4 py-2 mb-4 rounded-lg bg-black/20 backdrop-blur-sm border border-white/10 shadow-sm">
 
                         <flux:breadcrumbs>
                             <flux:breadcrumbs.item icon="home" :href="route('writing')"
@@ -77,7 +77,7 @@
                     @if ($writing->image_credit && $writing->image_credit_url)
                         <div class="mt-4 flex items-center gap-2">
                             <div
-                                class="px-3 py-1.5 bg-black/20 dark:bg-black/40 backdrop-blur-md rounded-lg border border-white/10 text-xs text-zinc-800 dark:text-zinc-200 shadow-sm inline-flex items-center gap-1">
+                                class="px-3 py-1.5 bg-black/20 dark:bg-black/40 backdrop-blur-sm rounded-lg border border-white/10 text-xs text-zinc-800 dark:text-zinc-200 shadow-sm inline-flex items-center gap-1">
                                 <span class="opacity-70">Photo by</span>
                                 <a href="{{ $writing->image_credit_url }}?utm_source={{ urlencode(config('app.name', 'WacanaMuda')) }}&utm_medium=referral"
                                     target="_blank" rel="noopener noreferrer"

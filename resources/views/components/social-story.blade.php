@@ -91,7 +91,7 @@
 
             <!-- Card Container -->
             <div
-                class="relative flex flex-col w-full max-w-5xl rounded-[3rem] border-2 border-gray-200 bg-card-light shadow-2xl dark:border-white/10 dark:bg-blue-950/40 dark:backdrop-blur-xl dark:shadow-2xl overflow-hidden">
+                class="relative flex flex-col w-full max-w-5xl rounded-[3rem] border-2 border-gray-200 bg-card-light shadow-2xl dark:border-white/10 dark:bg-blue-950/40 dark:backdrop-blur-sm dark:shadow-2xl overflow-hidden">
 
                 <div class="relative flex flex-col p-20 pb-24">
 

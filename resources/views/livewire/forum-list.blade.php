@@ -30,7 +30,7 @@
         </div>
 
         <div
-            class="group rounded-xl bg-gradient-to-br h-[200px] mt-6 backdrop-blur-md from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300 flex items-center justify-center text-zinc-400">
+            class="group rounded-xl bg-gradient-to-br h-[200px] mt-6 backdrop-blur-sm from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300 flex items-center justify-center text-zinc-400">
             Space Iklan / Banner
         </div>
     </div>
@@ -61,7 +61,7 @@
             </div>
 
             <div
-                class="group rounded-xl bg-gradient-to-br h-[300px] backdrop-blur-md from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300 text-center flex items-center justify-center text-zinc-400">
+                class="group rounded-xl bg-gradient-to-br h-[300px] backdrop-blur-sm from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300 text-center flex items-center justify-center text-zinc-400">
                 Footer / Copyright
             </div>
         </div>

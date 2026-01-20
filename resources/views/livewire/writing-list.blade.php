@@ -376,7 +376,7 @@
         <div class="sticky top-8 space-y-6">
 
             <div
-                class="group rounded-xl bg-gradient-to-br backdrop-blur-md from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300">
+                class="group rounded-xl bg-gradient-to-br backdrop-blur-sm from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300">
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
                         <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100">

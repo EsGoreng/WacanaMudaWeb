@@ -1,29 +1,92 @@
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-    <div class="lg:col-span-3">
-        @forelse ($events as $event)
+<div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach ($events as $event)
             <x-event-card :event="$event" />
-        @empty
-            <div class="text-center py-12 md:py-16 px-4">
-                <div
-                    class="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-zinc-50 dark:bg-zinc-800/50 rounded-full mb-4 md:mb-6 border border-zinc-200/50 dark:border-zinc-700/50">
-                    <svg class="w-10 h-10 md:w-12 md:h-12 text-zinc-950 dark:text-zinc-500" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-
-                <h3 class="text-xl md:text-2xl font-bold dark:text-white text-black mb-2">No events found</h3>
-                <p class="text-sm md:text-base dark:text-zinc-400 text-zinc-7   00 mb-6 max-w-md mx-auto">
-                    We couldn't find any event.
-                </p>
-
-            </div>
-        @endforelse
+        @endforeach
     </div>
-    <div class="lg:col-span-1">
-        <div class="w-full h-full border boder-zinc-200">
-            Test
+
+    <div class="mt-8">
+        {{ $events->links() }}
+    </div>
+
+    <div x-data="{ show: @entangle('isModalOpen') }" x-show="show" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto"
+        aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-zinc-500/10 backdrop-blur-sm ransition-opacity" wire:click="closeModal"></div>
+
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div x-show="show" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave="ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                class="relative transform overflow-hidden rounded-2xl text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-5xl">
+                @if ($selectedEvent)
+                    <div class="flex flex-col md:flex-row h-full md:h-[600px]">
+
+                        <div class="relative w-full md:w-1/2 h-64 md:h-full">
+                            <img src="{{ str_starts_with($selectedEvent->banner_image, 'http') ? $selectedEvent->banner_image : asset('storage/' . $selectedEvent->banner_image) }}"
+                                alt="{{ $selectedEvent->title }}" class="absolute inset-0 w-full h-full object-cover">
+                        </div>
+
+                        <div
+                            class="w-full md:w-1/2 p-8 md:p-10 flex flex-col h-full bg-zinc-800 relative overflow-y-auto">
+
+                            <button wire:click="closeModal"
+                                class="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+                                <x-bi-x-circle-fill />
+                            </button>
+
+                            <div class="flex flex-wrap gap-2 mb-2">
+                                @forelse($event->categories as $category)
+                                    <div
+                                        class="{{ $category->badgeClass }} px-3 py-1.5 rounded-full border border-black/10 text-xs font-medium text-black transition-colors hover:bg-white/20 cursor-default shadow-sm">
+                                        {{ $category->name }}
+                                    </div>
+                                @empty
+                                    <div
+                                        class="bg-black/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-black/10 text-xs font-medium text-white shadow-sm">
+                                        Event
+                                    </div>
+                                @endforelse
+                            </div>
+
+                            <h2 class="text-3xl font-extrabold text-zinc-950 dark:text-zinc-50 mb-2 leading-tight">
+                                {{ $selectedEvent->title }}
+                            </h2>
+
+                            <div class="flex items-center text-zinc-950 dark:text-zinc-300 mb-4 text-sm">
+                                <x-bi-geo class="mr-2"></x-bi-geo>
+                                {{ $selectedEvent->location_name }}, {{ $selectedEvent->location_address }}
+                            </div>
+
+                            <hr class="border-zinc-100 dark:border-zinc-700 mb-4">
+
+                            <div class="mb-4">
+                                <h3 class="font-bold text-zinc-900 dark:text-zinc-50 mb-2">About this event</h3>
+                                <div class="text-zinc-900 dark:text-zinc-300 text-sm leading-relaxed fi-prose">
+                                    {!! $selectedEvent->description !!}
+                                </div>
+                            </div>
+
+                            <div
+                                class="mt-auto pt-6 border-t border-zinc-100 dark:border-zinc-700 flex items-center justify-between">
+                                <flux:button variant="primary"
+                                    class="bg-brand-hover hover:bg-accent text-white font-semibold py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm">
+                                    Register
+                                </flux:button>
+                            </div>
+
+                        </div>
+                    </div>
+                @else
+                    <div class="p-10 text-center text-gray-500">
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 </div>

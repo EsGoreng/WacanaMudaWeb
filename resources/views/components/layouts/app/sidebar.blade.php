@@ -97,7 +97,7 @@
             }
         }">
             <flux:header
-                class="sticky top-0 z-10 block! border-b border-zinc-200 dark:border-slate-800 bg-zinc-100/90 dark:bg-zinc-900/80 backdrop-blur-md transition-all duration-300">
+                class="sticky top-0 z-10 block! border-b border-zinc-200 dark:border-slate-800 bg-zinc-100/90 dark:bg-zinc-900/80 backdrop-blur-sm transition-all duration-300">
 
                 <div class="overflow-hidden transition-all duration-300 ease-in-out lg:!h-auto lg:!opacity-100"
                     @if (isset($secondary_nav)) :class="showTopBar ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'" @endif>

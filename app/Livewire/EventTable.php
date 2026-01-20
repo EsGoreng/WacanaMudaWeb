@@ -8,7 +8,7 @@ use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
-use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -125,6 +125,12 @@ class EventTable extends Component implements HasActions, HasForms, HasTable
                         $categoryIds = $data['categories'] ?? [];
                         unset($data['categories']);
 
+                        if (empty($data['banner_image']) && ! empty($data['unsplash_photo_id'])) {
+                            if ($record->unsplash_photo_id === $data['unsplash_photo_id']) {
+                                $data['banner_image'] = $record->banner_image;
+                            }
+                        }
+
                         $record->update($data);
 
                         $record->categories()->sync($categoryIds);
@@ -213,12 +219,15 @@ class EventTable extends Component implements HasActions, HasForms, HasTable
                             ->searchable()
                             ->columnSpanFull(),
 
-                        DatePicker::make('start_time')
+                        DateTimePicker::make('start_time')
                             ->label('Start Time')
+                            ->seconds(false)
                             ->required(),
 
-                        DatePicker::make('end_time')
+                        DateTimePicker::make('end_time')
                             ->label('End Time')
+                            ->seconds(false)
+                            ->after('start_time')
                             ->required(),
 
                         TextInput::make('location_name')
@@ -247,9 +256,6 @@ class EventTable extends Component implements HasActions, HasForms, HasTable
                             ->maxSize(2048)
                             ->helperText('Max 2MB')
                             ->columnSpanFull()
-                                // ->afterStateUpdated(function ($state, Set $set) {
-                                //     $set('banner_image', $state);
-                                // })
                             ->hintAction(
                                 Action::make('unsplash')
                                     ->icon('heroicon-o-camera')

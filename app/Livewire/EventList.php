@@ -10,6 +10,22 @@ class EventList extends Component
 {
     use WithPagination;
 
+    public ?Event $selectedEvent = null;
+
+    public bool $isModalOpen = false;
+
+    public function openModal($eventId)
+    {
+        $this->selectedEvent = Event::find($eventId);
+        $this->isModalOpen = true;
+    }
+
+    public function closeModal()
+    {
+        $this->isModalOpen = false;
+        $this->reset('selectedEvent');
+    }
+
     public function render()
     {
         $events = Event::query()
