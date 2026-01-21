@@ -1,7 +1,7 @@
 @props(['event'])
 
 <div
-    class="relative w-full max-w-sm rounded-xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-white group">
+    class="relative w-full max-w-sm rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-white group">
     <div class="relative h-[500px] w-full">
         <img alt="{{ $event->title }}"
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -44,6 +44,16 @@
                             {{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }}
                         </span>
                     </div>
+
+                    <span class="w-1 h-1 rounded-full bg-blue-200/50"></span>
+
+                </div>
+
+                <div class="flex items-center justify-between mb-2">
+                    <h2
+                        class="text-sm font-bold tracking-tight {{ $event->statusColor }} drop-shadow-md backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 text-xs font-medium cursor-default">
+                        {{ $event->statusLabel }}
+                    </h2>
                 </div>
 
                 <div class="flex items-center justify-between mb-3">
@@ -58,7 +68,7 @@
                 <div class="flex flex-wrap gap-2 mb-6">
                     @forelse($event->categories as $category)
                         <div
-                            class="{{ $category->badgeClass }} backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 text-xs font-medium text-white transition-colors cursor-default">
+                            class="{{ $category->badgeClass }} backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 text-xs font-medium text-white cursor-default">
                             {{ $category->name }}
                         </div>
                     @empty

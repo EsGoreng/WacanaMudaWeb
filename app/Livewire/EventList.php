@@ -30,8 +30,10 @@ class EventList extends Component
     {
         $events = Event::query()
             ->with('categories')
+            ->whereIn('status', ['published', 'ongoing', 'ended', 'canceled'])
+            ->orderByRaw("FIELD(status, 'published', 'ongoing', 'ended', 'canceled') ASC")
             ->latest()
-            ->paginate(10);
+            ->paginate(perPage: 9);
 
         return view('livewire.event-list', [
             'events' => $events,

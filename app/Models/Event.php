@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -36,6 +37,37 @@ class Event extends Model
         'start_time' => 'datetime',
         'end_time' => 'datetime',
     ];
+
+    public function statusColor(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return match ($this->status) {
+                    'draft' => 'text-zinc-400',
+                    'published' => 'text-lime-500',
+                    'ongoing' => 'text-emerald-500',
+                    'canceled' => 'text-red-500',
+                    'ended' => 'text-red-500',
+                    default => 'text-zinc-400',
+                };
+            }
+        );
+    }
+
+    public function statusLabel(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return match ($this->status) {
+                    'draft' => 'Draft',
+                    'published' => 'Upcoming',
+                    'ongoing' => 'Ongoing',
+                    'canceled' => 'Canceled',
+                    'ended' => 'Ended',
+                };
+            }
+        );
+    }
 
     protected static function boot()
     {
