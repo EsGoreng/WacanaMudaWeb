@@ -156,7 +156,6 @@ class WritingDetail extends Component implements HasForms
             return redirect()->route('login');
         }
 
-        // Ambil data dari State Filament Form
         $data = $this->commentForm->getState();
 
         WritingComment::create([
