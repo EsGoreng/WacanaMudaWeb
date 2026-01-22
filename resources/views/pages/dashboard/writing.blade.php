@@ -28,9 +28,9 @@
                         Writing
                     </x-filament::tabs.item>
 
-                    <x-filament::tabs.item @click="activeTab = 'thread'" :active="false"
-                        icon="heroicon-m-chat-bubble-left-ellipsis" alpine-active="activeTab === 'thread'">
-                        Thread
+                    <x-filament::tabs.item @click="activeTab = 'forum'" :active="false"
+                        icon="heroicon-m-chat-bubble-left-ellipsis" alpine-active="activeTab === 'forum'">
+                        Forum
                     </x-filament::tabs.item>
                 </x-filament::tabs>
 
@@ -39,7 +39,7 @@
                         @livewire('writing-table')
                     </div>
 
-                    <div x-show="activeTab === 'thread'" x-cloak x-transition>
+                    <div x-show="activeTab === 'forum'" x-cloak x-transition>
                         <div class="flex flex-col gap-4">
                             @livewire('forum-table')
                         </div>

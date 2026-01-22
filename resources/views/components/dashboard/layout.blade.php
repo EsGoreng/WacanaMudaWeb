@@ -2,7 +2,7 @@
     <x-slot:secondary_nav>
         @can(['create posts'])
             <flux:navbar.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Overview') }}
+                {{ __('My Profile') }}
             </flux:navbar.item>
             <flux:navbar.item :href="route('dashboard.writing')" :current="request()->routeIs('dashboard.writing')"
                 wire:navigate>

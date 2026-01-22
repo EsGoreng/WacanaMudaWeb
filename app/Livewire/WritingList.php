@@ -146,7 +146,7 @@ class WritingList extends Component
                 $query->orderBy('title', 'desc');
                 break;
             case 'popular':
-                $query->latest('published_at');
+                $query->latest('published_at'); // Revisi
                 break;
             default:
                 $query->latest('published_at');
@@ -190,11 +190,6 @@ class WritingList extends Component
 
         return $query->orderBy('name')->get();
     }
-
-    // public function paginationView()
-    // {
-    //     return 'pagination.flux-theme';
-    // }
 
     public function render()
     {

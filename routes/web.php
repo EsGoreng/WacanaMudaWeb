@@ -20,7 +20,7 @@ Route::view('/forum', 'pages.forum.main')->name('forum');
 Route::view('/event', 'pages.event.main')->name('event');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::view('/dashboard', 'pages.dashboard.overview')->name('dashboard');
+    Route::view('/dashboard', 'pages.dashboard.myprofile')->name('dashboard');
 
     Route::view('/dashboard/writing', 'pages.dashboard.writing')->name('dashboard.writing');
     Route::get('/dashboard/writing/create', WritingForm::class)->name('dashboard.writing.create');

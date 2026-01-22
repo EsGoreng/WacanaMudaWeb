@@ -315,8 +315,6 @@
             @endif
         </div>
 
-        <flux:separator variant="subtle" />
-
         @if ($this->posts->isEmpty())
             <div class="text-center py-12 md:py-16 px-4">
                 <div
@@ -354,13 +352,18 @@
                 </div>
             </div>
         @else
-            <div>
+            <div class="flex flex-col gap-4">
                 @foreach ($this->posts as $post)
                     <div wire:key="post-{{ $post->writing_id }}">
                         <x-writing-card :image="$post->image_url" :avatar="$post->author_avatar_url" :author="$post->author_display_name" :categories="$post->categories"
                             :date="$post->published_at->format('M d, Y')" :read-time="$post->reading_time" :title="$post->title" :excerpt="$post->excerpt" :description="$post->description"
                             :link="route('writing.show', $post->slug ?? '#')" />
-                        <flux:separator variant="subtle" />
+
+                        @if (!$loop->last)
+                            <div class="mt-6 mb-2">
+                                <flux:separator variant="subtle" />
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>

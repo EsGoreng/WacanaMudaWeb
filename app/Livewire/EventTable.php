@@ -80,13 +80,14 @@ class EventTable extends Component implements HasActions, HasForms, HasTable
                     ->sortable(),
 
                 TextColumn::make('status')
+                    ->getStateUsing(fn ($record) => $record->statusLabel)
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'draft' => 'gray',
-                        'published' => 'success',
-                        'ongoing' => 'warning',
-                        'canceled' => 'danger',
-                        'ended' => 'info',
+                        'Draft' => 'gray',
+                        'Upcoming' => 'success',
+                        'Ongoing' => 'warning',
+                        'Canceled' => 'danger',
+                        'Ended' => 'info',
                     }),
             ])
             ->headerActions([

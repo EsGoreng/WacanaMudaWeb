@@ -88,4 +88,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Series::class);
     }
+
+    public function writings(): HasMany
+    {
+        return $this->hasMany(Writing::class, 'user_id', 'id');
+    }
 }
