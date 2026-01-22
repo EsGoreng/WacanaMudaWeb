@@ -2,34 +2,21 @@
 
 namespace App\Livewire\Writings;
 
+use App\Livewire\BaseDataTable;
 use App\Models\Writing;
 use Filament\Actions\Action;
-use Filament\Actions\BulkAction;
-use Filament\Actions\Concerns\InteractsWithActions;
-use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table as FilamentTable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class Table extends Component implements HasActions, HasForms, HasTable
+class Table extends BaseDataTable
 {
-    use InteractsWithActions;
-    use InteractsWithForms;
-    use InteractsWithTable;
-
     public function table(FilamentTable $table): FilamentTable
     {
         $user = auth()->user();
@@ -165,19 +152,8 @@ class Table extends Component implements HasActions, HasForms, HasTable
                     ->icon('heroicon-o-pencil')
                     ->url(fn (Writing $record) => route('dashboard.writing.edit', $record)),
 
-                Action::make('delete')
-                    ->label('Delete')
-                    ->icon('heroicon-o-trash')
-                    ->color('danger')
-                    ->requiresConfirmation()
-                    ->action(function (Writing $record) {
-                        $record->delete();
-
-                        Notification::make()
-                            ->title('Article deleted successfully')
-                            ->danger()
-                            ->send();
-                    }),
+                $this->getDeleteAction()
+                    ->successNotificationTitle('Article deleted successfully'),
             ])
             ->headerActions([
                 Action::make('add')
@@ -186,24 +162,7 @@ class Table extends Component implements HasActions, HasForms, HasTable
                     ->url(route('dashboard.writing.create')),
             ])
             ->bulkActions([
-                BulkAction::make('delete')
-                    ->label('Delete Selected')
-                    ->icon('heroicon-o-trash')
-                    ->color('danger')
-                    ->requiresConfirmation()
-                    ->action(function (Collection $records) {
-                        DB::transaction(function () use ($records) {
-                            foreach ($records as $record) {
-                                $record->delete();
-                            }
-                        });
-
-                        Notification::make()
-                            ->title('Article deleted Successfully')
-                            ->body(count($records).' artiicle already deleted.')
-                            ->danger()
-                            ->send();
-                    }),
+                $this->getBulkDeleteAction(), ,
             ]);
     }
 

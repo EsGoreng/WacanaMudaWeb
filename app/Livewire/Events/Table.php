@@ -2,39 +2,29 @@
 
 namespace App\Livewire\Events;
 
+use App\Livewire\BaseDataTable;
 use App\Models\Category;
 use App\Models\Event;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
-use Filament\Actions\Concerns\InteractsWithActions;
-use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Collection;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table as FilamentTable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Livewire\Component;
 
-class Table extends Component implements HasActions, HasForms, HasTable
+class Table extends BaseDataTable
 {
-    use InteractsWithActions;
-    use InteractsWithForms;
-    use InteractsWithTable;
-
     public ?Event $event = null;
 
     public function table(FilamentTable $table): FilamentTable

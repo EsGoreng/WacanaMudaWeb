@@ -2,28 +2,15 @@
 
 namespace App\Livewire\Forums;
 
+use App\Livewire\BaseDataTable;
 use App\Models\Forum;
 use Filament\Actions\Action;
-use Filament\Actions\BulkAction;
-use Filament\Actions\Concerns\InteractsWithActions;
-use Filament\Actions\Contracts\HasActions;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table as FilamentTable;
-use Illuminate\Support\Collection;
-use Livewire\Component;
 
-class Table extends Component implements HasActions, HasForms, HasTable
+class Table extends BaseDataTable
 {
-    use InteractsWithActions;
-    use InteractsWithForms;
-    use InteractsWithTable;
-
     public function table(FilamentTable $table): FilamentTable
     {
         return $table
@@ -56,40 +43,15 @@ class Table extends Component implements HasActions, HasForms, HasTable
                     ->label('Edit')
                     ->icon('heroicon-o-pencil'),
 
-                Action::make('delete')
-                    ->label('Delete')
-                    ->icon('heroicon-o-trash')
-                    ->color('danger')
-                    ->requiresConfirmation()
-                    ->action(function (Forum $record) {
-                        $record->delete();
-
-                        Notification::make()
-                            ->title('Article deleted successfully')
-                            ->danger()
-                            ->send();
-                    }),
+                $this->getDeleteAction()
+                    ->successNotificationTitle('Forum topic deleted'),
             ])
             ->filters([
                 SelectFilter::make('category')
                     ->relationship('category', 'name'),
             ])
             ->bulkActions([
-                BulkAction::make('delete')
-                    ->label('Delete Selected')
-                    ->icon('heroicon-o-trash')
-                    ->color('danger')
-                    ->requiresConfirmation()
-                    ->action(function (Collection $records) {
-                        $records->each(function ($record) {
-                            $record->delete();
-                        });
-
-                        Notification::make()
-                            ->title('Articles deleted successfully')
-                            ->danger()
-                            ->send();
-                    }),
+                $this->getBulkDeleteAction(),
             ]);
     }
 

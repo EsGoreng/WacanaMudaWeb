@@ -1,3 +1,3 @@
 <x-dashboard.layout>
-    <livewire:profile.page />
+    <livewire:profile.show />
 </x-dashboard.layout>
