@@ -43,8 +43,12 @@
                                 </span>
                             </div>
                             <span>•</span>
-                            <span>Posted by <span
-                                    class="hover:underline cursor-pointer text-zinc-600 dark:text-zinc-300">{{ $forum->user->name }}</span></span>
+                            <span>Posted by
+                                <a href="{{ route('profile.show', $forum->user) }}"
+                                    class="hover:underline cursor-pointer text-zinc-600 dark:text-zinc-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                    {{ $forum->user->name }}
+                                </a>
+                            </span></span>
                             <span>•</span>
                             <span>{{ $forum->created_at->diffForHumans() }}</span>
                         </div>
@@ -149,8 +153,10 @@
 
                                 <div class="flex-1 min-w-0 pb-2">
                                     <div class="flex items-center gap-2 text-xs mb-1">
-                                        <span
-                                            class="font-bold text-zinc-900 dark:text-slate-200">{{ $reply->user->name }}</span>
+                                        <a href="{{ route('profile.show', $reply->user) }}"
+                                            class="font-bold text-zinc-900 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
+                                            {{ $reply->user->name }}
+                                        </a>
                                         <span class="text-zinc-500 dark:text-slate-500">•
                                             {{ $reply->created_at->diffForHumans(null, true) }}</span>
                                     </div>
@@ -216,8 +222,10 @@
 
                                                     <div class="flex-1">
                                                         <div class="flex items-center gap-2 text-xs mb-0.5">
-                                                            <span
-                                                                class="font-bold text-zinc-900 dark:text-slate-200">{{ $child->user->name }}</span>
+                                                            <a href="{{ route('profile.show', $child->user) }}"
+                                                                class="font-bold text-zinc-900 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
+                                                                {{ $child->user->name }}
+                                                            </a>
                                                             <span
                                                                 class="text-zinc-500 dark:text-slate-500">{{ $child->created_at->diffForHumans(null, true) }}</span>
                                                         </div>

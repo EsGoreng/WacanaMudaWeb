@@ -355,9 +355,7 @@
             <div class="flex flex-col gap-4">
                 @foreach ($this->posts as $post)
                     <div wire:key="post-{{ $post->writing_id }}">
-                        <x-writing-card :image="$post->image_url" :avatar="$post->author_avatar_url" :author="$post->author_display_name" :categories="$post->categories"
-                            :date="$post->published_at->format('M d, Y')" :read-time="$post->reading_time" :title="$post->title" :excerpt="$post->excerpt" :description="$post->description"
-                            :link="route('writing.show', $post->slug ?? '#')" />
+                        <x-writing-card :writing="$post" />
 
                         @if (!$loop->last)
                             <div class="mt-6 mb-2">

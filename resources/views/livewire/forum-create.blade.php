@@ -2,7 +2,6 @@
     class="mx-auto p-0 lg:p-6 bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer group overflow-hidden">
     <div class="flex items-start gap-4">
 
-        {{-- Avatar (Kiri) --}}
         <div class="flex-shrink-0 hidden md:block">
             @php
                 $user = auth()->user();

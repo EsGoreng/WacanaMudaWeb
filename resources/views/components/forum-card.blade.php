@@ -38,8 +38,12 @@
                     </span>
                 </div>
                 <span class="opacity-50">•</span>
-                <span>Posted by <span
-                        class="hover:underline text-zinc-700 dark:text-zinc-300">{{ $forum->user->name }}</span></span>
+                <span>Posted by
+                    <a href="{{ route('profile.show', $forum->user) }}"
+                        class="hover:underline text-zinc-700 dark:text-zinc-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                        {{ $forum->user->name }}
+                    </a>
+                </span></span>
                 <span class="opacity-50">•</span>
                 <span>{{ $forum->created_at->diffForHumans() }}</span>
             </div>

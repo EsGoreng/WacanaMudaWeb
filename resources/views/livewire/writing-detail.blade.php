@@ -107,12 +107,19 @@
                     class="flex flex-col sm:flex-row sm:items-center justify-between py-6 border-b border-t border-zinc-200 dark:border-zinc-700 mb-10">
 
                     <div class="flex items-center space-x-4 mb-4 sm:mb-0">
-                        <img alt="{{ $writing->author_display_name }}"
-                            class="w-12 h-12 rounded-full border-2 border-zinc-100 dark:border-zinc-700 object-cover"
-                            src="{{ $writing->author_avatar_url }}" />
+                        <a href="{{ route('profile.show', $writing->user) }}" class="shrink-0">
+                            <img alt="{{ $writing->author_display_name }}"
+                                class="w-12 h-12 rounded-full border-2 border-zinc-100 dark:border-zinc-700 object-cover hover:ring-2 hover:ring-blue-500 transition-all"
+                                src="{{ $writing->author_avatar_url }}" />
+                        </a>
+
                         <div class="flex flex-col">
-                            <span class="font-bold text-lg text-zinc-900 dark:text-white">
-                                By {{ $writing->author_display_name }}
+                            <span class="font-bold text-lg text-zinc-900 dark:text-white flex items-center gap-1">
+                                By
+                                <a href="{{ route('profile.show', $writing->user) }}"
+                                    class="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors">
+                                    {{ $writing->author_display_name }}
+                                </a>
                             </span>
                             <div class="text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
                                 <time
@@ -256,8 +263,10 @@
 
                                     <div class="flex-1 min-w-0 pb-2">
                                         <div class="flex items-center gap-2 text-xs mb-1">
-                                            <span
-                                                class="font-bold text-zinc-900 dark:text-slate-200">{{ $comment->user->name }}</span>
+                                            <a href="{{ route('profile.show', $comment->user) }}"
+                                                class="font-bold text-zinc-900 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
+                                                {{ $comment->user->name }}
+                                            </a>
                                             <span class="text-zinc-500 dark:text-slate-500">•
                                                 {{ $comment->created_at->diffForHumans(null, true) }}</span>
                                         </div>
@@ -328,8 +337,12 @@
 
                                                         <div class="flex-1">
                                                             <div class="flex items-center gap-2 text-xs mb-0.5">
-                                                                <span
-                                                                    class="font-bold text-zinc-900 dark:text-slate-200">{{ $child->user->name }}</span>
+
+                                                                <a href="{{ route('profile.show', $child->user) }}"
+                                                                    class="font-bold text-zinc-900 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
+                                                                    {{ $child->user->name }}
+                                                                </a>
+
                                                                 <span
                                                                     class="text-zinc-500 dark:text-slate-500 text-[10px]">{{ $child->created_at->diffForHumans(null, true) }}</span>
                                                             </div>
@@ -376,28 +389,13 @@
             </div>
 
             <aside class="lg:col-span-4 space-y-8 lg:pt-0 sticky top-6 self-start">
-                <div
-                    class="bg-zinc-50 dark:bg-[#1f2937] p-6 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-sm">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-2">
-                        Newsletter
-                    </h3>
-                    <h4 class="text-xl font-bold text-zinc-900 dark:text-white mb-2">
-                        Get the latest updates
-                    </h4>
-                    <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
-                        Get all the stories you need-to-know from the most powerful name in news delivered first thing
-                        every morning to your inbox.
-                    </p>
-                    <button
-                        class="w-full bg-brand-hover hover:bg-accent text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2">
-                        Subscribe
-                    </button>
-                </div>
+
+                <livewire:profile-card :user="$writing->user" />
 
                 <div>
                     <h3
                         class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-white mb-5 border-b border-zinc-200 dark:border-zinc-700 pb-2">
-                        Latest News
+                        Latest Writings
                     </h3>
                     <div class="space-y-6">
                         @forelse($latestPosts as $post)
