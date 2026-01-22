@@ -1,3 +1,3 @@
 <x-writing.layout>
-    <livewire:writing-list />
+    <livewire:writings.index />
 </x-writing.layout>

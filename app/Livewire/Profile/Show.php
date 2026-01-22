@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Profile;
 
 use App\Models\User;
 use Filament\Actions\Action;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
-class ProfilePage extends Component implements HasActions, HasForms
+class Show extends Component implements HasActions, HasForms
 {
     use InteractsWithActions;
     use InteractsWithForms;
@@ -92,7 +92,7 @@ class ProfilePage extends Component implements HasActions, HasForms
 
     public function render()
     {
-        return view('livewire.profile-page', [
+        return view('livewire.profile.show', [
             'writings' => $this->user->writings()->latest()->paginate(5),
 
             'forums' => $this->user->forums()->latest()->get(),

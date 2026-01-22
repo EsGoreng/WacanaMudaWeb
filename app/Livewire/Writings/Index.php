@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Writings;
 
 use App\Models\Category;
 use App\Models\Writing;
@@ -9,7 +9,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class WritingList extends Component
+class Index extends Component
 {
     use WithPagination;
 
@@ -293,7 +293,7 @@ class WritingList extends Component
             ],
         ]);
 
-        return view('livewire.writing-list', [
+        return view('livewire.writings.index', [
             'literacyContent' => $literacyContent,
         ]);
     }

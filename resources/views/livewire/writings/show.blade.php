@@ -390,7 +390,7 @@
 
             <aside class="lg:col-span-4 space-y-8 lg:pt-0 sticky top-6 self-start">
 
-                <livewire:profile-card :user="$writing->user" />
+                <livewire:profile.card :user="$writing->user" />
 
                 <div>
                     <h3

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Forums;
 
 use App\Models\Forum;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ForumList extends Component
+class Index extends Component
 {
     use WithPagination;
 
@@ -56,7 +56,7 @@ class ForumList extends Component
             ->latest()
             ->paginate(10);
 
-        return view('livewire.forum-list', [
+        return view('livewire.forums.index', [
             'forums' => $forums,
         ]);
     }

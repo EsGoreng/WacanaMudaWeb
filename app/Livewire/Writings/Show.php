@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Writings;
 
 use App\Models\Writing;
 use App\Models\WritingComment;
@@ -16,7 +16,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Browsershot\Browsershot;
 
-class WritingDetail extends Component implements HasForms
+class Show extends Component implements HasForms
 {
     use InteractsWithForms;
     use WithPagination;
@@ -264,7 +264,7 @@ class WritingDetail extends Component implements HasForms
             ->latest()
             ->paginate(10);
 
-        return view('livewire.writing-detail', [
+        return view('livewire.writings.show', [
             'latestPosts' => $latestPosts,
             'comments' => $comments,
             'likesCount' => $this->writing->likes()->count(),

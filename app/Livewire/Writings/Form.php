@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Writings;
 
 use App\Models\Category;
 use App\Models\Series;
@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-class WritingForm extends Component implements HasActions, HasSchemas
+class Form extends Component implements HasActions, HasSchemas
 {
     use InteractsWithActions;
     use InteractsWithSchemas;
@@ -417,6 +417,6 @@ class WritingForm extends Component implements HasActions, HasSchemas
 
     public function render(): View
     {
-        return view('livewire.writing-form');
+        return view('livewire.writings.form');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Forums;
 
 use App\Models\Forum;
 use App\Models\Reply;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ForumDetail extends Component implements HasForms
+class Show extends Component implements HasForms
 {
     use InteractsWithForms;
     use WithPagination;
@@ -230,7 +230,7 @@ class ForumDetail extends Component implements HasForms
             ->latest()
             ->paginate(10);
 
-        return view('livewire.forum-detail', [
+        return view('livewire.forums.show', [
             'replies' => $replies,
             'latestForums' => $latestForums,
         ])->layoutData([

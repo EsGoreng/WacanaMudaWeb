@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Forums;
 
 use App\Models\Forum;
 use Filament\Actions\Concerns\InteractsWithActions;
@@ -17,7 +17,7 @@ use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-class ForumCreate extends Component implements HasActions, HasForms
+class Create extends Component implements HasActions, HasForms
 {
     use InteractsWithActions;
     use InteractsWithForms;
@@ -85,6 +85,6 @@ class ForumCreate extends Component implements HasActions, HasForms
 
     public function render()
     {
-        return view('livewire.forum-create');
+        return view('livewire.forums.create');
     }
 }

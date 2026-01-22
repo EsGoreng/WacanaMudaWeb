@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Profile;
 
 use App\Models\User;
 use Filament\Actions\Action;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
-class ProfileCard extends Component implements HasActions, HasForms
+class Card extends Component implements HasActions, HasForms
 {
     use InteractsWithActions;
     use InteractsWithForms;
@@ -82,6 +82,6 @@ class ProfileCard extends Component implements HasActions, HasForms
 
     public function render()
     {
-        return view('livewire.profile-card');
+        return view('livewire.profile.card');
     }
 }

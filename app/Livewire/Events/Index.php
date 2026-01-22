@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Events;
 
 use App\Models\Event;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class EventList extends Component
+class Index extends Component
 {
     use WithPagination;
 
@@ -35,7 +35,7 @@ class EventList extends Component
             ->latest()
             ->paginate(perPage: 9);
 
-        return view('livewire.event-list', [
+        return view('livewire.events.index', [
             'events' => $events,
         ]);
     }

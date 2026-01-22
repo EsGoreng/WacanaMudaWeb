@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Writings;
 
 use App\Models\Writing;
 use Filament\Actions\Action;
@@ -18,20 +18,19 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
-use Filament\Tables\Table;
+use Filament\Tables\Table as FilamentTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Livewire\Component;
 
-class WritingTable extends Component implements HasActions, HasForms, HasTable
+class Table extends Component implements HasActions, HasForms, HasTable
 {
     use InteractsWithActions;
     use InteractsWithForms;
     use InteractsWithTable;
 
-    public function table(Table $table): Table
+    public function table(FilamentTable $table): FilamentTable
     {
         $user = auth()->user();
 
@@ -210,6 +209,6 @@ class WritingTable extends Component implements HasActions, HasForms, HasTable
 
     public function render()
     {
-        return view('livewire.writing-table');
+        return view('livewire.writings.table');
     }
 }

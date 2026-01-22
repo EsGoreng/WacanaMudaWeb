@@ -1,3 +1,3 @@
 <x-event.layout>
-    <livewire:event-list />
+    <livewire:events.index />
 </x-event.layout>

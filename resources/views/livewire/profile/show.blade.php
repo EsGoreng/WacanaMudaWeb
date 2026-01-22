@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
     <div class="lg:col-span-1">
-        <livewire:profile-card :user="$user" />
+        <livewire:profile.card :user="$user" />
     </div>
 
     <div class="lg:col-span-3">

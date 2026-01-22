@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Events;
 
 use App\Models\Category;
 use App\Models\Event;
@@ -24,12 +24,12 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Table;
+use Filament\Tables\Table as FilamentTable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-class EventTable extends Component implements HasActions, HasForms, HasTable
+class Table extends Component implements HasActions, HasForms, HasTable
 {
     use InteractsWithActions;
     use InteractsWithForms;
@@ -37,7 +37,7 @@ class EventTable extends Component implements HasActions, HasForms, HasTable
 
     public ?Event $event = null;
 
-    public function Table(Table $table): Table
+    public function table(FilamentTable $table): FilamentTable
     {
         return $table
             ->query(Event::query()->with('categories'))
@@ -415,6 +415,6 @@ class EventTable extends Component implements HasActions, HasForms, HasTable
 
     public function render()
     {
-        return view('livewire.event-table');
+        return view('livewire.events.table');
     }
 }

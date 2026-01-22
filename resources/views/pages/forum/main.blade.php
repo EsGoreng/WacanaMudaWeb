@@ -1,3 +1,3 @@
 <x-forum.layout>
-    <livewire:forum-list />
+    <livewire:forums.index />
 </x-forum.layout>

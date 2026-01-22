@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Forums;
 
 use App\Models\Forum;
 use Filament\Actions\Action;
@@ -14,17 +14,17 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
+use Filament\Tables\Table as FilamentTable;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
-class ForumTable extends Component implements HasActions, HasForms, HasTable
+class Table extends Component implements HasActions, HasForms, HasTable
 {
     use InteractsWithActions;
     use InteractsWithForms;
     use InteractsWithTable;
 
-    public function table(Table $table): Table
+    public function table(FilamentTable $table): FilamentTable
     {
         return $table
             ->query(Forum::query()->where('user_id', auth()->id()))
@@ -95,6 +95,6 @@ class ForumTable extends Component implements HasActions, HasForms, HasTable
 
     public function render()
     {
-        return view('livewire.forum-table');
+        return view('livewire.forums.table');
     }
 }
