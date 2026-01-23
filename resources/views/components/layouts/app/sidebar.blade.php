@@ -35,15 +35,15 @@
 
                 <flux:heading>Main Menu</flux:heading>
                 <flux:sidebar.group class="grid">
-                    <flux:sidebar.item icon="book-open" :href="route('writing')"
+                    <flux:sidebar.item icon="book-open" :href="route('writings')"
                         :current="request()->routeIs('writing*')" wire:navigate>
                         {{ __('Article & Blog') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="chat-bubble-left-right" :href="route('forum')"
+                    <flux:sidebar.item icon="chat-bubble-left-right" :href="route('forums')"
                         :current="request()->routeIs('forum*')" wire:navigate>
                         {{ __('Forum') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="calendar" :href="route('event')" :current="request()->routeIs('event*')"
+                    <flux:sidebar.item icon="calendar" :href="route('events')" :current="request()->routeIs('event*')"
                         wire:navigate>
                         {{ __('Event') }}
                     </flux:sidebar.item>

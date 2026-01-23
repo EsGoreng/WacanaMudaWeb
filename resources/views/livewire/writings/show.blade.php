@@ -11,7 +11,7 @@
         </div>
 
         <div class="absolute top-6 left-4 lg:left-8 z-10">
-            <flux:button icon="arrow-left" :href="route('writing')"
+            <flux:button icon="arrow-left" :href="route('writings')"
                 class="!bg-black/20 hover:!bg-black/40 !border-white/10 !backdrop-blur-sm !text-white border transition-all">
                 Back
             </flux:button>
@@ -35,11 +35,11 @@
                         class="inline-flex items-center px-4 py-2 mb-4 rounded-lg bg-black/20 backdrop-blur-sm border border-white/10 shadow-sm">
 
                         <flux:breadcrumbs>
-                            <flux:breadcrumbs.item icon="home" :href="route('writing')"
+                            <flux:breadcrumbs.item icon="home" :href="route('writings')"
                                 class="[&_a]:!text-white [&_.text-zinc-300]:!text-white" />
 
                             <flux:breadcrumbs.item
-                                :href="route('writing', ['category' => $writing->categories->first()?->slug])"
+                                :href="route('writings', ['category' => $writing->categories->first()?->slug])"
                                 class="truncate max-w-[120px] sm:max-w-[200px] md:max-w-none [&_.text-gray-500]:!text-white [&_.text-zinc-800]:!text-white []">
                                 {{ $writing->categories->first()?->name ?? 'General' }}
                             </flux:breadcrumbs.item>
@@ -55,7 +55,7 @@
                     <div class="flex items-center gap-2 mb-4">
                         <div class="flex flex-wrap gap-2">
                             @foreach ($writing->categories as $category)
-                                <a href="{{ route('writing', ['category' => $category->slug]) }}"
+                                <a href="{{ route('writings', ['category' => $category->slug]) }}"
                                     class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full {{ $category->badge_class }}">
                                     {{ $category->name }}
                                 </a>

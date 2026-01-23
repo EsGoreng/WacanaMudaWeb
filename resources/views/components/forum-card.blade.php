@@ -48,7 +48,7 @@
                 <span>{{ $forum->created_at->diffForHumans() }}</span>
             </div>
 
-            <a href="{{ route('forums.show', $forum->slug) }}" class="block">
+            <a href="{{ route('forum.show', $forum->slug) }}" class="block">
                 <h2
                     class="text-xl font-bold text-black dark:text-zinc-100 leading-tight group-hover:text-gray-500 line-clamp-2 mb-2 transition-colors">
                     {{ $forum->title }}

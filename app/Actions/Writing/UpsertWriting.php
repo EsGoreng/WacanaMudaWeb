@@ -25,7 +25,7 @@ class UpsertWriting
                 $data['published_at'] = now();
 
                 if (! empty($data['unsplash_download_location'])) {
-                    (new UnsplashService)->triggerUnsplashDownload($this->writing->unsplash_download_location);
+                    (new UnsplashService)->triggerUnsplashDownload($data['unsplash_download_location']);
                 }
             }
         }

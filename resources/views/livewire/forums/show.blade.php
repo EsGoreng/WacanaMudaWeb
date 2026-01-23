@@ -1,7 +1,7 @@
 <div class="min-h-screen font-sans antialiased transition-colors duration-100 overflow-x-hidden">
 
     <div class="relative w-full h-[50px] group">
-        <flux:button icon="arrow-left" :href="route('forum')"
+        <flux:button icon="arrow-left" :href="route('forums')"
             class="!bg-black/20 hover:!bg-black/40 !border-white/10 !backdrop-blur-sm !text-white border transition-all">
             Back
         </flux:button>
@@ -312,7 +312,7 @@
                 <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-4">Latest Discussions</h3>
                 <div class="flex flex-col gap-4">
                     @foreach ($latestForums as $latest)
-                        <a class="group" href="{{ route('forums.show', $latest->slug) }}">
+                        <a class="group" href="{{ route('forums', $latest->slug) }}">
                             <p
                                 class="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 leading-snug mb-1 line-clamp-2">
                                 {{ $latest->title }}

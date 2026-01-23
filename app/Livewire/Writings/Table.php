@@ -162,7 +162,7 @@ class Table extends BaseDataTable
                     ->url(route('dashboard.writing.create')),
             ])
             ->bulkActions([
-                $this->getBulkDeleteAction(), ,
+                $this->getBulkDeleteAction(),
             ]);
     }
 
