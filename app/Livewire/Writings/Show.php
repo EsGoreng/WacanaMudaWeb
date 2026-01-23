@@ -4,13 +4,13 @@ namespace App\Livewire\Writings;
 
 use App\Models\Writing;
 use App\Models\WritingComment;
+use App\Services\UnsplashService;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -46,27 +46,11 @@ class Show extends Component implements HasForms
         }
 
         if (! empty($this->writing->unsplash_download_location)) {
-            $this->triggerUnsplashDownload($this->writing->unsplash_download_location);
+            (new UnsplashService)->triggerUnsplashDownload($this->writing->unsplash_download_location);
         }
 
         $this->commentForm->fill();
         $this->replyForm->fill();
-    }
-
-    private function triggerUnsplashDownload(string $downloadLocation): void
-    {
-        try {
-            Http::withOptions([
-                'verify' => false,
-                'connect_timeout' => 10,
-                'timeout' => 10,
-                'curl' => [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4],
-            ])->get($downloadLocation, [
-                'client_id' => env('UNSPLASH_ACCESS_KEY'),
-            ]);
-        } catch (\Exception $e) {
-            \Log::warning('Failed to trigger Unsplash download: '.$e->getMessage());
-        }
     }
 
     public function articleInfolist(Schema $schema): Schema
