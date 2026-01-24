@@ -106,16 +106,96 @@
 
                         <div
                             class="flex items-center gap-1 md:gap-6 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 text-sm font-medium">
-                            <button
-                                class="flex items-center gap-2 px-2 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
-                                <x-bi-chat-left class="w-5 h-5" />
-                                <span>{{ $replies->total() }} Comments</span>
-                            </button>
-                            <button
-                                class="flex items-center gap-2 px-2 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
-                                <x-bi-share class="w-5 h-5" />
-                                <span>Share</span>
-                            </button>
+                            <div class="flex items-center gap-1">
+                                <button wire:click="generateInstagramStory" wire:loading.attr="disabled"
+                                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400 font-medium text-sm group">
+
+                                    <svg wire:loading wire:target="generateInstagramStory"
+                                        class="animate-spin w-4 h-4 text-zinc-500" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+
+                                    <svg wire:loading.remove wire:target="generateInstagramStory"
+                                        xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5">
+                                        </rect>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                    </svg>
+
+                                    <span wire:loading.remove wire:target="generateInstagramStory"
+                                        class="group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">Story</span>
+                                    <span wire:loading wire:target="generateInstagramStory">Generating...</span>
+                                </button>
+
+                                <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1"></div>
+
+                                <div x-data="{
+                                    copied: false,
+                                    shareTitle: '{{ $forum->title }}',
+                                    shareAuthor: '{{ $forum->user->name }}',
+                                    shareUrl: '{{ route('forums', $forum->slug) }}',
+                                
+                                    async share() {
+                                        const fullText = `Wacana Muda Forum\n${this.shareTitle}\nBy ${this.shareAuthor}\nLink: ${this.shareUrl}`;
+                                
+                                        if (navigator.share) {
+                                            try {
+                                                await navigator.share({
+                                                    title: this.shareTitle,
+                                                    text: fullText,
+                                                    url: this.shareUrl
+                                                });
+                                            } catch (err) {
+                                                console.log('Share cancelled');
+                                            }
+                                        } else {
+                                            try {
+                                                await navigator.clipboard.writeText(fullText);
+                                                this.copied = true;
+                                                setTimeout(() => this.copied = false, 2000);
+                                            } catch (err) {
+                                                console.error('Gagal menyalin ke clipboard', err);
+                                            }
+                                        }
+                                    }
+                                }">
+                                    <button @click="share()"
+                                        class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400 font-medium text-sm group">
+
+                                        <svg x-show="copied" x-cloak xmlns="http://www.w3.org/2000/svg"
+                                            width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" class="text-green-500">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+
+                                        <svg x-show="!copied" xmlns="http://www.w3.org/2000/svg" width="18"
+                                            height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+                                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
+                                            </path>
+                                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
+                                            </path>
+                                        </svg>
+
+                                        <span x-text="copied ? 'Copied!' : 'Link'"
+                                            :class="copied ? 'text-green-500' :
+                                                'group-hover:text-zinc-900 dark:group-hover:text-white transition-colors'">
+                                        </span>
+                                    </button>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

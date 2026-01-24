@@ -12,6 +12,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -22,6 +23,36 @@ class Card extends Component implements HasActions, HasForms
     use InteractsWithForms;
 
     public User $user;
+
+    public function toggleFollow()
+    {
+        $currentUser = Auth::user();
+
+        if (! $currentUser || $currentUser->id === $this->user->id) {
+            return;
+        }
+
+        if ($this->user->isFollowedBy($currentUser)) {
+
+            $currentUser->followings()->detach($this->user->id);
+
+            $this->user->decrement('followers_count');
+            $currentUser->decrement('following_count');
+        } else {
+
+            $currentUser->followings()->attach($this->user->id);
+
+            $this->user->increment('followers_count');
+            $currentUser->increment('following_count');
+        }
+
+        $this->user->refresh();
+
+        Notification::make()
+            ->title($this->user->isFollowedBy($currentUser) ? 'Followed' : 'Unfollowed')
+            ->success()
+            ->send();
+    }
 
     public function editProfile(): Action
     {

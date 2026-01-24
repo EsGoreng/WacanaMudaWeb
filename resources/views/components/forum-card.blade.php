@@ -81,18 +81,56 @@
                     <x-bi-chat-left-text />
                     {{ $forum->replies_count }} <span class="hidden sm:inline">Comments</span>
                 </button>
-                <button
-                    class="flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-white/5 px-2.5 py-1.5 rounded-lg transition-colors">
-                    <x-bi-share />
-                    <span class="hidden sm:inline">Share</span>
-                </button>
+                <div x-data="{
+                    copied: false,
+                    shareData: {
+                        title: '{{ addslashes($forum->title) }}',
+                        author: '{{ addslashes($forum->user->name) }}',
+                        url: '{{ route('forum.show', $forum->slug) }}'
+                    },
+                    async share() {
+                        const fullText = `Wacana Muda Forum\n${this.shareData.title}\nBy ${this.shareData.author}\nLink: ${this.shareData.url}`;
+                
+                        if (navigator.share) {
+                            try {
+                                await navigator.share({
+                                    title: this.shareData.title,
+                                    text: fullText,
+                                    url: this.shareData.url
+                                });
+                            } catch (err) {
+                                console.log('Share cancelled');
+                            }
+                        } else {
+                            try {
+                                await navigator.clipboard.writeText(fullText);
+                                this.copied = true;
+                                setTimeout(() => this.copied = false, 2000);
+                            } catch (err) {
+                                console.error('Gagal menyalin', err);
+                            }
+                        }
+                    }
+                }" class="relative">
+                    <button @click.prevent="share()"
+                        class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors"
+                        :class="copied ? 'bg-green-500/10 text-green-500' :
+                            'hover:bg-zinc-100 dark:hover:bg-white/5 text-zinc-500 dark:text-zinc-400'">
+
+                        <template x-if="!copied">
+                            <x-bi-share class="w-4 h-4" />
+                        </template>
+                        <template x-if="copied">
+                            <x-bi-check2 class="w-4 h-4" />
+                        </template>
+
+                        <span class="hidden sm:inline" x-text="copied ? 'Copied!' : 'Share'"></span>
+                    </button>
+                </div>
                 <button
                     class="flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-white/5 px-2.5 py-1.5 rounded-lg transition-colors">
                     <x-bi-bookmark />
                     <span class="hidden sm:inline">Save</span>
-                </button>
-                <button class="ml-auto hover:bg-zinc-100 dark:hover:bg-white/5 p-1.5 rounded-lg transition-colors">
-                    <x-bi-three-dots />
                 </button>
             </div>
         </div>

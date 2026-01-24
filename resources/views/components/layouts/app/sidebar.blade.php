@@ -136,7 +136,7 @@
 
             </flux:header>
 
-            <main class="flex-1 overflow-y-auto overflow-x-hidden" @scroll="handleScroll($event)">
+            <main id="main-content" class="flex-1 overflow-y-auto overflow-x-hidden" @scroll="handleScroll($event)">
                 <div
                     class="min-h-full bg-white dark:bg-transparent dark:bg-gradient-to-b dark:from-page-gray-950/50 dark:to-page-gray-950/90">
                     {{ $slot }}

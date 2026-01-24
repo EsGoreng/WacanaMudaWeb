@@ -12,6 +12,41 @@
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
+<script src="https://unpkg.com/lenis@1.3.17/dist/lenis.min.js"></script>
+<script>
+    function initLenis() {
+        if (window.lenis) {
+            window.lenis.destroy();
+        }
+
+        const scrollElement = document.getElementById('main-content') || window;
+
+        window.lenis = new Lenis({
+            wrapper: scrollElement === window ? window : scrollElement,
+            content: scrollElement === window ? document.documentElement : scrollElement.querySelector('div'),
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
+        });
+
+        function raf(time) {
+            window.lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+    }
+
+    document.addEventListener('DOMContentLoaded', initLenis);
+
+    document.addEventListener('livewire:navigated', () => {
+        initLenis();
+        window.lenis.scrollTo(0, {
+            immediate: true
+        });
+    });
+</script>
+
 @filamentStyles
 @vite('resources/css/app.css')
 @fluxAppearance

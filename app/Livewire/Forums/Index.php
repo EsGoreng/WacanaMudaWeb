@@ -2,8 +2,11 @@
 
 namespace App\Livewire\Forums;
 
+use App\Models\Category;
 use App\Models\Forum;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,7 +16,58 @@ class Index extends Component
 
     public $category = null;
 
+    #[Url(except: '')]
     public $search = '';
+
+    #[Url(except: null)]
+    public $selectedCategory = null;
+
+    #[Url(except: 'latest')]
+    public $sortBy = 'latest';
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSelectedCategory()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSortBy()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingDateTo()
+    {
+        $this->resetPage();
+    }
+
+    public function clearFilters()
+    {
+        $this->reset(['search', 'selectedCategory', 'sortBy', 'dateFrom', 'dateTo']);
+        $this->resetPage();
+    }
+
+    #[Computed]
+    public function categories()
+    {
+        return Category::whereHas('forums')
+            ->withCount(['forums' => function ($q) {
+                if (! empty($this->search)) {
+                    $q->where('title', 'like', '%'.$this->search.'%');
+                }
+            }])
+            ->orderBy('name')
+            ->get();
+    }
 
     public function vote($forumId, $type)
     {
@@ -48,16 +102,45 @@ class Index extends Component
 
     public function render()
     {
-        $forums = Forum::query()
+        $query = Forum::query()
             ->with(['user', 'category', 'votes'])
-            ->withCount(['replies', 'votes'])
-            ->when($this->category, fn ($q) => $q->where('category_id', $this->category))
-            ->when($this->search, fn ($q) => $q->where('title', 'like', '%'.$this->search.'%'))
-            ->latest()
-            ->paginate(10);
+            ->withCount(['replies', 'votes']);
+
+        if (! empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('body', 'like', '%'.$this->search.'%');
+            });
+        }
+
+        if ($this->selectedCategory) {
+            $query->where('category_id', $this->selectedCategory);
+        }
+
+        if (! empty($this->dateFrom)) {
+            $query->whereDate('created_at', '>=', $this->dateFrom);
+        }
+        if (! empty($this->dateTo)) {
+            $query->whereDate('created_at', '<=', $this->dateTo);
+        }
+
+        switch ($this->sortBy) {
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'popular':
+                $query->orderByDesc('view_count');
+                break;
+            case 'most_replied':
+                $query->orderByDesc('replies_count');
+                break;
+            default:
+                $query->latest();
+                break;
+        }
 
         return view('livewire.forums.index', [
-            'forums' => $forums,
+            'forums' => $query->paginate(10),
         ]);
     }
 }

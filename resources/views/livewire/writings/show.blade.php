@@ -135,7 +135,7 @@
                             class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors flex items-center justify-center"
                             title="Download Instastory">
 
-                            <x-bi-camera class="w-4 h-4" wire:loading.remove wire:target="generateInstagramStory" />
+                            <x-bi-instagram class="w-4 h-4" wire:loading.remove wire:target="generateInstagramStory" />
 
                             <svg wire:loading wire:target="generateInstagramStory"
                                 class="animate-spin w-4 h-4 text-zinc-500" xmlns="http://www.w3.org/2000/svg"
@@ -151,19 +151,25 @@
                             copied: false,
                             shareData: {
                                 title: '{{ $writing->title }}',
-                                text: 'Baca tulisan dari {{ $writing->author_display_name }}: {{ $writing->title }}',
+                                author: '{{ $writing->author_display_name }}',
                                 url: window.location.href
                             },
                             async share() {
+                                const fullText = `Baca tulisan menarik di Wacana Muda:\n'${this.shareData.title}'\nBy ${this.shareData.author}\n\nLink: ${this.shareData.url}`;
+                        
                                 if (navigator.share) {
                                     try {
-                                        await navigator.share(this.shareData);
+                                        await navigator.share({
+                                            title: this.shareData.title,
+                                            text: fullText,
+                                            url: this.shareData.url
+                                        });
                                     } catch (err) {
                                         console.log('Share cancelled');
                                     }
                                 } else {
                                     try {
-                                        await navigator.clipboard.writeText(`${this.shareData.text}\n\n${this.shareData.url}`);
+                                        await navigator.clipboard.writeText(fullText);
                                         this.copied = true;
                                         setTimeout(() => this.copied = false, 2000);
                                     } catch (err) {
@@ -173,8 +179,9 @@
                             }
                         }" @click="share()"
                             class="p-2 rounded-lg transition-all duration-200 flex items-center gap-2 relative
-                            {{ 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500' }}"
+    {{ 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500' }}"
                             :class="copied ? 'bg-green-50 dark:bg-green-900/20 text-green-600' : ''" title="Share Link">
+
                             <template x-if="!copied">
                                 <x-bi-link class="w-4 h-4" />
                             </template>

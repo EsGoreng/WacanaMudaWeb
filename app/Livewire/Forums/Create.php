@@ -33,12 +33,11 @@ class Create extends Component implements HasActions, HasForms
     {
         return $schema
             ->schema([
-                Section::make('Buat Diskusi Baru')
-                    ->description('Klik disini untuk membuka formulir pembuatan topik')
+                Section::make('Make new forum')
                     ->schema([
                         TextInput::make('title')
-                            ->label('Judul Diskusi')
-                            ->placeholder('Apa yang ingin Anda tanyakan?')
+                            ->label('Title')
+                            ->placeholder('What do you want to ask?')
                             ->required()
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn ($set, $state) => $set('slug', Str::slug($state)))
@@ -48,27 +47,25 @@ class Create extends Component implements HasActions, HasForms
                         Hidden::make('slug'),
 
                         Select::make('category_id')
-                            ->label('Kategori')
+                            ->label('Category')
                             ->relationship('category', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
 
                         RichEditor::make('body')
-                            ->label('Konten')
+                            ->label('Content')
                             ->required()
                             ->toolbarButtons([
                                 'bold', 'italic', 'link', 'bulletList', 'codeBlock', 'blockquote',
                             ])
                             ->columnSpanFull(),
 
-                        // --- TAMBAHKAN TOMBOL DI SINI ---
-                        // Ini akan merender file blade yang berisi tombol flux
                         View::make('components.submit-button')
                             ->columnSpanFull(),
-                    ])
-                    ->collapsible()
-                    ->collapsed(),
+                    ]),
+                // ->collapsible()
+                // ->collapsed(),
             ])
             ->statePath('data')
             ->model(Forum::class);
@@ -80,7 +77,7 @@ class Create extends Component implements HasActions, HasForms
         $data['user_id'] = auth()->id();
         Forum::create($data);
 
-        return redirect()->route('forum')->with('status', 'Forum berhasil dibuat!');
+        return redirect()->route('forums')->with('status', 'Forum berhasil dibuat!');
     }
 
     public function render()

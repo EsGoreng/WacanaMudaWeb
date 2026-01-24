@@ -151,7 +151,7 @@
                             </div>
                         </div>
 
-                        <div
+                        {{-- <div
                             class=" bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-xs border rounded-lg md:rounded-xl p-4 md:p-6 hover:border-page-gray-500/30 transition-all group">
                             <div class="flex items-start justify-between mb-3">
                                 <div
@@ -166,7 +166,7 @@
                             <div class="text-3xl md:text-4xl font-bold dark:text-white text-black">
                                 {{ $this->categories->count() }}
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             @endif

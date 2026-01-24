@@ -9,8 +9,10 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\Browsershot\Browsershot;
 
 class Show extends Component implements HasForms
 {
@@ -42,6 +44,25 @@ class Show extends Component implements HasForms
 
         $this->commentForm->fill();
         $this->replyForm->fill();
+    }
+
+    public function generateInstagramStory()
+    {
+        // Render view html
+        $html = view('components.forum-story', [
+            'forum' => $this->forum,
+        ])->render();
+
+        $fileName = Str::slug($this->forum->title).'-story.jpg';
+
+        $screenshot = Browsershot::html($html)
+            ->windowSize(1080, 1920)
+            ->noSandbox()
+            ->screenshot();
+
+        return response()->streamDownload(function () use ($screenshot) {
+            echo $screenshot;
+        }, $fileName);
     }
 
     protected function getForms(): array
