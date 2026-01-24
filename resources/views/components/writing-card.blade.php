@@ -6,10 +6,16 @@
 @endphp
 
 <article
-    class="group flex flex-col-reverse lg:flex-row gap-6 py-6 hover:opacity-90 bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 duration-300 p-4 lg:p-8 bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer group overflow-hidden">
+    class="group relative flex flex-col-reverse lg:flex-row gap-6 py-6 hover:opacity-90 duration-300 p-4 lg:p-8 bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer overflow-hidden">
 
-    <div class="flex-1 flex flex-col justify-between min-w-0">
-        <div class="flex items-center mb-4 relative z-10">
+    <div class="absolute inset-y-0 right-0 w-[30%] hidden lg:block -z-10">
+        <img src="{{ $writing->image_url }}" alt="{{ $writing->title }}"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+
+    </div>
+
+    <div class="flex-1 flex flex-col justify-between min-w-0 relative z-10 lg:max-w-[55%]">
+        <div class="flex items-center mb-4">
             <a href="{{ route('profile.show', $writing->user) }}" class="flex items-center hover:underline group/author">
                 <img src="{{ $writing->author_avatar_url }}" alt="{{ $writing->author_display_name }}"
                     class="w-6 h-6 rounded-full object-cover mr-2 border border-transparent group-hover/author:border-blue-500 transition-colors">
@@ -38,12 +44,12 @@
 
         @if ($writing->description)
             <p class="text-gray-800 dark:text-page-gray-200 text-md leading-relaxed mb-2 line-clamp-2 sm:block">
-                {{ $writing->description }}
+                {{ Str::limit($writing->description, 150) }}
             </p>
         @endif
 
         <p class="text-gray-700 dark:text-page-gray-400 text-sm leading-relaxed mb-4 line-clamp-2 hidden sm:block">
-            {{ $writing->excerpt }}
+            {{ Str::limit($writing->excerpt, 180) }}
         </p>
 
         <div class="flex items-center text-xs text-gray-500 mt-auto">
@@ -53,7 +59,7 @@
         </div>
     </div>
 
-    <div class="w-full h-48 lg:w-48 lg:h-auto flex-shrink-0 overflow-hidden rounded">
+    <div class="w-full h-48 lg:hidden flex-shrink-0 overflow-hidden rounded relative z-10">
         <a href="{{ $link }}">
             <img src="{{ $writing->image_url }}" alt="{{ $writing->title }}"
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">

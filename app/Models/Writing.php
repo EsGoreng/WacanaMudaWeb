@@ -149,6 +149,6 @@ class Writing extends Model
 
     public function getExcerptAttribute()
     {
-        return Str::limit(strip_tags($this->content), 120);
+        return Str::limit(strip_tags($this->content), 100);
     }
 }

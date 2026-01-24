@@ -16,8 +16,16 @@
                     <div
                         class="hidden sm:flex w-12 flex-col items-center bg-zinc-50 dark:bg-zinc-900/50 py-4 gap-1 border-r border-zinc-100 dark:border-zinc-800/50">
                         <button wire:click="vote('up')"
-                            class="p-1 rounded transition-colors {{ $userVoteType === 'up' ? 'text-green-500 bg-green-500/10' : 'text-zinc-400 hover:text-green-500 hover:bg-green-500/10' }}">
-                            <x-bi-arrow-up class="w-6 h-6 font-bold" />
+                            class="p-1 rounded transition-colors relative {{ $userVoteType === 'up' ? 'text-green-500 bg-green-500/10' : 'text-zinc-400 hover:text-green-500 hover:bg-green-500/10' }}">
+                            <x-bi-arrow-up class="w-6 h-6 font-bold" wire:loading.remove wire:target="vote('up')" />
+                            <svg wire:loading wire:target="vote('up')" class="animate-spin w-6 h-6"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
                         </button>
 
                         <span
@@ -26,8 +34,16 @@
                         </span>
 
                         <button wire:click="vote('down')"
-                            class="p-1 rounded transition-colors {{ $userVoteType === 'down' ? 'text-red-500 bg-blue-500/10' : 'text-zinc-400 hover:text-red-500 hover:bg-blue-500/10' }}">
-                            <x-bi-arrow-down class="w-6 h-6 font-bold" />
+                            class="p-1 rounded transition-colors relative {{ $userVoteType === 'down' ? 'text-red-500 bg-blue-500/10' : 'text-zinc-400 hover:text-red-500 hover:bg-blue-500/10' }}">
+                            <x-bi-arrow-down class="w-6 h-6 font-bold" wire:loading.remove wire:target="vote('down')" />
+                            <svg wire:loading wire:target="vote('down')" class="animate-spin w-6 h-6"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
                         </button>
                     </div>
 
@@ -188,13 +204,15 @@
                                                 {{ $this->replyForm }}
 
                                                 <div class="flex justify-end gap-2 mt-4">
-                                                    <button type="button" wire:click="setReplyTo({{ $reply->id }})"
+                                                    <button type="button"
+                                                        wire:click="setReplyTo({{ $reply->id }})"
                                                         class="text-xs text-slate-400 hover:text-white px-2">
                                                         Cancel
                                                     </button>
                                                     <button type="submit" wire:loading.attr="disabled"
                                                         class="bg-brand-hover hover:bg-accent text-white font-semibold py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm">
-                                                        <span wire:loading.remove wire:target="createReply">Reply</span>
+                                                        <span wire:loading.remove
+                                                            wire:target="createReply">Reply</span>
                                                         <span wire:loading wire:target="createReply">Posting...</span>
                                                     </button>
                                                 </div>
