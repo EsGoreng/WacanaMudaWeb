@@ -115,7 +115,13 @@ class Show extends Component implements HasActions, HasForms
     {
         return view('livewire.profile.show', [
             'user' => $this->user,
-            'writings' => $this->user->writings()->latest()->paginate(3),
+            'writings' => $this->user->writings()
+                ->latest()
+                ->when(Auth::id() !== $this->user->id, function ($query) {
+                    $query->where('status', 'published')
+                        ->where('is_anonymous', false);
+                })
+                ->paginate(3),
             'forums' => $this->user->forums()->latest()->paginate(3),
 
             'bookmarkedWritings' => $bookmarkService->getBookmarkedWritings($this->user),

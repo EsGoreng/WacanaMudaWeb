@@ -19,6 +19,7 @@ return new class extends Migration
 
             $table->string('title');
             $table->string('slug')->unique();
+            $table->unsignedBigInteger('view_count')->default(0);
             $table->longText('content');
             $table->string('description')->nullable();
             $table->string('featured_image')->nullable();

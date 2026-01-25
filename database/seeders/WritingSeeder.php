@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\ContentView;
 use App\Models\User;
 use App\Models\Writing;
+use App\Models\WritingComment;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
@@ -17,16 +19,13 @@ class WritingSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        // Ambil semua user
         $users = User::with('series')->get();
 
-        // Ambil semua ID Category untuk dipilih secara acak nanti
         $categoryIds = Category::pluck('category_id');
 
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $randomUser = $users->random();
 
-            // Logika Series (tetap sama)
             $userSeriesIds = DB::table('series')
                 ->where('user_id', $randomUser->id)
                 ->pluck('series_id')
@@ -37,7 +36,6 @@ class WritingSeeder extends Seeder
                 $selectedSeriesId = $faker->randomElement($userSeriesIds);
             }
 
-            // Logika Status (tetap sama)
             $status = $faker->randomElement(['published', 'published', 'published', 'draft']);
             $publishedAt = ($status === 'published')
                 ? $faker->dateTimeBetween('-1 year', 'now')
@@ -46,6 +44,7 @@ class WritingSeeder extends Seeder
             $title = $faker->sentence(mt_rand(3, 7));
             $title = rtrim($title, '.');
 
+            /** @var Writing $writing */
             $writing = Writing::create([
                 'user_id' => $randomUser->id,
                 'series_id' => $selectedSeriesId,
@@ -55,7 +54,7 @@ class WritingSeeder extends Seeder
                 'description' => $faker->sentence(10),
                 'featured_image' => null,
                 'reading_time' => mt_rand(2, 15),
-                'is_anonymous' => $faker->boolean(20),
+                'is_anonymous' => $faker->boolean(10),
                 'status' => $status,
                 'published_at' => $publishedAt,
                 'created_at' => $publishedAt ?? Carbon::now(),
@@ -63,8 +62,47 @@ class WritingSeeder extends Seeder
             ]);
 
             $randomCategories = $categoryIds->random(mt_rand(1, 3));
-
             $writing->categories()->attach($randomCategories);
+
+            if ($status === 'published') {
+
+                $likerCount = rand(0, 15);
+                if ($likerCount > 0) {
+                    $likers = $users->random(min($likerCount, $users->count()));
+                    $writing->likes()->attach($likers->pluck('id'));
+                }
+
+                $commentCount = rand(0, 8);
+                for ($k = 0; $k < $commentCount; $k++) {
+                    WritingComment::create([
+                        'user_id' => $users->random()->id,
+                        'writing_id' => $writing->writing_id,
+                        'body' => $faker->sentence(mt_rand(5, 20)),
+                        'created_at' => $this->randomDateAfter($writing->created_at),
+                        'updated_at' => Carbon::now(),
+                    ]);
+                }
+
+                $viewCount = rand(10, 200);
+                $viewData = [];
+                for ($v = 0; $v < $viewCount; $v++) {
+                    $viewData[] = [
+                        'viewable_id' => $writing->writing_id,
+                        'viewable_type' => Writing::class,
+                        'created_at' => $this->randomDateAfter($writing->created_at),
+                        'updated_at' => Carbon::now(),
+                    ];
+                }
+
+                if (! empty($viewData)) {
+                    ContentView::insert($viewData);
+                }
+            }
         }
+    }
+
+    private function randomDateAfter($date)
+    {
+        return Carbon::instance($date)->addMinutes(rand(5, 43200));
     }
 }

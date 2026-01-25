@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->text('bio')->nullable();
             $table->string('phone');
+
+            $table->string('instagram_url')->nullable();
+            $table->string('linkedin_url')->nullable();
             $table->boolean('is_active')->default(false);
 
             $table->integer('followers_count')->default(0);

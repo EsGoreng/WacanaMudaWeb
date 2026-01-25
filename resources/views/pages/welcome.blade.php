@@ -3,6 +3,12 @@
 
 <head>
     @include('partials.head')
+    <style>
+        .section-card {
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body class="overflow-x-hidden w-full relative">
@@ -48,7 +54,7 @@
                 </div>
                 <div
                     class="container mx-auto px-6 md:px-12 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 h-full items-center">
-                    <div class="max-w-3xl pt-20">
+                    <div class="max-w-3xl">
                         <div class="flex items-center gap-2 mb-6 text-xs tracking-[0.2em] text-zinc-400 uppercase">
                             <span>[ Dari <b>Kata</b> ke <b>Karya</b> ]</span>
                             <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -66,9 +72,6 @@
                             Maka dari itu mari melangkah Bersama. Entah lewat
                             Ruang Kata, Jejak Karya, atau Jelajah Rasa. Jalanmu
                             bisa dimulai dari sini.
-                            <br />
-                            <br />
-                            "Dari Kata Ke Karya"
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <a class="group bg-white text-black px-6 py-3 rounded text-xs font-bold uppercase tracking-wider hover:bg-slate-200 transition-colors flex items-center gap-2"

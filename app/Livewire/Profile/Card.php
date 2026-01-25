@@ -7,11 +7,12 @@ use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Grid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -66,33 +67,58 @@ class Card extends Component implements HasActions, HasForms
                 'bio' => $this->user->bio,
                 'avatar' => $this->user->avatar,
                 'phone' => $this->user->phone,
+                'instagram_url' => $this->user->instagram_url,
+                'linkedin_url' => $this->user->linkedin_url,
             ])
             ->form([
-                FileUpload::make('avatar')
-                    ->image()
-                    ->avatar()
-                    ->disk('public')
-                    ->directory('avatars')
-                    ->imageEditor(),
+                Grid::make(3)
+                    ->schema([
+                        FileUpload::make('avatar')
+                            ->image()
+                            ->avatar()
+                            ->disk('public')
+                            ->directory('avatars')
+                            ->imageEditor()
+                            ->columnSpanFull(),
 
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
+                        TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
 
-                TextInput::make('username')
-                    ->required()
-                    ->maxLength(255)
-                    ->rules([
-                        Rule::unique('users', 'username')->ignore($this->user->id),
+                        TextInput::make('username')
+                            ->required()
+                            ->maxLength(255)
+                            ->rules([
+                                Rule::unique('users', 'username')->ignore($this->user->id),
+                            ]),
+
+                        TextInput::make('phone')
+                            ->tel()
+                            ->label('Phone Number'),
+
+                        TextInput::make('instagram_url')
+                            ->label('Instagram URL')
+                            ->placeholder('https://instagram.com/...')
+                            ->url()
+                            ->maxLength(255),
+
+                        TextInput::make('linkedin_url')
+                            ->label('LinkedIn URL')
+                            ->placeholder('https://linkedin.com/in/...')
+                            ->url()
+                            ->maxLength(255),
+
+                        MarkdownEditor::make('bio')
+                            ->label('Bio')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                            ])
+                            ->columnSpanFull(),
                     ]),
-
-                TextInput::make('phone')
-                    ->tel()
-                    ->label('Phone Number'),
-
-                Textarea::make('bio')
-                    ->rows(4)
-                    ->columnSpanFull(),
             ])
             ->action(function (array $data): void {
                 if (isset($data['avatar']) && $this->user->avatar && $data['avatar'] !== $this->user->avatar) {
@@ -100,6 +126,8 @@ class Card extends Component implements HasActions, HasForms
                 }
 
                 $this->user->update($data);
+
+                $this->user->refresh();
 
                 Notification::make()
                     ->title('Profile updated successfully')

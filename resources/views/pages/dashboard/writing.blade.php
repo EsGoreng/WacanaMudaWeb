@@ -2,24 +2,6 @@
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
         <div class="lg:col-span-3">
-            <div class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 mb-4">
-                <div
-                    class="aspect-square rounded-xl border border-neutral-200 dark:border-neutral-700 p-4 flex items-center justify-center">
-                    Card A
-                </div>
-                <div
-                    class="aspect-square rounded-xl border border-neutral-200 dark:border-neutral-700 p-4 flex items-center justify-center">
-                    Card B
-                </div>
-                <div
-                    class="aspect-square rounded-xl border border-neutral-200 dark:border-neutral-700 p-4 flex items-center justify-center">
-                    Card C
-                </div>
-                <div
-                    class="aspect-square rounded-xl border border-neutral-200 dark:border-neutral-700 p-4 flex items-center justify-center">
-                    Card D
-                </div>
-            </div>
 
             <div x-data="{ activeTab: 'writing' }">
                 <x-filament::tabs>

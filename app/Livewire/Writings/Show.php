@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Writings;
 
+use App\Models\ContentView;
 use App\Models\Writing;
 use App\Models\WritingComment;
 use App\Services\BookmarkService;
@@ -58,6 +59,15 @@ class Show extends Component implements HasForms
 
         $this->commentForm->fill();
         $this->replyForm->fill();
+
+        $this->writing = $writing;
+
+        $this->writing->increment('view_count');
+
+        ContentView::create([
+            'viewable_type' => Writing::class,
+            'viewable_id' => $this->writing->writing_id,
+        ]);
     }
 
     public function toggleBookmark(BookmarkService $service)

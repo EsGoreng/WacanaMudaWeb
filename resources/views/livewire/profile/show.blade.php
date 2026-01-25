@@ -5,6 +5,10 @@
     </div>
 
     <div class="lg:col-span-3">
+        <div class="mb-4">
+            @livewire('dashboard.stats-overview', ['user' => $user])
+        </div>
+
         <div x-data="{ activeTab: 'writing' }">
             <x-filament::tabs>
                 <x-filament::tabs.item @click="activeTab = 'writing'" :active="false" icon="heroicon-m-pencil"

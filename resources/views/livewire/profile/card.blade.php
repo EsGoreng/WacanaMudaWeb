@@ -17,17 +17,28 @@
                 </a>
             </div>
 
-            <p class="text-gray-500 text-sm leading-relaxed mb-4">
-                {{ $user->bio ?? 'No bio available yet.' }}
-            </p>
+            <div class="text-gray-500 text-sm leading-relaxed mb-4 fi-prose dark:prose-invert prose-sm max-w-none">
+                @if ($user->bio)
+                    {!! \Illuminate\Support\Str::markdown($user->bio) !!}
+                @else
+                    No bio available yet.
+                @endif
+            </div>
 
             <div class="flex items-center gap-4 mb-6">
-                <a href="#" class="text-gray-400 hover:text-[#0077b5] transition-colors duration-300">
-                    <x-bi-linkedin class="w-5 h-5" />
-                </a>
-                <a href="#" class="text-gray-400 hover:text-[#E1306C] transition-colors duration-300">
-                    <x-bi-instagram class="w-5 h-5" />
-                </a>
+                @if ($user->linkedin_url)
+                    <a href="{{ $user->linkedin_url }}" target="_blank" rel="noopener noreferrer"
+                        class="text-gray-400 hover:text-[#0077b5] transition-colors duration-300">
+                        <x-bi-linkedin class="w-5 h-5" />
+                    </a>
+                @endif
+
+                @if ($user->instagram_url)
+                    <a href="{{ $user->instagram_url }}" target="_blank" rel="noopener noreferrer"
+                        class="text-gray-400 hover:text-[#E1306C] transition-colors duration-300">
+                        <x-bi-instagram class="w-5 h-5" />
+                    </a>
+                @endif
             </div>
 
             <div class="flex items-center justify-between">
@@ -57,7 +68,6 @@
                         @php
                             $isFollowing = $user->isFollowedBy(Auth::user());
                         @endphp
-
                         <button wire:click="toggleFollow" wire:loading.attr="disabled"
                             class="px-5 py-2 rounded-xl active:scale-95 duration-300 flex items-center gap-1 text-sm font-medium transition-colors
                             {{ $isFollowing

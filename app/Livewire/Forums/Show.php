@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forums;
 
+use App\Models\ContentView;
 use App\Models\Forum;
 use App\Models\Reply;
 use Filament\Forms\Components\Textarea;
@@ -40,6 +41,11 @@ class Show extends Component implements HasForms
         $this->forum = $forum;
         $this->forum->load(['user', 'category', 'votes']);
         $this->forum->increment('view_count');
+
+        ContentView::create([
+            'viewable_type' => Forum::class,
+            'viewable_id' => $this->forum->id,
+        ]);
         $this->calculateScore();
 
         $this->commentForm->fill();
