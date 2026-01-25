@@ -233,9 +233,10 @@
                     </div>
                 </div>
 
-                <div class="prose lg:prose-2xl dark:prose-invert">
-                    {{ $this->articleInfolist }}
+                <div class="prose dark:prose-invert max-w-none">
+                    {!! \Filament\Forms\Components\RichEditor\RichContentRenderer::make($writing->content)->toHtml() !!}
                 </div>
+
 
 
                 <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">

@@ -5,8 +5,10 @@ namespace App\Livewire\Events;
 use App\Models\Event;
 use App\Services\BookmarkService;
 use App\Traits\InteractsWithEventModal;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\Browsershot\Browsershot;
 
 class Index extends Component
 {
@@ -28,6 +30,32 @@ class Index extends Component
                 $this->isBookmarked = ! $this->isBookmarked;
             }
         }
+    }
+
+    public function generateInstagramStory($eventId)
+    {
+        $event = Event::with('categories')->find($eventId);
+
+        if (! $event) {
+            return;
+        }
+
+        $html = view('components.event-social-story', [
+            'event' => $event,
+        ])->render();
+
+        $fileName = Str::slug($event->title).'-story.jpg';
+
+        $screenshot = Browsershot::html($html)
+            ->windowSize(1080, 1920)
+            ->deviceScaleFactor(1)
+            ->noSandbox()
+            ->waitUntilNetworkIdle()
+            ->screenshot();
+
+        return response()->streamDownload(function () use ($screenshot) {
+            echo $screenshot;
+        }, $fileName);
     }
 
     public function render()

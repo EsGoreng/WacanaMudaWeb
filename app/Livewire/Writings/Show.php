@@ -10,7 +10,6 @@ use App\Services\UnsplashService;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -81,15 +80,7 @@ class Show extends Component implements HasForms
 
     public function articleInfolist(Schema $schema): Schema
     {
-        return $schema
-            ->record($this->writing)
-            ->components([
-                TextEntry::make('content')
-                    ->hiddenLabel()
-                    ->html()
-                    ->columnSpanFull(),
-
-            ]);
+        return $schema->record($this->writing); // kosongkan atau tambah field lain
     }
 
     public function generateInstagramStory()
