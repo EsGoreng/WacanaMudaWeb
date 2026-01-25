@@ -3,37 +3,41 @@
 namespace App\Livewire\Events;
 
 use App\Models\Event;
+use App\Services\BookmarkService;
+use App\Traits\InteractsWithEventModal;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use InteractsWithEventModal;
     use WithPagination;
 
-    public ?Event $selectedEvent = null;
-
-    public bool $isModalOpen = false;
-
-    public function openModal($eventId)
+    public function toggleEventBookmark($eventId, BookmarkService $service)
     {
-        $this->selectedEvent = Event::find($eventId);
-        $this->isModalOpen = true;
-    }
+        if (! auth()->check()) {
+            return redirect()->route('login');
+        }
 
-    public function closeModal()
-    {
-        $this->isModalOpen = false;
-        $this->reset('selectedEvent');
+        $event = Event::find($eventId);
+
+        if ($event) {
+            $service->toggleBookmark(auth()->user(), $event);
+
+            if ($this->selectedEvent && $this->selectedEvent->id == $eventId) {
+                $this->isBookmarked = ! $this->isBookmarked;
+            }
+        }
     }
 
     public function render()
     {
         $events = Event::query()
-            ->with('categories')
+            ->with('categories', 'bookmarks')
             ->whereIn('status', ['published', 'ongoing', 'ended', 'canceled'])
             ->orderByRaw("FIELD(status, 'published', 'ongoing', 'ended', 'canceled') ASC")
             ->latest()
-            ->paginate(perPage: 9);
+            ->paginate(perPage: 6);
 
         return view('livewire.events.index', [
             'events' => $events,

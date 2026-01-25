@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CanBeBookmarked;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,7 @@ use Illuminate\Support\Str;
 
 class Writing extends Model
 {
-    use HasFactory;
+    use CanBeBookmarked, HasFactory;
 
     protected $primaryKey = 'writing_id';
 
@@ -97,6 +98,11 @@ class Writing extends Model
     public function isLikedBy(User $user): bool
     {
         return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+    public function bookmarks()
+    {
+        return $this->morphMany(Bookmark::class, 'bookmarkable');
     }
 
     public function getAuthorDisplayNameAttribute()

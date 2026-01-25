@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CanBeBookmarked;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Support\Str;
 
 class Event extends Model
 {
-    use HasFactory;
+    use CanBeBookmarked, HasFactory;
 
     protected $table = 'events';
 
@@ -94,5 +95,10 @@ class Event extends Model
             'event_id',
             'category_id'
         );
+    }
+
+    public function bookmarks()
+    {
+        return $this->morphMany(Bookmark::class, 'bookmarkable');
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Livewire\Profile;
 
 use App\Models\User;
+use App\Services\BookmarkService;
+use App\Traits\InteractsWithEventModal;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -20,6 +22,7 @@ use Livewire\Component;
 class Show extends Component implements HasActions, HasForms
 {
     use InteractsWithActions;
+    use InteractsWithEventModal;
     use InteractsWithForms;
 
     public User $user;
@@ -90,12 +93,16 @@ class Show extends Component implements HasActions, HasForms
         $this->user = $user->exists ? $user : Auth::user();
     }
 
-    public function render()
+    public function render(BookmarkService $bookmarkService)
     {
         return view('livewire.profile.show', [
-            'writings' => $this->user->writings()->latest()->paginate(5),
+            'user' => $this->user,
+            'writings' => $this->user->writings()->latest()->paginate(3),
+            'forums' => $this->user->forums()->latest()->paginate(3),
 
-            'forums' => $this->user->forums()->latest()->get(),
+            'bookmarkedWritings' => $bookmarkService->getBookmarkedWritings($this->user),
+            'bookmarkedForums' => $bookmarkService->getBookmarkedForums($this->user),
+            'bookmarkedEvents' => $bookmarkService->getBookmarkedEvents($this->user),
         ]);
     }
 }

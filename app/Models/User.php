@@ -111,4 +111,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(Writing::class, 'user_id', 'id');
     }
+
+    public function bookmarkedWritings()
+    {
+        return $this->morphedByMany(Writing::class, 'bookmarkable', 'bookmarks')
+            ->withTimestamps();
+    }
+
+    public function bookmarkedEvents()
+    {
+        return $this->morphedByMany(Event::class, 'bookmarkable', 'bookmarks')
+            ->withTimestamps();
+    }
+
+    public function bookmarkedForums()
+    {
+        return $this->morphedByMany(Forum::class, 'bookmarkable', 'bookmarks')
+            ->withTimestamps();
+    }
 }

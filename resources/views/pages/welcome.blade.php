@@ -145,7 +145,7 @@
                     class="container mx-auto px-6 md:px-12 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 h-full items-center">
                     <div class="max-w-3xl pt-20">
                         <div class="flex items-center gap-2 mb-6 text-xs tracking-[0.2em] text-zinc-400 uppercase">
-                            <span>[ The PHP Framework for Web Artisans ]</span>
+                            <span>[ Dari <b>Kata</b> ke <b>Karya</b> ]</span>
                             <span class="material-symbols-outlined text-sm">arrow_forward</span>
                         </div>
                         <h1 class="font-display text-6xl md:text-8xl font-bold leading-[0.9] tracking-tight mb-8">
@@ -153,20 +153,22 @@
                             <span class="text-accent">BERKARYA</span>
                         </h1>
                         <p
-                            class="text-zinc-400 max-w-md text-sm md:text-base leading-relaxed mb-10 border-l border-zinc-700 pl-4">
-                            Laravel has an incredibly rich ecosystem combining branding, web development, and powerful
-                            backend tools into a single evolving framework.
+                            class="text-zinc-400 max-w-lg text-sm md:text-base leading-relaxed mb-10 border-l border-zinc-700 pl-4">
+                            Wacana Muda Berkarya bukan tempat bagi yang
+                            sudah sempurna, tapi ruang aman dan nyaman
+                            untuk yang mau belajar bersama. Yang ingin
+                            bersuara, berkarya, dan merasa.
+                            Maka dari itu mari melangkah Bersama. Entah lewat
+                            Ruang Kata, Jejak Karya, atau Jelajah Rasa. Jalanmu
+                            bisa dimulai dari sini.
+                            <br />
+                            <br />
+                            "Dari Kata Ke Karya"
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <a class="group bg-white text-black px-6 py-3 rounded text-xs font-bold uppercase tracking-wider hover:bg-slate-200 transition-colors flex items-center gap-2"
                                 href="https://laravel.com/docs" target="_blank">
-                                Documentation
-                                <span
-                                    class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                            </a>
-                            <a class="group border border-white/20 hover:border-white px-6 py-3 rounded text-xs font-bold uppercase tracking-wider text-white transition-colors flex items-center gap-2"
-                                href="https://laracasts.com" target="_blank">
-                                Laracasts
+                                Explore
                                 <span
                                     class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </a>
@@ -178,33 +180,18 @@
                 </div>
             </header>
 
-            <section class="section-card py-12 bg-slate-50 dark:bg-slate-900 border-b border-zinc-200/0">
-                <div class="container mx-auto px-6 md:px-12 mb-8">
-                    <div class="flex items-center gap-2 text-xs tracking-[0.2em] text-zinc-400 uppercase">
-                        <span>[ Trusted By Thousands ]</span>
-                        <span class="material-symbols-outlined text-sm">expand_more</span>
-                    </div>
-                </div>
-                <div class="w-full overflow-hidden whitespace-nowrap py-4 group">
+            <section
+                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
+                <div class="container mx-auto px-6 md:px-12 relative z-10">
                     <div
-                        class="inline-flex animate-marquee gap-16 items-center grayscale opacity-60 hover:opacity-100 transition-opacity duration-300">
-                        <span class="text-2xl font-bold font-display text-black dark:text-white mx-8">LARAVEL</span>
-                        <span class="text-2xl font-bold font-display text-black dark:text-white mx-8">ELOQUENT</span>
-                        <div class="flex items-center gap-2 mx-8 text-black dark:text-white"><span
-                                class="material-symbols-outlined">radio_button_checked</span><span
-                                class="font-bold font-sans">BLADE</span></div>
-                        <span
-                            class="text-2xl font-black font-display text-black dark:text-white mx-8 tracking-tighter">ARTISAN®</span>
-                        <span class="text-2xl font-bold font-display text-black dark:text-white mx-8">Forge</span>
-                        <span class="text-2xl font-bold font-display text-black dark:text-white mx-8">Vapor</span>
-                        <span class="text-2xl font-bold font-display text-black dark:text-white mx-8">LARAVEL</span>
-                        <span class="text-2xl font-bold font-display text-black dark:text-white mx-8">ELOQUENT</span>
-                        <div class="flex items-center gap-2 mx-8 text-black dark:text-white"><span
-                                class="material-symbols-outlined">radio_button_checked</span><span
-                                class="font-bold font-sans">BLADE</span></div>
-                        <span
-                            class="text-2xl font-black font-display text-black dark:text-white mx-8 tracking-tighter">ARTISAN®</span>
+                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        <span>[ Lorem Ipsum ]</span>
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
                     </div>
+                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                        ABOUT US
+                    </h2>
                 </div>
             </section>
 
@@ -213,44 +200,51 @@
                     <div class="flex justify-between items-end mb-16">
                         <h2
                             class="font-display text-5xl md:text-6xl font-medium tracking-tight flex items-center gap-4">
-                            Key Features
+                            3 Pillars
                             <span class="material-symbols-outlined text-4xl transform rotate-45">arrow_downward</span>
                         </h2>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div
                             class="group relative bg-white dark:bg-slate-800 rounded-lg p-8 h-[400px] flex flex-col justify-end overflow-hidden hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-zinc-200/50 dark:border-zinc-700">
-                            <div
-                                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-2/3 w-48 h-48 opacity-90 group-hover:scale-110 transition-transform duration-500">
-                                <span class="material-symbols-outlined text-[120px] text-accent">terminal</span>
-                            </div>
-                            <h3 class="text-xl font-display font-medium relative z-10">Elegant Syntax</h3>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 relative z-10">Beautiful, expressive
-                                code that's a joy to
-                                write</p>
+                            <h3 class="text-xl font-display font-medium relative z-10">WMB Ruang Kata</h3>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 relative z-10">A place where
+                                <b>ideas</b> are born, discourse is <b>nurtured</b>, and reason is <b>tested</b>.
+                                Here, we converse <b>not to win</b>, but <b>to understand</b>.
+                                Discussions, forums, and a space for exchanging perspectives.
+                                This is a space for words that truly matter.
+
+                        </div>
+
+                        <div
+                            class="group relative bg-white dark:bg-slate-800 rounded-lg p-8 h-[400px] flex flex-col justify-end overflow-hidden hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-zinc-200/50 dark:border-zinc-700">
+                            <h3 class="text-xl font-display font-medium relative z-10">WMB Jelajah Rasa</h3>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 relative z-10"><b>Exploring</b>
+                                places, time, and emotions that are <b>
+                                    not written
+                                    in books
+                                </b>. We wander not only to
+                                see, but also to <b>feel</b> and
+                                <b>understand</b>. Every step is a lesson,
+                                and every journey deserves to be <b>reflected upon</b>.
+
+                            </p>
                         </div>
                         <div
                             class="group relative bg-white dark:bg-slate-800 rounded-lg p-8 h-[400px] flex flex-col justify-end overflow-hidden hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-zinc-200/50 dark:border-zinc-700">
-                            <div
-                                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-2/3 w-48 h-48 opacity-90 group-hover:scale-110 transition-transform duration-500">
-                                <span class="material-symbols-outlined text-[120px] text-accent">architecture</span>
-                            </div>
-                            <h3 class="text-xl font-display font-medium relative z-10">MVC Architecture</h3>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 relative z-10">Clean separation of
-                                concerns for
-                                maintainable apps</p>
-                        </div>
-                        <div
-                            class="group relative bg-white dark:bg-slate-800 rounded-lg p-8 h-[400px] flex flex-col justify-end overflow-hidden hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-zinc-200/50 dark:border-zinc-700">
-                            <div
-                                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-2/3 w-48 h-48 opacity-90 group-hover:scale-110 transition-transform duration-500">
-                                <span class="material-symbols-outlined text-[120px] text-accent">database</span>
-                            </div>
-                            <h3 class="text-xl font-display font-medium relative z-10">Eloquent ORM</h3>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 relative z-10">Work with databases
-                                using
-                                beautiful,
-                                expressive syntax</p>
+                            <h3 class="text-xl font-display font-medium relative z-10">WMB Jejak Karya</h3>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 relative z-10">Not content with <b>
+                                    merely
+                                    having a voice
+                                </b>, we also seek to
+                                <b>touch reality</b>. Through action and service, we learn to leave
+                                meaningful footprints in our surroundings.
+                                Because <b>
+                                    work is not about scale, but about
+                                    impact
+                                </b>.
+
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -262,26 +256,132 @@
                     <div
                         class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
                         <span class="material-symbols-outlined text-sm">arrow_downward</span>
-                        <span>[ Get Started Today ]</span>
+                        <span>[ Lorem Ipsum ]</span>
                         <span class="material-symbols-outlined text-sm">arrow_downward</span>
                     </div>
                     <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                        LET'S BUILD <br />
-                        SOMETHING GREAT
-                        <span class="inline-block align-middle ml-2 text-6xl md:text-8xl">🚀</span>
+                        WHAT ARE WE DOING
                     </h2>
-                    <div class="flex justify-center gap-4 mt-12">
-                        <a class="bg-slate-200 dark:bg-slate-700 text-black dark:text-white px-8 py-4 rounded text-xs font-bold uppercase tracking-wider hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors flex items-center gap-2"
-                            href="https://laravel.com/docs" target="_blank">
-                            Read Docs
-                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </a>
-                        <a class="bg-accent text-white px-8 py-4 rounded text-xs font-bold uppercase tracking-wider hover:bg-brand-hover transition-colors flex items-center gap-2 shadow-lg shadow-accent/30"
-                            href="https://cloud.laravel.com" target="_blank">
-                            Deploy Now
-                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </a>
+                </div>
+            </section>
+
+            <section
+                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
+                <div class="container mx-auto px-6 md:px-12 relative z-10">
+                    <div
+                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        <span>[ Lorem Ipsum ]</span>
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
                     </div>
+                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                        PRINCIPLE
+                    </h2>
+                </div>
+            </section>
+
+            <section
+                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
+                <div class="container mx-auto px-6 md:px-12 relative z-10">
+                    <div
+                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        <span>[ Lorem Ipsum ]</span>
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                    </div>
+                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                        LATEST WRITING CONTENT
+                    </h2>
+                </div>
+            </section>
+
+            <section
+                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
+                <div class="container mx-auto px-6 md:px-12 relative z-10">
+                    <div
+                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        <span>[ Lorem Ipsum ]</span>
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                    </div>
+                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                        ANONIM FEATURE
+                    </h2>
+                </div>
+            </section>
+
+            <section
+                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
+                <div class="container mx-auto px-6 md:px-12 relative z-10">
+                    <div
+                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        <span>[ Lorem Ipsum ]</span>
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                    </div>
+                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                        FORUM FEATURE
+                    </h2>
+                </div>
+            </section>
+
+            <section
+                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
+                <div class="container mx-auto px-6 md:px-12 relative z-10">
+                    <div
+                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        <span>[ Lorem Ipsum ]</span>
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                    </div>
+                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                        OUR EVENT
+                    </h2>
+                </div>
+            </section>
+
+            <section
+                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
+                <div class="container mx-auto px-6 md:px-12 relative z-10">
+                    <div
+                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        <span>[ Lorem Ipsum ]</span>
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                    </div>
+                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                        FOUNDER
+                    </h2>
+                </div>
+            </section>
+
+            <section
+                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
+                <div class="container mx-auto px-6 md:px-12 relative z-10">
+                    <div
+                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        <span>[ Lorem Ipsum ]</span>
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                    </div>
+                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                        FEEDBACK
+                    </h2>
+                </div>
+            </section>
+
+            <section
+                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
+                <div class="container mx-auto px-6 md:px-12 relative z-10">
+                    <div
+                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        <span>[ Lorem Ipsum ]</span>
+                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                    </div>
+                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+                        EXPLORE APP
+                    </h2>
                 </div>
             </section>
 

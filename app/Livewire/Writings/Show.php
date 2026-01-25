@@ -4,6 +4,7 @@ namespace App\Livewire\Writings;
 
 use App\Models\Writing;
 use App\Models\WritingComment;
+use App\Services\BookmarkService;
 use App\Services\UnsplashService;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -23,6 +24,8 @@ class Show extends Component implements HasForms
 
     public Writing $writing;
 
+    public bool $isBookmarked = false;
+
     public ?array $commentData = [];
 
     public ?array $replyData = [];
@@ -37,8 +40,12 @@ class Show extends Component implements HasForms
 
     public $editingBody = '';
 
-    public function mount(Writing $writing)
+    public function mount(Writing $writing, BookmarkService $service)
     {
+        if (auth()->check()) {
+            $this->isBookmarked = $service->isBookmarked(auth()->user(), $this->writing);
+        }
+
         $this->writing = $writing;
 
         if ($this->writing->status !== 'published' && $this->writing->status !== 'Published') {
@@ -51,6 +58,15 @@ class Show extends Component implements HasForms
 
         $this->commentForm->fill();
         $this->replyForm->fill();
+    }
+
+    public function toggleBookmark(BookmarkService $service)
+    {
+        if (! auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $this->isBookmarked = $service->toggleBookmark(auth()->user(), $this->writing);
     }
 
     public function articleInfolist(Schema $schema): Schema

@@ -196,9 +196,14 @@
                             <span x-show="copied" x-transition
                                 class="text-[10px] font-bold uppercase tracking-wider">Copied</span>
                         </button>
-                        <button class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
-                            title="Bookmark">
-                            <x-bi-bookmark />
+                        <button wire:click="toggleBookmark"
+                            class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                            title=" ">
+                            @if ($isBookmarked)
+                                <x-bi-bookmark-fill />
+                            @else
+                                <x-bi-bookmark />
+                            @endif
                         </button>
                         <button wire:click="toggleLike"
                             class="p-2 rounded-lg transition-colors flex items-center gap-2

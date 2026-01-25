@@ -16,6 +16,10 @@
                     icon="heroicon-m-chat-bubble-left-ellipsis" alpine-active="activeTab === 'forum'">
                     Forum
                 </x-filament::tabs.item>
+                <x-filament::tabs.item @click="activeTab = 'bookmark'" :active="false" icon="heroicon-m-bookmark"
+                    alpine-active="activeTab === 'bookmark'">
+                    Bookmark
+                </x-filament::tabs.item>
             </x-filament::tabs>
 
             <div class="mt-4">
@@ -62,8 +66,85 @@
                     </div>
                 </div>
 
+                {{-- Bagian Tab Bookmark --}}
+                <div x-show="activeTab === 'bookmark'" x-cloak x-transition>
+
+                    <div class="space-y-12 py-4">
+
+                        @if ($bookmarkedWritings->count() > 0)
+                            <div>
+                                <h3
+                                    class="text-lg font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2">
+                                    <x-bi-pen /> Saved Writings
+                                </h3>
+                                <div class="flex flex-col gap-4">
+                                    @foreach ($bookmarkedWritings as $writing)
+                                        <div wire:key="bm-writing-{{ $writing->writing_id }}">
+                                            <x-writing-card :writing="$writing" />
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="mt-4">
+                                    {{ $bookmarkedWritings->links() }}
+                                </div>
+                            </div>
+                        @endif
+
+                        @if ($bookmarkedForums->count() > 0)
+                            <div>
+                                <h3
+                                    class="text-lg font-bold text-zinc-900 dark:text-white mb-4 mt-8 flex items-center gap-2">
+                                    <x-bi-chat-left-text /> Saved Discussions
+                                </h3>
+                                <div class="flex flex-col gap-4">
+                                    @foreach ($bookmarkedForums as $forum)
+                                        <x-forum-card :forum="$forum" />
+                                    @endforeach
+                                </div>
+                                <div class="mt-4">
+                                    {{ $bookmarkedForums->links() }}
+                                </div>
+                            </div>
+                        @endif
+
+                        @if ($bookmarkedEvents->count() > 0)
+                            <div>
+                                <h3
+                                    class="text-lg font-bold text-zinc-900 dark:text-white mb-4 mt-8 flex items-center gap-2">
+                                    <x-bi-calendar-event /> Saved Events
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                    @foreach ($bookmarkedEvents as $event)
+                                        <x-event.card :event="$event" />
+                                    @endforeach
+                                </div>
+                                <div class="mt-4">
+                                    {{ $bookmarkedEvents->links() }}
+                                </div>
+                            </div>
+                        @endif
+
+                        @if ($bookmarkedWritings->isEmpty() && $bookmarkedForums->isEmpty() && $bookmarkedEvents->isEmpty())
+                            <div
+                                class="bg-white dark:bg-zinc-800/50 p-12 rounded-xl text-center border border-zinc-200 dark:border-zinc-800">
+                                <div class="text-zinc-500 dark:text-zinc-400">
+                                    <x-bi-bookmark class="w-16 h-16 mx-auto mb-4 opacity-50" />
+                                    <h3 class="text-lg font-medium text-zinc-900 dark:text-white">No Bookmarks Yet</h3>
+                                    <p class="mt-1">Save writings, forums, or events to read them later.</p>
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
     <x-filament-actions::modals />
+    <x-event-modal wire:model="isModalOpen" maxWidth="5xl">
+        @if ($selectedEvent)
+            <x-event.detail :event="$selectedEvent" :is-bookmarked="$isBookmarked" />
+        @endif
+    </x-event-modal>
 </div>

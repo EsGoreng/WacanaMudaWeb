@@ -1,5 +1,10 @@
 @props(['event'])
 
+@php
+    $user = auth()->user();
+    $isBookmarked = $event->isBookmarkedBy($user);
+@endphp
+
 <div
     class="relative w-full max-w-sm rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-white group">
     <div class="relative h-[500px] w-full">
@@ -7,10 +12,29 @@
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             src="{{ str_starts_with($event->banner_image, 'http') ? $event->banner_image : asset('storage/' . $event->banner_image) }}" />
 
-        <button
-            class="absolute top-5 right-5 w-10 h-10 bg-black/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-colors group/btn z-20 shadow-lg border border-white/10">
-            <span
-                class="material-icons-round text-white text-xl group-hover/btn:scale-110 transition-transform"><x-bi-bookmark></x-bi-bookmark></span>
+        <button wire:click.stop="toggleEventBookmark({{ $event->id }})" wire:loading.attr="disabled"
+            class="absolute top-5 right-5 w-10 h-10 rounded-full flex items-center justify-center transition-colors group/btn z-20 shadow-lg border border-white/10
+            {{ $isBookmarked
+                ? 'bg-yellow-500/90 text-white hover:bg-yellow-600'
+                : 'bg-black/20 backdrop-blur-sm hover:bg-white/30 text-white' }}">
+
+            <span class="material-icons-round text-xl group-hover/btn:scale-110 transition-transform">
+                @if ($isBookmarked)
+                    <x-bi-bookmark-fill />
+                @else
+                    <x-bi-bookmark />
+                @endif
+            </span>
+
+            <svg wire:loading wire:target="toggleEventBookmark({{ $event->id }})"
+                class="absolute animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                </circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+            </svg>
         </button>
 
         <div class="absolute inset-0 bg-gradient-glass pointer-events-none z-10"></div>
