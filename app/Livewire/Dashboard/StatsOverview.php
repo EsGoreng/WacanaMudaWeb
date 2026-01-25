@@ -80,6 +80,9 @@ class StatsOverview extends BaseWidget
 
         $totalWritings = Writing::where('user_id', $targetUser->id)
             ->where('status', 'published')
+            ->when(Auth::id() !== $targetUser->id, function ($query) {
+                $query->where('is_anonymous', false);
+            })
             ->count();
         $writingChart = $this->getChartData(Writing::class, ['status' => 'published']);
 

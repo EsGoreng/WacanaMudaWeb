@@ -86,7 +86,6 @@ class Show extends Component implements HasForms
             ->components([
                 TextEntry::make('content')
                     ->hiddenLabel()
-                    ->prose()
                     ->html()
                     ->columnSpanFull(),
 

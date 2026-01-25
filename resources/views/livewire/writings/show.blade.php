@@ -107,19 +107,31 @@
                     class="flex flex-col sm:flex-row sm:items-center justify-between py-6 border-b border-t border-zinc-200 dark:border-zinc-700 mb-10">
 
                     <div class="flex items-center space-x-4 mb-4 sm:mb-0">
-                        <a href="{{ route('profile.show', $writing->user) }}" class="shrink-0">
-                            <img alt="{{ $writing->author_display_name }}"
-                                class="w-12 h-12 rounded-full border-2 border-zinc-100 dark:border-zinc-700 object-cover hover:ring-2 hover:ring-blue-500 transition-all"
-                                src="{{ $writing->author_avatar_url }}" />
-                        </a>
+                        @if ($writing->is_anonymous)
+                            <div class="shrink-0">
+                                <img alt="Anonymous"
+                                    class="w-12 h-12 rounded-full border-2 border-zinc-100 dark:border-zinc-700 object-cover"
+                                    src="{{ $writing->author_avatar_url }}" />
+                            </div>
+                        @else
+                            <a href="{{ route('profile.show', $writing->user) }}" class="shrink-0">
+                                <img alt="{{ $writing->author_display_name }}"
+                                    class="w-12 h-12 rounded-full border-2 border-zinc-100 dark:border-zinc-700 object-cover hover:ring-2 hover:ring-blue-500 transition-all"
+                                    src="{{ $writing->author_avatar_url }}" />
+                            </a>
+                        @endif
 
                         <div class="flex flex-col">
                             <span class="font-bold text-lg text-zinc-900 dark:text-white flex items-center gap-1">
                                 By
-                                <a href="{{ route('profile.show', $writing->user) }}"
-                                    class="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors">
-                                    {{ $writing->author_display_name }}
-                                </a>
+                                @if ($writing->is_anonymous)
+                                    <span>{{ $writing->author_display_name }}</span>
+                                @else
+                                    <a href="{{ route('profile.show', $writing->user) }}"
+                                        class="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors">
+                                        {{ $writing->author_display_name }}
+                                    </a>
+                                @endif
                             </span>
                             <div class="text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
                                 <time
@@ -221,9 +233,10 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="prose lg:prose-2xl dark:prose-invert">
                     {{ $this->articleInfolist }}
                 </div>
+
 
                 <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">
 
@@ -402,7 +415,9 @@
 
             <aside class="lg:col-span-4 space-y-8 lg:pt-0 sticky top-6 self-start">
 
-                <livewire:profile.card :user="$writing->user" />
+                @if (!$writing->is_anonymous)
+                    <livewire:profile.card :user="$writing->user" />
+                @endif
 
                 <div>
                     <h3
