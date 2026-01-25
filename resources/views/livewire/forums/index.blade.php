@@ -3,7 +3,7 @@
         <div class="space-y-4">
             <livewire:forums.create />
             @forelse ($forums as $forum)
-                <x-forum-card :forum="$forum" />
+                <x-forum.card :forum="$forum" />
             @empty
                 <div class="text-center py-12 md:py-16 px-4">
                     <div

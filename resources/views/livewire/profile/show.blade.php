@@ -53,7 +53,7 @@
                 <div x-show="activeTab === 'forum'" x-cloak x-transition>
                     <div class="flex flex-col gap-4">
                         @forelse ($forums as $forum)
-                            <x-forum-card :forum="$forum" />
+                            <x-forum.card :forum="$forum" />
                         @empty
                             <div
                                 class="bg-white dark:bg-zinc-800/50 p-8 rounded-xl text-center border border-zinc-200 dark:border-zinc-800">
@@ -98,7 +98,7 @@
                                 </h3>
                                 <div class="flex flex-col gap-4">
                                     @foreach ($bookmarkedForums as $forum)
-                                        <x-forum-card :forum="$forum" />
+                                        <x-forum.card :forum="$forum" />
                                     @endforeach
                                 </div>
                                 <div class="mt-4">

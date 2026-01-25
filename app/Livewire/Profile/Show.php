@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Profile;
 
+use App\Models\Event;
 use App\Models\User;
 use App\Services\BookmarkService;
 use App\Traits\InteractsWithEventModal;
@@ -26,6 +27,23 @@ class Show extends Component implements HasActions, HasForms
     use InteractsWithForms;
 
     public User $user;
+
+    public function toggleEventBookmark($eventId, BookmarkService $service)
+    {
+        if (! auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $event = Event::find($eventId);
+
+        if ($event) {
+            $service->toggleBookmark(auth()->user(), $event);
+
+            if ($this->selectedEvent && $this->selectedEvent->id == $eventId) {
+                $this->isBookmarked = ! $this->isBookmarked;
+            }
+        }
+    }
 
     protected $queryString = [
         'page' => ['except' => 1, 'as' => 'p'],

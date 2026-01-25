@@ -4,6 +4,7 @@ namespace App\Livewire\Forums;
 
 use App\Models\Category;
 use App\Models\Forum;
+use App\Services\BookmarkService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
@@ -24,6 +25,19 @@ class Index extends Component
 
     #[Url(except: 'latest')]
     public $sortBy = 'latest';
+
+    public function toggleBookmark($forumId, BookmarkService $service)
+    {
+        if (! Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $forum = Forum::find($forumId);
+
+        if ($forum) {
+            $service->toggleBookmark(Auth::user(), $forum);
+        }
+    }
 
     public function updatingSearch()
     {

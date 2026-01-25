@@ -6,6 +6,8 @@
     $score = $upvotes - $downvotes;
 
     $userVote = auth()->check() ? $forum->votes->where('user_id', auth()->id())->first() : null;
+
+    $isBookmarked = auth()->check() && $forum->isBookmarkedBy(auth()->user());
 @endphp
 
 <article
@@ -77,9 +79,9 @@
 
             <div class="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-medium">
                 <button
-                    class="flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-white/5 px-2.5 py-1.5 rounded-lg transition-colors">
+                    class="flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-white/5 px-2.5 py-2.5 rounded-lg transition-colors">
                     <x-bi-chat-left-text />
-                    {{ $forum->replies_count }} <span class="hidden sm:inline">Comments</span>
+                    {{ $forum->replies_count }}
                 </button>
                 <div x-data="{
                     copied: false,
@@ -113,25 +115,48 @@
                     }
                 }" class="relative">
                     <button @click.prevent="share()"
-                        class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors"
+                        class="flex items-center gap-1.5  px-2.5 py-2.5  rounded-lg transition-colors"
                         :class="copied ? 'bg-green-500/10 text-green-500' :
                             'hover:bg-zinc-100 dark:hover:bg-white/5 text-zinc-500 dark:text-zinc-400'">
 
                         <template x-if="!copied">
-                            <x-bi-share class="w-4 h-4" />
+                            <x-bi-share />
                         </template>
                         <template x-if="copied">
-                            <x-bi-check2 class="w-4 h-4" />
+                            <x-bi-check2 />
                         </template>
-
-                        <span class="hidden sm:inline" x-text="copied ? 'Copied!' : 'Share'"></span>
                     </button>
                 </div>
-                <button
-                    class="flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-white/5 px-2.5 py-1.5 rounded-lg transition-colors">
-                    <x-bi-bookmark />
-                    <span class="hidden sm:inline">Save</span>
+
+                <button wire:click.prevent="toggleBookmark({{ $forum->id }})" wire:loading.attr="disabled"
+                    class="flex items-center gap-1.5  px-2.5 py-2.5 rounded-lg transition-colors
+    {{ $isBookmarked
+        ? 'text-yellow-600 bg-yellow-50 dark:text-yellow-400 dark:bg-yellow-500/10'
+        : 'hover:bg-zinc-100 dark:hover:bg-white/5' }}">
+
+                    <span wire:loading.remove wire:target="toggleBookmark({{ $forum->id }})"
+                        class="flex items-center gap-1.5">
+                        @if ($isBookmarked)
+                            <x-bi-bookmark-fill />
+                        @else
+                            <x-bi-bookmark />
+                        @endif
+                    </span>
+
+                    <span wire:loading wire:target="toggleBookmark({{ $forum->id }})"
+                        class="flex items-center gap-1.5">
+                        <svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                    </span>
+
                 </button>
+
             </div>
         </div>
     </div>

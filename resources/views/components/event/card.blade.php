@@ -13,12 +13,13 @@
             src="{{ str_starts_with($event->banner_image, 'http') ? $event->banner_image : asset('storage/' . $event->banner_image) }}" />
 
         <button wire:click.stop="toggleEventBookmark({{ $event->id }})" wire:loading.attr="disabled"
-            class="absolute top-5 right-5 w-10 h-10 rounded-full flex items-center justify-center transition-colors group/btn z-20 shadow-lg border border-white/10
-            {{ $isBookmarked
-                ? 'bg-yellow-500/90 text-white hover:bg-yellow-600'
-                : 'bg-black/20 backdrop-blur-sm hover:bg-white/30 text-white' }}">
+            class="absolute top-5 right-5 w-10 h-10 rounded-full flex items-center justify-center transition-colors group/btn z-30 shadow-lg border border-white/10
+    {{ $isBookmarked
+        ? 'bg-yellow-500/90 text-white hover:bg-yellow-600'
+        : 'bg-black/20 backdrop-blur-sm hover:bg-white/30 text-white' }}">
 
-            <span class="material-icons-round text-xl group-hover/btn:scale-110 transition-transform">
+            <span wire:loading.remove wire:target="toggleEventBookmark({{ $event->id }})"
+                class="material-icons-round text-xl group-hover/btn:scale-110 transition-transform flex items-center justify-center">
                 @if ($isBookmarked)
                     <x-bi-bookmark-fill />
                 @else
@@ -27,7 +28,7 @@
             </span>
 
             <svg wire:loading wire:target="toggleEventBookmark({{ $event->id }})"
-                class="absolute animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
                 </circle>
