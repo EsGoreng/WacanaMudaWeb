@@ -117,8 +117,17 @@ class Index extends Component
     public function render()
     {
         $query = Forum::query()
-            ->with(['user', 'category', 'votes'])
-            ->withCount(['comments', 'votes']);
+            ->with(['user', 'categories', 'votes'])
+            ->withCount([
+                'comments',
+                'votes',
+                'votes as up_votes_count' => function ($query) {
+                    $query->where('type', 'up');
+                },
+                'votes as down_votes_count' => function ($query) {
+                    $query->where('type', 'down');
+                },
+            ]);
 
         if (! empty($this->search)) {
             $query->where(function ($q) {
@@ -128,7 +137,9 @@ class Index extends Component
         }
 
         if ($this->selectedCategory) {
-            $query->where('category_id', $this->selectedCategory);
+            $query->whereHas('categories', function ($q) {
+                $q->where('categories.category_id', $this->selectedCategory);
+            });
         }
 
         if (! empty($this->dateFrom)) {
@@ -147,6 +158,12 @@ class Index extends Component
                 break;
             case 'most_replied':
                 $query->orderByDesc('comments_count');
+                break;
+            case 'most_upvoted':
+                $query->orderByDesc('up_votes_count');
+                break;
+            case 'most_downvoted':
+                $query->orderByDesc('down_votes_count');
                 break;
             default:
                 $query->latest();

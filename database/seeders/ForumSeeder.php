@@ -23,23 +23,26 @@ class ForumSeeder extends Seeder
 
         Forum::factory(20)->make()->each(function ($forum) use ($users, $categories) {
             $forum->user_id = $users->random()->id;
-            $forum->category_id = $categories->random()->category_id;
+
             $forum->created_at = Carbon::now()->subDays(rand(1, 60));
             $forum->updated_at = Carbon::now();
             $forum->save();
+
+            $forum->categories()->attach(
+                $categories->random(rand(1, 3))->pluck('category_id')
+            );
 
             $replyCount = rand(0, 15);
             if ($replyCount > 0) {
 
                 for ($i = 0; $i < $replyCount; $i++) {
-                    $comment = $forum->comments()->create([
+                    $forum->comments()->create([
                         'user_id' => $users->random()->id,
                         'body' => \Faker\Factory::create('id_ID')->sentence(10),
                         'parent_id' => null,
                         'created_at' => $this->randomDateAfter($forum->created_at),
                         'updated_at' => Carbon::now(),
                     ]);
-
                 }
             }
 
@@ -55,7 +58,9 @@ class ForumSeeder extends Seeder
                     'updated_at' => Carbon::now(),
                 ];
             }
-            ContentView::insert($viewData);
+            if (! empty($viewData)) {
+                ContentView::insert($viewData);
+            }
         });
     }
 

@@ -88,6 +88,8 @@
                                     <option value="oldest">oldest</option>
                                     <option value="popular">Popular</option>
                                     <option value="most_replied">Most Comment</option>
+                                    <option value="most_upvoted">Most Upvoted</option>
+                                    <option value="most_downvoted">Most Downvoted</option>
                                 </select>
                             </div>
 

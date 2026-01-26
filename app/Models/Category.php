@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -65,9 +64,14 @@ class Category extends Model
         );
     }
 
-    public function forums(): HasMany
+    public function forums(): BelongsToMany
     {
-        return $this->hasMany(Forum::class, 'category_id', 'category_id');
+        return $this->belongsToMany(
+            Forum::class,
+            'category_forum',
+            'category_id',
+            'forum_id'
+        );
     }
 
     public function writings(): BelongsToMany

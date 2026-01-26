@@ -42,7 +42,7 @@ class Show extends Component implements HasForms
     public function mount(Forum $forum, BookmarkService $bookmarkService): void
     {
         $this->forum = $forum;
-        $this->forum->load(['user', 'category', 'votes']);
+        $this->forum->load(['user', 'categories', 'votes']);
         $this->forum->increment('view_count');
 
         if (auth()->check()) {
@@ -223,7 +223,7 @@ class Show extends Component implements HasForms
     public function render()
     {
         $latestForums = Forum::where('id', '!=', $this->forum->id)
-            ->with('category', 'user')
+            ->with('categories', 'user')
             ->latest()
             ->take(3)
             ->get();

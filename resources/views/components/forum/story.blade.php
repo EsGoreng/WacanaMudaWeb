@@ -80,10 +80,12 @@
             <div class="flex flex-col px-10 py-10 bg-card-bg flex-1 -mt-5 relative z-20">
 
                 <div class="flex flex-wrap gap-3 mb-8">
-                    <span
-                        class="{{ $forum->category->badge_class ?? 'bg-blue-600' }} bg-opacity-90 border border-white/10 px-5 py-2 rounded-full text-lg font-bold uppercase tracking-wide shadow-lg">
-                        {{ $forum->category->name }}
-                    </span>
+                    @foreach ($forum->categories as $category)
+                        <span
+                            class="{{ $category->badge_class ?? 'bg-blue-600' }} bg-opacity-90 border border-white/10 px-5 py-2 rounded-full text-lg font-bold uppercase tracking-wide shadow-lg">
+                            {{ $category->name }}
+                        </span>
+                    @endforeach
                     @if ($forum->is_pinned)
                         <span
                             class="bg-yellow-500/80 border border-white/10 px-5 py-2 rounded-full text-lg font-bold uppercase tracking-wide shadow-lg">

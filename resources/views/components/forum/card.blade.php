@@ -23,9 +23,11 @@
 
             <div class="flex items-center flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400 mb-3">
                 <div class="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-200">
-                    <span class="px-2 py-0.5 rounded shadow-sm text-[10px] {{ $forum->category->badge_class }}">
-                        {{ $forum->category->name }}
-                    </span>
+                    @foreach ($forum->categories as $category)
+                        <span class="px-2 py-0.5 rounded shadow-sm text-[10px] {{ $category->badge_class }}">
+                            {{ $category->name }}
+                        </span>
+                    @endforeach
                 </div>
                 <span class="opacity-50">•</span>
                 <span class="truncate max-w-[120px] sm:max-w-none">Posted by

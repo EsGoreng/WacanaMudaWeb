@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forums;
 
+use App\Models\Category;
 use App\Models\Forum;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -46,9 +47,10 @@ class Create extends Component implements HasActions, HasForms
 
                         Hidden::make('slug'),
 
-                        Select::make('category_id')
-                            ->label('Category')
-                            ->relationship('category', 'name')
+                        Select::make('categories')
+                            ->label('Categories')
+                            ->multiple()
+                            ->options(Category::all()->pluck('name', 'category_id'))
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -66,8 +68,6 @@ class Create extends Component implements HasActions, HasForms
                         View::make('components.submit-button')
                             ->columnSpanFull(),
                     ]),
-                // ->collapsible()
-                // ->collapsed(),
             ])
             ->statePath('data')
             ->model(Forum::class);
@@ -76,8 +76,15 @@ class Create extends Component implements HasActions, HasForms
     public function create()
     {
         $data = $this->form->getState();
+
+        $categoryIds = $data['categories'] ?? [];
+        unset($data['categories']);
+
         $data['user_id'] = auth()->id();
-        Forum::create($data);
+
+        $forum = Forum::create($data);
+
+        $forum->categories()->sync($categoryIds);
 
         return redirect()->route('forums')->with('status', 'Forum berhasil dibuat!');
     }
