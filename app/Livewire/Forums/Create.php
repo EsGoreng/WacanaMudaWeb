@@ -56,6 +56,8 @@ class Create extends Component implements HasActions, HasForms
                         RichEditor::make('body')
                             ->label('Content')
                             ->required()
+                            ->fileAttachmentsDirectory('writings/attachments')
+                            ->fileAttachmentsVisibility('public')
                             ->toolbarButtons([
                                 'bold', 'italic', 'link', 'bulletList', 'codeBlock', 'blockquote',
                             ])

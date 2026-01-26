@@ -31,7 +31,7 @@
                     <div class="flex flex-col gap-4">
                         @forelse ($writings as $writing)
                             <div wire:key="writing-{{ $writing->writing_id }}">
-                                <x-writing-card :writing="$writing" />
+                                <x-writing.card :writing="$writing" />
                                 @if (!$loop->last)
                                     <div class="mt-6 mb-2">
                                         <flux:separator variant="subtle" />
@@ -70,7 +70,6 @@
                     </div>
                 </div>
 
-                {{-- Bagian Tab Bookmark --}}
                 <div x-show="activeTab === 'bookmark'" x-cloak x-transition>
 
                     <div class="space-y-12 py-4">
@@ -84,7 +83,7 @@
                                 <div class="flex flex-col gap-4">
                                     @foreach ($bookmarkedWritings as $writing)
                                         <div wire:key="bm-writing-{{ $writing->writing_id }}">
-                                            <x-writing-card :writing="$writing" />
+                                            <x-writing.card :writing="$writing" />
                                         </div>
                                     @endforeach
                                 </div>

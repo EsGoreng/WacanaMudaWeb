@@ -109,7 +109,7 @@
                 </div>
 
                 <p class="text-white/90 text-sm leading-relaxed mb-5 font-medium pr-2 drop-shadow-sm">
-                    {{ \Illuminate\Support\Str::limit(strip_tags($event->description ?? ''), 100) }}
+                    {{ \Illuminate\Support\Str::limit(strip_tags($event->description ?? ''), 80) }}
                 </p>
 
                 <div class="flex flex-wrap gap-2 mb-6">

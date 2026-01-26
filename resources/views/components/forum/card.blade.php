@@ -63,31 +63,25 @@
                         <span class="text-xs sm:text-sm">{{ $forum->comments_count }}</span>
                     </button>
 
-                    <div x-data="{
-                        copied: false,
-                        shareData: {
-                            title: '{{ addslashes($forum->title) }}',
-                            author: '{{ addslashes($forum->user->name) }}',
-                            url: '{{ route('forum.show', $forum->slug) }}'
-                        },
-                        async share() {
-                            const fullText = `Wacana Muda Forum\n${this.shareData.title}\nBy ${this.shareData.author}\nLink: ${this.shareData.url}`;
-                            if (navigator.share) {
-                                try { await navigator.share({ title: this.shareData.title, text: fullText, url: this.shareData.url }); } catch (err) {}
-                            } else {
-                                try { await navigator.clipboard.writeText(fullText);
-                                    this.copied = true;
-                                    setTimeout(() => this.copied = false, 2000); } catch (err) {}
-                            }
-                        }
-                    }" class="relative">
-                        <button @click.prevent="share()"
-                            class="flex items-center gap-1.5 px-2 py-1.5 sm:px-2.5 sm:py-2.5 rounded-lg transition-colors"
-                            :class="copied ? 'bg-green-500/10 text-green-500' : 'hover:bg-zinc-100 dark:hover:bg-white/5'">
-                            <template x-if="!copied"><x-bi-share class="w-4 h-4" /></template>
-                            <template x-if="copied"><x-bi-check2 class="w-4 h-4" /></template>
-                        </button>
-                    </div>
+                    <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
+
+                    <button x-data="{ copied: false }"
+                        @click.prevent="navigator.clipboard.writeText('{{ route('forum.show', $forum->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                        class="flex items-center gap-1.5 px-2 py-1.5 sm:px-2.5 sm:py-2.5 rounded-lg transition-colors"
+                        :class="copied ? 'bg-green-500/10 text-green-500' :
+                            'hover:bg-zinc-100 dark:hover:bg-white/5 text-zinc-500 dark:text-zinc-400'"
+                        title="Copy Link">
+
+                        <template x-if="!copied">
+                            <x-bi-link class="w-4 h-4" />
+                        </template>
+
+                        <template x-if="copied">
+                            <x-bi-check2 class="w-4 h-4" />
+                        </template>
+                    </button>
+
+                    <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
 
                     <button wire:click.prevent="toggleBookmark({{ $forum->id }})"
                         class="flex items-center gap-1.5 px-2 py-1.5 sm:px-2.5 sm:py-2.5 rounded-lg transition-colors {{ $isBookmarked ? 'text-yellow-600 bg-yellow-50 dark:text-yellow-400 dark:bg-yellow-500/10' : 'hover:bg-zinc-100 dark:hover:bg-white/5' }}">

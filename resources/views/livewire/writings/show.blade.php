@@ -142,7 +142,7 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-3 text-zinc-500 dark:text-zinc-400">
+                    <div class="flex items-center space-x-3 text-zinc-500">
                         <button wire:click="generateInstagramStory"
                             class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors flex items-center justify-center"
                             title="Download Instastory">
@@ -159,55 +159,25 @@
                                 </path>
                             </svg>
                         </button>
-                        <button x-data="{
-                            copied: false,
-                            shareData: {
-                                title: '{{ $writing->title }}',
-                                author: '{{ $writing->author_display_name }}',
-                                url: window.location.href
-                            },
-                            async share() {
-                                const fullText = `Baca tulisan menarik di Wacana Muda:\n'${this.shareData.title}'\nBy ${this.shareData.author}\n\nLink: ${this.shareData.url}`;
-                        
-                                if (navigator.share) {
-                                    try {
-                                        await navigator.share({
-                                            title: this.shareData.title,
-                                            text: fullText,
-                                            url: this.shareData.url
-                                        });
-                                    } catch (err) {
-                                        console.log('Share cancelled');
-                                    }
-                                } else {
-                                    try {
-                                        await navigator.clipboard.writeText(fullText);
-                                        this.copied = true;
-                                        setTimeout(() => this.copied = false, 2000);
-                                    } catch (err) {
-                                        console.error('Gagal menyalin', err);
-                                    }
-                                }
-                            }
-                        }" @click="share()"
-                            class="p-2 rounded-lg transition-all duration-200 flex items-center gap-2 relative
-    {{ 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500' }}"
-                            :class="copied ? 'bg-green-50 dark:bg-green-900/20 text-green-600' : ''" title="Share Link">
+
+                        <button x-data="{ copied: false }"
+                            @click.prevent="navigator.clipboard.writeText(window.location.href); copied = true; setTimeout(() => copied = false, 2000)"
+                            class="p-2 rounded-lg transition-all duration-200 flex items-center gap-2 relative hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500"
+                            :class="copied ? 'bg-green-50 dark:bg-green-900/20 text-green-600' : ''" title="Copy Link">
 
                             <template x-if="!copied">
                                 <x-bi-link class="w-4 h-4" />
                             </template>
 
                             <template x-if="copied">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                                </svg>
+                                <x-bi-link class="w-4 h-4" />
                             </template>
 
-                            <span x-show="copied" x-transition
-                                class="text-[10px] font-bold uppercase tracking-wider">Copied</span>
+                            <span x-show="copied" x-transition class="text-[10px] font-bold uppercase tracking-wider">
+                                Copied
+                            </span>
                         </button>
+
                         <button wire:click="toggleBookmark"
                             class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                             title=" ">
@@ -233,8 +203,8 @@
                     </div>
                 </div>
 
-                <div class="prose dark:prose-invert max-w-none">
-                    {!! \Filament\Forms\Components\RichEditor\RichContentRenderer::make($writing->content)->toHtml() !!}
+                <div class="prose dark:prose-invert max-w-none w-full break-words">
+                    {!! $writing->content !!}
                 </div>
                 <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">
                     <x-comments.area :comments="$comments" :parentCommentId="$parentCommentId" />

@@ -295,6 +295,7 @@ class Index extends Component
 
         return view('livewire.writings.index', [
             'literacyContent' => $literacyContent,
+            'totalAuthors' => \App\Models\User::count(),
         ]);
     }
 }

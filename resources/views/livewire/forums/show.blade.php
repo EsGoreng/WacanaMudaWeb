@@ -51,9 +51,8 @@
                             {{ $forum->title }}
                         </h1>
 
-                        <div
-                            class="fi-prose dark:prose-invert text-base leading-relaxed space-y-4 dark:prose-invert max-w-none text-zinc-700 dark:text-slate-300 break-words">
-                            {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($forum->body) }}
+                        <div class="prose dark:prose-invert max-w-none w-full break-words">
+                            {!! $forum->body !!}
                         </div>
 
                         <div
@@ -101,62 +100,36 @@
 
                             <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
 
-                            <div x-data="{
-                                copied: false,
-                                shareTitle: '{{ addslashes($forum->title) }}',
-                                shareAuthor: '{{ addslashes($forum->user->name) }}',
-                                shareUrl: '{{ route('forums', $forum->slug) }}',
-                            
-                                async share() {
-                                    const fullText = `Wacana Muda Forum\n${this.shareTitle}\nBy ${this.shareAuthor}\nLink: ${this.shareUrl}`;
-                            
-                                    if (navigator.share) {
-                                        try {
-                                            await navigator.share({
-                                                title: this.shareTitle,
-                                                text: fullText,
-                                                url: this.shareUrl
-                                            });
-                                        } catch (err) {
-                                            console.log('Share cancelled');
-                                        }
-                                    } else {
-                                        try {
-                                            await navigator.clipboard.writeText(fullText);
-                                            this.copied = true;
-                                            setTimeout(() => this.copied = false, 2000);
-                                        } catch (err) {
-                                            console.error('Gagal menyalin ke clipboard', err);
-                                        }
-                                    }
-                                }
-                            }" class="shrink-0">
-                                <button @click="share()"
-                                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400 font-medium text-sm group">
+                            <button x-data="{ copied: false }"
+                                @click.prevent="navigator.clipboard.writeText('{{ route('forums', $forum->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                                class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400 font-medium text-sm group shrink-0"
+                                :class="copied ? 'bg-green-50 dark:bg-green-500/10' : ''">
 
-                                    <svg x-show="copied" x-cloak xmlns="http://www.w3.org/2000/svg" width="18"
-                                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="text-green-500">
+                                <template x-if="!copied">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                    </svg>
+                                </template>
+
+                                <template x-if="copied">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="text-green-500">
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
+                                </template>
 
-                                    <svg x-show="!copied" xmlns="http://www.w3.org/2000/svg" width="18"
-                                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
-                                        </path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
-                                        </path>
-                                    </svg>
+                                <span x-text="copied ? 'Copied!' : 'Copy Link'" class="hidden sm:inline"
+                                    :class="copied ? 'text-green-500' :
+                                        'group-hover:text-zinc-900 dark:group-hover:text-white transition-colors'">
+                                </span>
+                            </button>
 
-                                    <span x-text="copied ? 'Copied!' : 'Share'" class="hidden sm:inline"
-                                        :class="copied ? 'text-green-500' :
-                                            'group-hover:text-zinc-900 dark:group-hover:text-white transition-colors'">
-                                    </span>
-                                </button>
-                            </div>
+                            <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
 
                             <button wire:click="toggleBookmark({{ $forum->id }})" wire:loading.attr="disabled"
                                 class="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors font-medium text-sm group shrink-0

@@ -29,8 +29,8 @@ class Table extends BaseDataTable
                         default => 'gray',
                     }),
 
-                TextColumn::make('replies_count')
-                    ->counts('replies')
+                TextColumn::make('comments_count')
+                    ->counts('comments')
                     ->label('Komentar')
                     ->badge(),
 

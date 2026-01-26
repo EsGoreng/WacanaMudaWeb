@@ -52,10 +52,24 @@
             {{ Str::limit($writing->excerpt, 180) }}
         </p>
 
-        <div class="flex items-center text-xs text-gray-500 mt-auto">
-            <span>{{ $date }}</span>
-            <span class="mx-2">·</span>
-            <span>{{ $writing->reading_time }} min read</span>
+        <div class="flex items-center justify-between mt-auto">
+            <div class="flex items-center text-xs text-gray-500">
+                <span>{{ $date }}</span>
+                <span class="mx-2">·</span>
+                <span>{{ $writing->reading_time }} min read</span>
+            </div>
+
+            <div class="flex items-center gap-3 text-xs text-gray-500">
+                <div class="flex items-center gap-1" title="Likes">
+                    <x-bi-heart-fill class="text-red-500 bg-red-50 dark:bg-red-900/20" />
+                    <span>{{ $writing->likes_count ?? $writing->likes()->count() }}</span>
+                </div>
+
+                <div class="flex items-center gap-1" title="Comments">
+                    <x-bi-chat-left-text-fill />
+                    <span>{{ $writing->comments_count ?? $writing->comments()->count() }}</span>
+                </div>
+            </div>
         </div>
     </div>
 

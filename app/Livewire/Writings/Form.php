@@ -205,9 +205,11 @@ class Form extends Component implements HasActions, HasSchemas
                                         }
 
                                         if (! empty($featuredImage)) {
-                                            if (str_starts_with($featuredImage, 'http')) {
+                                            if ($featuredImage instanceof TemporaryUploadedFile) {
+                                                $imageUrl = $featuredImage->temporaryUrl();
+                                            } elseif (is_string($featuredImage) && str_starts_with($featuredImage, 'http')) {
                                                 $imageUrl = $featuredImage;
-                                            } else {
+                                            } elseif (is_string($featuredImage)) {
                                                 $imageUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($featuredImage);
                                             }
                                         }
