@@ -6,16 +6,15 @@ use App\Models\ContentView;
 use App\Models\Writing;
 use App\Models\WritingComment;
 use App\Services\BookmarkService;
+use App\Services\StoryGeneratorService;
 use App\Services\UnsplashService;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\Browsershot\Browsershot;
 
 class Show extends Component implements HasForms
 {
@@ -80,25 +79,12 @@ class Show extends Component implements HasForms
 
     public function articleInfolist(Schema $schema): Schema
     {
-        return $schema->record($this->writing); // kosongkan atau tambah field lain
+        return $schema->record($this->writing);
     }
 
-    public function generateInstagramStory()
+    public function generateInstagramStory(StoryGeneratorService $service)
     {
-        $html = view('components.social-story', [
-            'writing' => $this->writing,
-        ])->render();
-
-        $fileName = Str::slug($this->writing->title).'-story.jpg';
-
-        $screenshot = Browsershot::html($html)
-            ->windowSize(1080, 1920)
-            ->noSandbox()
-            ->screenshot();
-
-        return response()->streamDownload(function () use ($screenshot) {
-            echo $screenshot;
-        }, $fileName);
+        return $service->generate($this->writing, 'components.writing.story', 'writing');
     }
 
     public function toggleLike()

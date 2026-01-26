@@ -1,20 +1,15 @@
 @props(['event', 'isBookmarked' => false])
 
 <div class="flex flex-col md:flex-row h-full md:h-[600px]">
-    {{-- BAGIAN GAMBAR (Kiri/Atas) --}}
     <div class="relative w-full md:w-1/2 h-64 md:h-full">
         <img src="{{ str_starts_with($event->banner_image, 'http') ? $event->banner_image : asset('storage/' . $event->banner_image) }}"
             alt="{{ $event->title }}" class="absolute inset-0 w-full h-full object-cover">
     </div>
 
-    {{-- BAGIAN KONTEN (Kanan/Bawah) --}}
     <div class="w-full md:w-1/2 p-8 md:p-10 flex flex-col h-full bg-zinc-800 relative overflow-y-auto">
 
-        {{-- HEADER TOMBOL (Kanan Atas) --}}
-        {{-- Bookmark dihapus dari sini, sisa Instagram Story & Close --}}
         <div class="absolute top-4 right-4 flex items-center gap-2 z-10">
 
-            {{-- TOMBOL INSTAGRAM STORY --}}
             <button wire:click="generateInstagramStory({{ $event->id }})" wire:loading.attr="disabled"
                 class="w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-lg border border-white/10 bg-white/10 text-gray-400 hover:bg-white/20 hover:text-gray-200">
 
@@ -45,7 +40,6 @@
                 class="w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-lg border border-white/10 bg-white/10 text-gray-400 hover:bg-white/20 hover:text-gray-200"
                 title="Copy Link">
 
-                {{-- Icon Link (Default) --}}
                 <div x-show="!copied" class="flex items-center justify-center transition-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-link-45deg" viewBox="0 0 16 16">
@@ -56,7 +50,6 @@
                     </svg>
                 </div>
 
-                {{-- Icon Copied (Active) --}}
                 <div x-show="copied" x-cloak
                     class="flex items-center justify-center text-green-400 transition-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -67,14 +60,12 @@
                 </div>
             </button>
 
-            {{-- TOMBOL CLOSE --}}
             <button x-on:click="show = false"
                 class="p-2 rounded-full hover:bg-gray-100/10 text-gray-400 hover:text-gray-200 transition-colors">
                 <x-bi-x-circle-fill class="w-8 h-8" />
             </button>
         </div>
 
-        {{-- BADGES & TITLE --}}
         <div class="flex flex-wrap gap-2 mb-2">
             @forelse($event->categories as $category)
                 <div
@@ -100,7 +91,6 @@
 
         <hr class="border-zinc-100 dark:border-zinc-700 mb-4">
 
-        {{-- DESCRIPTION --}}
         <div class="mb-4">
             <h3 class="font-bold text-zinc-900 dark:text-zinc-50 mb-2">About this event</h3>
             <div class="text-zinc-900 dark:text-zinc-300 text-sm leading-relaxed fi-prose">
@@ -108,11 +98,8 @@
             </div>
         </div>
 
-        {{-- FOOTER BUTTONS --}}
-        {{-- Menggunakan flex-col agar tombol bertumpuk vertical --}}
         <div class="mt-auto pt-6 border-t border-zinc-100 dark:border-zinc-700 flex flex-col gap-3">
 
-            {{-- TOMBOL BOOKMARK (Dipindahkan kesini) --}}
             <button wire:click="toggleBookmark" wire:loading.attr="disabled"
                 class="w-full font-semibold py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm border
                  {{ $isBookmarked
@@ -129,7 +116,6 @@
                     @endif
                 </div>
 
-                {{-- Loading Spinner Bookmark --}}
                 <div wire:loading wire:target="toggleBookmark">
                     <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24">
@@ -143,7 +129,6 @@
                 </div>
             </button>
 
-            {{-- TOMBOL REGISTER --}}
             <flux:button variant="primary"
                 class="bg-brand-hover hover:bg-accent text-white font-semibold py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm w-full">
                 Register

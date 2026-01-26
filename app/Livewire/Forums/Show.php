@@ -5,15 +5,14 @@ namespace App\Livewire\Forums;
 use App\Models\ContentView;
 use App\Models\Forum;
 use App\Models\Reply;
+use App\Services\StoryGeneratorService;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\Browsershot\Browsershot;
 
 class Show extends Component implements HasForms
 {
@@ -52,23 +51,9 @@ class Show extends Component implements HasForms
         $this->replyForm->fill();
     }
 
-    public function generateInstagramStory()
+    public function generateInstagramStory(StoryGeneratorService $service)
     {
-        // Render view html
-        $html = view('components.forum-story', [
-            'forum' => $this->forum,
-        ])->render();
-
-        $fileName = Str::slug($this->forum->title).'-story.jpg';
-
-        $screenshot = Browsershot::html($html)
-            ->windowSize(1080, 1920)
-            ->noSandbox()
-            ->screenshot();
-
-        return response()->streamDownload(function () use ($screenshot) {
-            echo $screenshot;
-        }, $fileName);
+        return $service->generate($this->forum, 'components.forum.story', 'forum');
     }
 
     protected function getForms(): array
