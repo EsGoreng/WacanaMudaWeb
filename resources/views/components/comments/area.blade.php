@@ -1,6 +1,6 @@
 @props(['comments', 'parentCommentId'])
 
-<div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+<div>
 
     <h3
         class="text-lg font-medium text-zinc-900 dark:text-slate-100 mb-6 border-b border-zinc-200 dark:border-slate-800 pb-2">

@@ -1,7 +1,9 @@
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
     <div class="lg:col-span-3">
         <div class="space-y-4">
-            <livewire:forums.create />
+            @auth
+                <livewire:forums.create />
+            @endauth
             @forelse ($forums as $forum)
                 <x-forum.card :forum="$forum" />
             @empty

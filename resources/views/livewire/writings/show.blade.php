@@ -236,8 +236,9 @@
                 <div class="prose dark:prose-invert max-w-none">
                     {!! \Filament\Forms\Components\RichEditor\RichContentRenderer::make($writing->content)->toHtml() !!}
                 </div>
-
-                <x-comments.area :comments="$comments" :parentCommentId="$parentCommentId" />
+                <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+                    <x-comments.area :comments="$comments" :parentCommentId="$parentCommentId" />
+                </div>
 
             </div>
 

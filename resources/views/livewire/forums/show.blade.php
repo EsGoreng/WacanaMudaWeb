@@ -232,10 +232,19 @@
                             <span class="text-xs text-zinc-500">Status</span>
                         </div>
                     </div>
-                    <button
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition-colors text-sm">
-                        Create Post
-                    </button>
+                    @auth
+                        <button onclick="window.location='{{ route('forums') }}'"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition-colors text-sm">
+                            Create Post
+                        </button>
+                    @endauth
+
+                    @guest
+                        <a href="{{ route('login') }}"
+                            class="block w-full text-center bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-300 font-medium py-2 rounded-lg transition-colors text-sm">
+                            Login to Post
+                        </a>
+                    @endguest
                 </div>
             </div>
 
