@@ -84,6 +84,7 @@ class Table extends BaseDataTable
                 Action::make('create')
                     ->label('Create')
                     ->icon('heroicon-o-plus')
+                    ->closeModalByClickingAway(false)
                     ->schema(fn (Schema $schema) => $this->getEventForm($schema))
                     ->action(function (array $data) {
                         $categoryIds = $data['categories'] ?? [];
@@ -104,6 +105,7 @@ class Table extends BaseDataTable
                 Action::make('edit')
                     ->label('Edit')
                     ->icon('heroicon-o-pencil')
+                    ->closeModalByClickingAway(false)
                     ->schema(fn (Schema $schema) => $this->getEventForm($schema))
                     ->mountUsing(function ($form, Event $record) {
                         $form->fill([
@@ -381,9 +383,11 @@ class Table extends BaseDataTable
                                 }
 
                                 if (! empty($featuredImage)) {
-                                    if (str_starts_with($featuredImage, 'http')) {
+                                    if ($featuredImage instanceof TemporaryUploadedFile) {
+                                        $imageUrl = $featuredImage->temporaryUrl();
+                                    } elseif (is_string($featuredImage) && str_starts_with($featuredImage, 'http')) {
                                         $imageUrl = $featuredImage;
-                                    } else {
+                                    } elseif (is_string($featuredImage)) {
                                         $imageUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($featuredImage);
                                     }
                                 }
@@ -397,8 +401,7 @@ class Table extends BaseDataTable
                                     'isUnsplash' => $isUnsplash,
                                     'isUpload' => ! empty($imageUrl) && ! $isUnsplash,
                                 ];
-                            }),
-                    ]),
+                            }),                    ]),
 
             ]);
     }

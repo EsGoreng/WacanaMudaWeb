@@ -40,12 +40,16 @@ class Show extends Component implements HasForms
     {
         $this->writing = $writing;
 
-        if (auth()->check()) {
-            $this->isBookmarked = $service->isBookmarked(auth()->user(), $this->writing);
+        $isPublished = in_array($this->writing->status, ['published', 'Published']);
+
+        $isAuthor = Auth::check() && Auth::id() === $this->writing->user_id;
+
+        if (! $isPublished && ! $isAuthor) {
+            abort(404);
         }
 
-        if ($this->writing->status !== 'published' && $this->writing->status !== 'Published') {
-            abort(404);
+        if (auth()->check()) {
+            $this->isBookmarked = $service->isBookmarked(auth()->user(), $this->writing);
         }
 
         if (! empty($this->writing->unsplash_download_location)) {

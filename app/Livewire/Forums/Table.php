@@ -21,13 +21,12 @@ class Table extends BaseDataTable
                     ->weight('bold')
                     ->limit(50),
 
-                TextColumn::make('category.name')
+                TextColumn::make('categories.name')
+                    ->label('Categories')
                     ->badge()
-                    ->color(fn ($record) => match ($record->category->name) {
-                        'Technology' => 'info',
-                        'Business' => 'warning',
-                        default => 'gray',
-                    }),
+                    ->separator(',')
+                    ->limitList(2)
+                    ->color('info'),
 
                 TextColumn::make('comments_count')
                     ->counts('comments')
@@ -47,8 +46,11 @@ class Table extends BaseDataTable
                     ->successNotificationTitle('Forum topic deleted'),
             ])
             ->filters([
-                SelectFilter::make('category')
-                    ->relationship('category', 'name'),
+                SelectFilter::make('categories')
+                    ->relationship('categories', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
             ])
             ->bulkActions([
                 $this->getBulkDeleteAction(),

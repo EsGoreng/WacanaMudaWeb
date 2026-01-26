@@ -66,7 +66,7 @@
             </button>
         </div>
 
-        <div class="flex flex-wrap gap-2 mb-2">
+        <div class="flex flex-wrap gap-2 mb-2 mt-12 md:mt-0">
             @forelse($event->categories as $category)
                 <div
                     class="{{ $category->badgeClass }} px-3 py-1.5 rounded-full border border-black/10 text-xs font-medium text-black transition-colors hover:bg-white/20 cursor-default shadow-sm">
@@ -93,7 +93,7 @@
 
         <div class="mb-4">
             <h3 class="font-bold text-zinc-900 dark:text-zinc-50 mb-2">About this event</h3>
-            <div class="text-zinc-900 dark:text-zinc-300 text-sm leading-relaxed fi-prose">
+            <div class="prose dark:prose-invert max-w-none w-full break-words">
                 {!! $event->description !!}
             </div>
         </div>

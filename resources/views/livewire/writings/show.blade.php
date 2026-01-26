@@ -135,7 +135,7 @@
                             </span>
                             <div class="text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
                                 <time
-                                    datetime="{{ $writing->published_at }}">{{ $writing->published_at->format('M d, Y') }}</time>
+                                    datetime="{{ $writing->published_at }}">{{ $writing->published_at ? $writing->published_at->format('d M Y') : 'Draft' }}</time>
                                 <span>•</span>
                                 <span>{{ $writing->reading_time }} min read</span>
                             </div>

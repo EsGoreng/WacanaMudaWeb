@@ -4,7 +4,7 @@
     <div class="p-4 md:p-6">
         <div class="flex gap-3 md:gap-4">
 
-            <div class="shrink-0">
+            <div class="shrink-0 hidden md:block">
                 @php
                     $user = auth()->user();
                     $avatarUrl = $user->avatar

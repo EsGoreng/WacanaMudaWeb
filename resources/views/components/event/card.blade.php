@@ -13,7 +13,7 @@
             src="{{ str_starts_with($event->banner_image, 'http') ? $event->banner_image : asset('storage/' . $event->banner_image) }}" />
 
         <button wire:click.stop="generateInstagramStory({{ $event->id }})" wire:loading.attr="disabled"
-            class="absolute top-5 right-[70px] w-10 h-10 rounded-full flex items-center justify-center transition-colors group/btn z-20 shadow-lg border border-white/10 bg-black/20 backdrop-blur-sm hover:bg-white/30 text-white">
+            class="absolute top-5 right-[70px] w-10 h-10 rounded-full flex items-center justify-center transition-colors group/btn z-5 shadow-lg border border-white/10 bg-black/20 backdrop-blur-sm hover:bg-white/30 text-white">
 
             <span wire:loading.remove wire:target="generateInstagramStory({{ $event->id }})"
                 class="material-icons-round text-xl group-hover/btn:scale-110 transition-transform flex items-center justify-center">
@@ -35,7 +35,7 @@
             </svg>
         </button>
         <button wire:click.stop="toggleEventBookmark({{ $event->id }})" wire:loading.attr="disabled"
-            class="absolute top-5 right-5 w-10 h-10 rounded-full flex items-center justify-center transition-colors group/btn z-20 shadow-lg border border-white/10
+            class="absolute top-5 right-5 w-10 h-10 rounded-full flex items-center justify-center transition-colors group/btn z-5 shadow-lg border border-white/10
     {{ $isBookmarked
         ? 'bg-yellow-500/90 text-white hover:bg-yellow-600'
         : 'bg-black/20 backdrop-blur-sm hover:bg-white/30 text-white' }}">

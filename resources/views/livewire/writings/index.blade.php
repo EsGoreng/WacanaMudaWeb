@@ -203,7 +203,7 @@
                             Clear All Filters
                         </button>
                     @endif
-                    <a href="{{ route('writing') }}"
+                    <a href="{{ route('writings') }}"
                         class="bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 rounded-xl border border-zinc-400/50 dark:border-zinc-800/50 text-sm font-medium text-zinc-900 dark:text-zinc-500 hover:text-zinc-400 transition-colors w-full sm:w-auto px-6 py-3 bg-page-gray-100 dark:hover:text-white">
                         Browse All Writings
                     </a>

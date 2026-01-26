@@ -15,7 +15,8 @@ class Index extends Component
 {
     use WithPagination;
 
-    public $category = null;
+    #[Url(except: [])]
+    public $selectedCategories = [];
 
     #[Url(except: '')]
     public $search = '';
@@ -25,6 +26,12 @@ class Index extends Component
 
     #[Url(except: 'latest')]
     public $sortBy = 'latest';
+
+    #[Url(except: null)]
+    public $dateFrom = null;
+
+    #[Url(except: null)]
+    public $dateTo = null;
 
     public function toggleBookmark($forumId, BookmarkService $service)
     {
@@ -44,7 +51,7 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function updatingSelectedCategory()
+    public function updatingSelectedCategories()
     {
         $this->resetPage();
     }
@@ -66,7 +73,7 @@ class Index extends Component
 
     public function clearFilters()
     {
-        $this->reset(['search', 'selectedCategory', 'sortBy', 'dateFrom', 'dateTo']);
+        $this->reset(['search', 'selectedCategories', 'sortBy', 'dateFrom', 'dateTo']);
         $this->resetPage();
     }
 
@@ -136,9 +143,9 @@ class Index extends Component
             });
         }
 
-        if ($this->selectedCategory) {
+        if (! empty($this->selectedCategories)) {
             $query->whereHas('categories', function ($q) {
-                $q->where('categories.category_id', $this->selectedCategory);
+                $q->whereIn('categories.category_id', $this->selectedCategories);
             });
         }
 
@@ -171,7 +178,7 @@ class Index extends Component
         }
 
         return view('livewire.forums.index', [
-            'forums' => $query->paginate(10),
+            'forums' => $query->paginate(5),
         ]);
     }
 }

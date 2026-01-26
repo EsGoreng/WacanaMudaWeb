@@ -1,6 +1,5 @@
 <div class="min-h-screen font-sans antialiased transition-colors duration-100 overflow-x-hidden">
 
-    {{-- Tombol Back --}}
     <div class="relative w-full h-[50px] group">
         <flux:button icon="arrow-left" :href="route('forums')"
             class="!bg-black/20 hover:!bg-black/40 !border-white/10 !backdrop-blur-sm !text-white border transition-all">
@@ -8,17 +7,14 @@
         </flux:button>
     </div>
 
-    {{-- Grid Layout Utama --}}
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-        {{-- KOLOM KIRI (Konten Utama) - Lebar 8 --}}
         <div class="lg:col-span-8 min-w-0">
 
             <article
                 class="flex flex-col rounded-xl bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm transition-colors duration-200">
                 <div class="flex flex-col sm:flex-row">
 
-                    {{-- Vote Buttons Vertical (Desktop) --}}
                     <div
                         class="hidden sm:flex w-12 flex-col items-center bg-zinc-50 dark:bg-zinc-900/50 py-4 gap-1 border-r border-zinc-100 dark:border-zinc-800/50 shrink-0">
                         @include('components.forum.vote-buttons', [
@@ -30,7 +26,6 @@
                     </div>
 
                     <div class="flex-1 p-4 md:p-6 min-w-0">
-                        {{-- Metadata Header --}}
                         <div class="flex items-center flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400 mb-3">
                             <div class="flex items-center gap-2">
                                 @foreach ($forum->categories as $category)
@@ -58,18 +53,15 @@
                             <span class="whitespace-nowrap">{{ $forum->created_at->diffForHumans() }}</span>
                         </div>
 
-                        {{-- Judul --}}
                         <h1
                             class="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white mb-4 leading-tight break-words">
                             {{ $forum->title }}
                         </h1>
 
-                        {{-- Isi Konten --}}
                         <div class="prose dark:prose-invert max-w-none w-full break-words">
                             {!! $forum->body !!}
                         </div>
 
-                        {{-- Vote Buttons Horizontal (Mobile) --}}
                         <div
                             class="flex sm:hidden items-center mt-6 border-t border-zinc-100 dark:border-zinc-700 pt-4">
                             <div class="flex items-center bg-zinc-100 dark:bg-white/5 rounded-lg px-1">
@@ -82,11 +74,9 @@
                             </div>
                         </div>
 
-                        {{-- Action Buttons (Share, Save, etc) --}}
                         <div
                             class="flex items-center gap-1 md:gap-4 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 text-sm font-medium overflow-x-auto">
 
-                            {{-- Instagram Story Button --}}
                             <button wire:click="generateInstagramStory" wire:loading.attr="disabled"
                                 class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400 font-medium text-sm group shrink-0">
                                 <svg wire:loading wire:target="generateInstagramStory"
@@ -114,7 +104,6 @@
 
                             <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
 
-                            {{-- Copy Link Button --}}
                             <button x-data="{ copied: false }"
                                 @click.prevent="navigator.clipboard.writeText('{{ route('forums', $forum->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
                                 class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400 font-medium text-sm group shrink-0"
@@ -143,7 +132,6 @@
 
                             <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
 
-                            {{-- Bookmark Button --}}
                             <button wire:click="toggleBookmark({{ $forum->id }})" wire:loading.attr="disabled"
                                 class="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors font-medium text-sm group shrink-0
                                 {{ $isBookmarked
@@ -177,7 +165,6 @@
                 </div>
             </article>
 
-            {{-- Komentar --}}
             <div
                 class="mt-4 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 backdrop-blur-xs text-zinc-700 dark:text-slate-300 p-4 md:p-6 rounded-xl">
                 <x-comments.area :comments="$replies" :parentCommentId="$parentReplyId" />
@@ -185,10 +172,8 @@
 
         </div>
 
-        {{-- KOLOM KANAN (Sidebar) - Lebar 4 --}}
         <aside class="lg:col-span-4 space-y-8 lg:pt-0 sticky top-6 self-start">
 
-            {{-- Latest Discussions --}}
             <div
                 class="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm transition-colors duration-200">
                 <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-4">Latest Discussions</h3>
@@ -206,7 +191,6 @@
                 </div>
             </div>
 
-            {{-- Topic Rules --}}
             <div
                 class="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm transition-colors duration-200">
                 <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Topic Rules</h3>
@@ -217,7 +201,7 @@
                 </ul>
             </div>
 
-        </aside> {{-- Penutup Aside --}}
+        </aside>
 
-    </div> {{-- Penutup Grid --}}
-</div> {{-- Penutup Container Utama --}}
+    </div>
+</div>
