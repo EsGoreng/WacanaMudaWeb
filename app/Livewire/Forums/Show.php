@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Forums;
 
+use App\Models\Comment;
 use App\Models\ContentView;
 use App\Models\Forum;
-use App\Models\Reply;
+use App\Services\BookmarkService;
+use App\Services\CommentService;
 use App\Services\StoryGeneratorService;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -27,19 +29,25 @@ class Show extends Component implements HasForms
 
     public $parentReplyId = null;
 
-    public $userVoteType = null;
-
-    public $score = 0;
-
     public $editingReplyId = null;
 
     public $editingBody = '';
 
-    public function mount(Forum $forum): void
+    public $userVoteType = null;
+
+    public bool $isBookmarked = false;
+
+    public $score = 0;
+
+    public function mount(Forum $forum, BookmarkService $bookmarkService): void
     {
         $this->forum = $forum;
         $this->forum->load(['user', 'category', 'votes']);
         $this->forum->increment('view_count');
+
+        if (auth()->check()) {
+            $this->isBookmarked = $bookmarkService->isBookmarked(auth()->user(), $this->forum);
+        }
 
         ContentView::create([
             'viewable_type' => Forum::class,
@@ -51,6 +59,15 @@ class Show extends Component implements HasForms
         $this->replyForm->fill();
     }
 
+    public function toggleBookmark(BookmarkService $service)
+    {
+        if (! auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $this->isBookmarked = $service->toggleBookmark(auth()->user(), $this->forum);
+    }
+
     public function generateInstagramStory(StoryGeneratorService $service)
     {
         return $service->generate($this->forum, 'components.forum.story', 'forum');
@@ -58,43 +75,32 @@ class Show extends Component implements HasForms
 
     protected function getForms(): array
     {
-        return [
-            'commentForm',
-            'replyForm',
-        ];
+        return ['commentForm', 'replyForm'];
     }
 
     public function commentForm(Schema $form): Schema
     {
-        return $form
-            ->schema([
-                Textarea::make('comment')
-                    ->label('Comment')
-                    ->placeholder('Write your comment...')
-                    ->autosize()
-                    ->minLength(1)
-                    ->maxLength(1024)
-                    ->required(),
-            ])
-            ->statePath('commentData');
+        return $form->schema([
+            Textarea::make('comment')
+                ->label('Comment')
+                ->placeholder('Write your comment...')
+                ->autosize()
+                ->required(),
+        ])->statePath('commentData');
     }
 
     public function replyForm(Schema $form): Schema
     {
-        return $form
-            ->schema([
-                Textarea::make('reply')
-                    ->label('Reply')
-                    ->placeholder('Write reply...')
-                    ->autosize()
-                    ->minLength(1)
-                    ->maxLength(1024)
-                    ->required(),
-            ])
-            ->statePath('replyData');
+        return $form->schema([
+            Textarea::make('reply')
+                ->label('Reply')
+                ->placeholder('Write reply...')
+                ->autosize()
+                ->required(),
+        ])->statePath('replyData');
     }
 
-    public function createComment()
+    public function createComment(CommentService $service)
     {
         if (! Auth::check()) {
             return redirect()->route('login');
@@ -102,18 +108,13 @@ class Show extends Component implements HasForms
 
         $data = $this->commentForm->getState();
 
-        Reply::create([
-            'forum_id' => $this->forum->id,
-            'user_id' => Auth::id(),
-            'body' => $data['comment'],
-            'parent_id' => null,
-        ]);
+        $service->createComment($this->forum, $data['comment']);
 
         $this->commentForm->fill();
         $this->dispatch('reply-posted');
     }
 
-    public function createReply()
+    public function createReply(CommentService $service)
     {
         if (! Auth::check()) {
             return redirect()->route('login');
@@ -121,16 +122,35 @@ class Show extends Component implements HasForms
 
         $data = $this->replyForm->getState();
 
-        Reply::create([
-            'forum_id' => $this->forum->id,
-            'user_id' => Auth::id(),
-            'body' => $data['reply'],
-            'parent_id' => $this->parentReplyId,
-        ]);
+        $service->createComment(
+            $this->forum,
+            $data['reply'],
+            $this->parentReplyId
+        );
 
         $this->replyForm->fill();
         $this->parentReplyId = null;
         $this->dispatch('reply-posted');
+    }
+
+    public function updateReply(CommentService $service)
+    {
+        $comment = Comment::find($this->editingReplyId);
+
+        if ($comment) {
+            $service->updateComment($comment, $this->editingBody, Auth::id());
+        }
+
+        $this->cancelEdit();
+    }
+
+    public function deleteComment($commentId, CommentService $service)
+    {
+        $comment = Comment::find($commentId);
+
+        if ($comment) {
+            $service->deleteComment($comment, Auth::user());
+        }
     }
 
     public function setReplyTo($id)
@@ -144,6 +164,24 @@ class Show extends Component implements HasForms
         }
     }
 
+    public function editReply($replyId)
+    {
+        $comment = Comment::find($replyId);
+
+        if (! $comment || $comment->user_id !== Auth::id()) {
+            return;
+        }
+
+        $this->editingReplyId = $replyId;
+        $this->editingBody = $comment->body;
+    }
+
+    public function cancelEdit()
+    {
+        $this->editingReplyId = null;
+        $this->editingBody = '';
+    }
+
     public function calculateScore()
     {
         $this->score = $this->forum->votes()->where('type', 'up')->count() -
@@ -155,7 +193,7 @@ class Show extends Component implements HasForms
         }
     }
 
-    public function vote($type)
+    public function vote($forumId, $type)
     {
         if (! Auth::check()) {
             return redirect()->route('login');
@@ -182,52 +220,6 @@ class Show extends Component implements HasForms
         $this->calculateScore();
     }
 
-    public function editReply($replyId)
-    {
-        $reply = Reply::find($replyId);
-
-        if (! $reply || $reply->user_id !== Auth::id()) {
-            return;
-        }
-
-        $this->editingReplyId = $replyId;
-        $this->editingBody = $reply->body;
-    }
-
-    public function updateReply()
-    {
-        $reply = Reply::find($this->editingReplyId);
-
-        if ($reply && $reply->user_id === Auth::id()) {
-            $reply->update([
-                'body' => $this->editingBody,
-            ]);
-        }
-
-        $this->cancelEdit();
-    }
-
-    public function cancelEdit()
-    {
-        $this->editingReplyId = null;
-        $this->editingBody = '';
-    }
-
-    public function deleteReply($replyId)
-    {
-        $reply = Reply::find($replyId);
-
-        if (! $reply) {
-            return;
-        }
-
-        $user = Auth::user();
-
-        if ($reply->user_id === $user->id || ($user->hasAnyRole(['superadmin', 'admin']) ?? false)) {
-            $reply->delete();
-        }
-    }
-
     public function render()
     {
         $latestForums = Forum::where('id', '!=', $this->forum->id)
@@ -236,9 +228,9 @@ class Show extends Component implements HasForms
             ->take(3)
             ->get();
 
-        $replies = $this->forum->replies()
+        $replies = $this->forum->comments()
             ->whereNull('parent_id')
-            ->with(['user', 'votes', 'children.user', 'children.votes'])
+            ->with(['user', 'children.user'])
             ->latest()
             ->paginate(10);
 

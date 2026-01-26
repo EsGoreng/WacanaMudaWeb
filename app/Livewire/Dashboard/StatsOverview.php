@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Models\Comment;
 use App\Models\ContentView;
 use App\Models\Forum;
-use App\Models\Reply;
 use App\Models\User;
 use App\Models\Writing;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -92,12 +92,12 @@ class StatsOverview extends BaseWidget
             ->sum('likes_count');
 
         $forumCount = Forum::where('user_id', $targetUser->id)->count();
-        $replyCount = Reply::where('user_id', $targetUser->id)->count();
-        $totalActivity = $forumCount + $replyCount;
+        $commentCount = Comment::where('user_id', $targetUser->id)->count();
+        $totalActivity = $forumCount + $commentCount;
 
         $forumChartData = $this->getChartData(Forum::class);
-        $replyChartData = $this->getChartData(Reply::class);
-        $activityChart = array_map(fn ($f, $r) => $f + $r, $forumChartData, $replyChartData);
+        $CommentChartData = $this->getChartData(Comment::class);
+        $activityChart = array_map(fn ($f, $r) => $f + $r, $forumChartData, $CommentChartData);
 
         $forumViews = Forum::where('user_id', $targetUser->id)->sum('view_count');
         $writingViews = Writing::where('user_id', $targetUser->id)->sum('view_count');

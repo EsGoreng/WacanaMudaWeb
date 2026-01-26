@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\ContentView;
 use App\Models\Forum;
-use App\Models\Reply;
 use App\Models\User;
 use App\Models\Vote;
 use Carbon\Carbon;
@@ -31,14 +30,17 @@ class ForumSeeder extends Seeder
 
             $replyCount = rand(0, 15);
             if ($replyCount > 0) {
-                Reply::factory($replyCount)->make()->each(function ($reply) use ($forum, $users) {
-                    $reply->forum_id = $forum->id;
-                    $reply->user_id = $users->random()->id;
-                    $reply->created_at = $this->randomDateAfter($forum->created_at);
-                    $reply->save();
 
-                    $this->generateVotes($reply, $users);
-                });
+                for ($i = 0; $i < $replyCount; $i++) {
+                    $comment = $forum->comments()->create([
+                        'user_id' => $users->random()->id,
+                        'body' => \Faker\Factory::create('id_ID')->sentence(10),
+                        'parent_id' => null,
+                        'created_at' => $this->randomDateAfter($forum->created_at),
+                        'updated_at' => Carbon::now(),
+                    ]);
+
+                }
             }
 
             $this->generateVotes($forum, $users);

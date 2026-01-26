@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Writings;
 
+use App\Models\Comment;
 use App\Models\ContentView;
 use App\Models\Writing;
-use App\Models\WritingComment;
 use App\Services\BookmarkService;
+use App\Services\CommentService;
 use App\Services\StoryGeneratorService;
 use App\Services\UnsplashService;
 use Filament\Forms\Components\Textarea;
@@ -33,19 +34,15 @@ class Show extends Component implements HasForms
 
     public $parentCommentId = null;
 
-    public $commentBody = '';
-
-    public $replyBody = '';
-
     public $editingBody = '';
 
     public function mount(Writing $writing, BookmarkService $service)
     {
+        $this->writing = $writing;
+
         if (auth()->check()) {
             $this->isBookmarked = $service->isBookmarked(auth()->user(), $this->writing);
         }
-
-        $this->writing = $writing;
 
         if ($this->writing->status !== 'published' && $this->writing->status !== 'Published') {
             abort(404);
@@ -58,8 +55,6 @@ class Show extends Component implements HasForms
         $this->commentForm->fill();
         $this->replyForm->fill();
 
-        $this->writing = $writing;
-
         $this->writing->increment('view_count');
 
         ContentView::create([
@@ -68,23 +63,17 @@ class Show extends Component implements HasForms
         ]);
     }
 
+    public function generateInstagramStory(StoryGeneratorService $service)
+    {
+        return $service->generate($this->writing, 'components.writing.story', 'writing');
+    }
+
     public function toggleBookmark(BookmarkService $service)
     {
         if (! auth()->check()) {
             return redirect()->route('login');
         }
-
         $this->isBookmarked = $service->toggleBookmark(auth()->user(), $this->writing);
-    }
-
-    public function articleInfolist(Schema $schema): Schema
-    {
-        return $schema->record($this->writing);
-    }
-
-    public function generateInstagramStory(StoryGeneratorService $service)
-    {
-        return $service->generate($this->writing, 'components.writing.story', 'writing');
     }
 
     public function toggleLike()
@@ -92,18 +81,13 @@ class Show extends Component implements HasForms
         if (! Auth::check()) {
             return redirect()->route('login');
         }
-
         $this->writing->likes()->toggle(Auth::id());
-
         $this->writing->refresh();
     }
 
     protected function getForms(): array
     {
-        return [
-            'commentForm',
-            'replyForm',
-        ];
+        return ['commentForm', 'replyForm'];
     }
 
     public function commentForm(Schema $form): Schema
@@ -136,7 +120,7 @@ class Show extends Component implements HasForms
             ->statePath('replyData');
     }
 
-    public function createComment()
+    public function createComment(CommentService $service)
     {
         if (! Auth::check()) {
             return redirect()->route('login');
@@ -144,18 +128,13 @@ class Show extends Component implements HasForms
 
         $data = $this->commentForm->getState();
 
-        WritingComment::create([
-            'user_id' => Auth::id(),
-            'writing_id' => $this->writing->writing_id,
-            'body' => $data['comment'],
-            'parent_id' => null,
-        ]);
+        $service->createComment($this->writing, $data['comment']);
 
         $this->commentForm->fill();
         $this->dispatch('comment-posted');
     }
 
-    public function createReply()
+    public function createReply(CommentService $service)
     {
         if (! Auth::check()) {
             return redirect()->route('login');
@@ -163,16 +142,40 @@ class Show extends Component implements HasForms
 
         $data = $this->replyForm->getState();
 
-        WritingComment::create([
-            'user_id' => Auth::id(),
-            'writing_id' => $this->writing->writing_id,
-            'body' => $data['reply'],
-            'parent_id' => $this->parentCommentId,
-        ]);
+        $service->createComment(
+            $this->writing,
+            $data['reply'],
+            $this->parentCommentId
+        );
 
         $this->replyForm->fill();
         $this->parentCommentId = null;
         $this->dispatch('comment-posted');
+    }
+
+    public function updateComment(CommentService $service)
+    {
+        $this->validate([
+            'editingBody' => 'required|min:1|max:1000',
+        ]);
+
+        $comment = Comment::find($this->editingCommentId);
+
+        if ($comment) {
+            $service->updateComment($comment, $this->editingBody, Auth::id());
+        }
+
+        $this->cancelEdit();
+
+    }
+
+    public function deleteComment($commentId, CommentService $service)
+    {
+        $comment = Comment::find($commentId);
+
+        if ($comment) {
+            $service->deleteComment($comment, Auth::user());
+        }
     }
 
     public function setReplyTo($id)
@@ -186,22 +189,9 @@ class Show extends Component implements HasForms
         }
     }
 
-    public function deleteComment($commentId)
-    {
-        $comment = WritingComment::find($commentId);
-        if (! $comment) {
-            return;
-        }
-
-        $user = Auth::user();
-        if ($comment->user_id === $user->id || $user->hasAnyRole(['superadmin', 'admin'])) {
-            $comment->delete();
-        }
-    }
-
     public function editComment($commentId)
     {
-        $comment = WritingComment::find($commentId);
+        $comment = Comment::find($commentId);
 
         if (! $comment || $comment->user_id !== Auth::id()) {
             return;
@@ -209,24 +199,6 @@ class Show extends Component implements HasForms
 
         $this->editingCommentId = $commentId;
         $this->editingBody = $comment->body;
-    }
-
-    public function updateComment()
-    {
-        $this->validate([
-            'editingBody' => 'required|min:1|max:1000',
-        ]);
-
-        $comment = WritingComment::find($this->editingCommentId);
-
-        if ($comment && $comment->user_id === Auth::id()) {
-            $comment->update([
-                'body' => $this->editingBody,
-            ]);
-        }
-
-        $this->cancelEdit();
-        $this->writing->refresh();
     }
 
     public function cancelEdit()
@@ -244,7 +216,7 @@ class Show extends Component implements HasForms
             ->take(3)
             ->get();
 
-        $comments = WritingComment::where('writing_id', $this->writing->writing_id)
+        $comments = $this->writing->comments()
             ->whereNull('parent_id')
             ->with(['user', 'children.user'])
             ->latest()

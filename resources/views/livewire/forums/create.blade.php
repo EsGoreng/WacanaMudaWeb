@@ -1,34 +1,46 @@
-<div x-data="{ expanded: false }" @click.self="expanded = !expanded"
-    class="mx-auto p-0 lg:p-6 bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer group overflow-hidden">
-    <div class="flex items-start gap-4 pointer-events-none">
+<div x-data="{ expanded: false }"
+    class="w-full mx-auto bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all overflow-hidden group">
 
-        <div class="flex-shrink-0 hidden md:block">
-            @php
-                $user = auth()->user();
-                $avatarUrl = $user->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name);
-            @endphp
-            <img src="{{ $avatarUrl }}" alt="{{ $user->name }}" class="h-10 w-10 rounded-full object-cover">
-        </div>
+    <div class="p-4 md:p-6">
+        <div class="flex gap-3 md:gap-4">
 
-        <div class="flex-1 pointer-events-auto">
-
-            <div x-show="!expanded" @click="expanded = true"
-                class="text-zinc-500 py-2 select-none flex flex-rows items-center">
-                <x-bi-chat-left-text class="mr-2" />
-                Click here to open new forum
+            <div class="shrink-0">
+                @php
+                    $user = auth()->user();
+                    $avatarUrl = $user->avatar
+                        ? Storage::url($user->avatar)
+                        : 'https://ui-avatars.com/api/?name=' . urlencode($user->name);
+                @endphp
+                <img src="{{ $avatarUrl }}" alt="{{ $user->name }}"
+                    class="w-8 h-8 md:w-10 md:h-10 mt-1 md:mt-0  rounded-full object-cover ring-2 ring-white dark:ring-zinc-800">
             </div>
 
-            <div x-show="expanded" x-collapse x-cloak @click.stop>
-                <form wire:submit="create">
-                    {{ $this->form }}
+            <div class="flex-1 min-w-0">
+                <div x-show="!expanded" @click="expanded = true" class="cursor-text w-full transition-all duration-200">
 
-                    <div class="flex justify-end mt-4">
-                        <button type="button" @click="expanded = false"
-                            class="text-xs text-zinc-500 hover:text-zinc-700 mr-4">
-                            Cancel
-                        </button>
+                    <div
+                        class="w-full bg-white/60 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-700/50 rounded-lg px-4 py-2.5 md:py-2 text-sm text-zinc-500 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors flex items-center gap-2 shadow-sm">
+                        <x-bi-chat-left-text class="shrink-0 w-4 h-4" />
+                        <span class="truncate">Click here to start a new discussion...</span>
                     </div>
-                </form>
+                </div>
+
+                <div x-show="expanded" x-cloak x-collapse>
+                    <form wire:submit="create">
+                        <div class="mt-1">
+                            {{ $this->form }}
+                        </div>
+
+                        <div class="flex items-center justify-end gap-3 mt-4">
+                            <button type="button" @click="expanded = false"
+                                class="text-xs md:text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300 px-3 py-2 rounded-lg transition-colors">
+                                Cancel
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>

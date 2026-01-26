@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\ContentView;
 use App\Models\User;
 use App\Models\Writing;
-use App\Models\WritingComment;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
@@ -74,10 +73,10 @@ class WritingSeeder extends Seeder
 
                 $commentCount = rand(0, 8);
                 for ($k = 0; $k < $commentCount; $k++) {
-                    WritingComment::create([
+                    $writing->comments()->create([
                         'user_id' => $users->random()->id,
-                        'writing_id' => $writing->writing_id,
                         'body' => $faker->sentence(mt_rand(5, 20)),
+                        'parent_id' => null,
                         'created_at' => $this->randomDateAfter($writing->created_at),
                         'updated_at' => Carbon::now(),
                     ]);

@@ -48,13 +48,6 @@ return new class extends Migration
             $table->unique(['user_id', 'writing_id']);
         });
 
-        Schema::create('writing_comments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('writing_id')->constrained('writings', 'writing_id')->onDelete('cascade');
-            $table->text('body');
-            $table->timestamps();
-        });
     }
 
     /**
@@ -64,6 +57,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('writings');
         Schema::dropIfExists('writing_likes');
-        Schema::dropIfExists('writing_comments');
     }
 };

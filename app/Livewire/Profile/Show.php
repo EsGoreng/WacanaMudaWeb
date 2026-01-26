@@ -122,7 +122,10 @@ class Show extends Component implements HasActions, HasForms
                         ->where('is_anonymous', false);
                 })
                 ->paginate(3),
-            'forums' => $this->user->forums()->latest()->paginate(3),
+            'forums' => $this->user->forums()
+                ->latest()
+                ->withCount('comments')
+                ->paginate(3),
 
             'bookmarkedWritings' => $bookmarkService->getBookmarkedWritings($this->user),
             'bookmarkedForums' => $bookmarkService->getBookmarkedForums($this->user),

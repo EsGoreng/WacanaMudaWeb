@@ -73,6 +73,7 @@ class BookmarkService
             $q->where('user_id', $user->id);
         })
             ->with(['user', 'category'])
+            ->withCount('comments')
             ->latest()
             ->paginate(5, ['*'], 'forumsPage');
     }

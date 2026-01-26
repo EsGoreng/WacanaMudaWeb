@@ -118,7 +118,7 @@ class Index extends Component
     {
         $query = Forum::query()
             ->with(['user', 'category', 'votes'])
-            ->withCount(['replies', 'votes']);
+            ->withCount(['comments', 'votes']);
 
         if (! empty($this->search)) {
             $query->where(function ($q) {
@@ -146,7 +146,7 @@ class Index extends Component
                 $query->orderByDesc('view_count');
                 break;
             case 'most_replied':
-                $query->orderByDesc('replies_count');
+                $query->orderByDesc('comments_count');
                 break;
             default:
                 $query->latest();

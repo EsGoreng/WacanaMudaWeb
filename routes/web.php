@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['guest'])->group(function () {});
 
 Route::view('/', 'pages.welcome')->name('welcome');
-Route::view('/home', 'pages.welcome')->name('home');
+Route::view('/home', 'pages.home')->name('home');
 
 Route::get('/profile/{user:username}', Profile\Show::class)->name('profile.show');
 

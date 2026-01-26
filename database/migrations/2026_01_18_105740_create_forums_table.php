@@ -26,18 +26,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('replies', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('forum_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('parent_id')
-                ->nullable()
-                ->constrained('replies')
-                ->cascadeOnDelete();
-            $table->text('body');
-            $table->timestamps();
-        });
-
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
@@ -54,7 +42,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('votes');
-        Schema::dropIfExists('replies');
         Schema::dropIfExists('forums');
     }
 };
