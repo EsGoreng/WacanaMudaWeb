@@ -77,6 +77,18 @@
                         <div
                             class="flex items-center gap-1 md:gap-4 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 text-sm font-medium overflow-x-auto">
 
+                            <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-500 dark:text-zinc-400 font-medium text-sm group shrink-0 cursor-default"
+                                title="Total Views">
+                                <x-bi-eye
+                                    class="w-5 h-5 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
+                                <span
+                                    class="hidden sm:inline group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">{{ $forum->view_count }}
+                                    Views</span>
+                                <span class="sm:hidden">{{ $forum->view_count }}</span>
+                            </div>
+
+                            <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
+
                             <button wire:click="generateInstagramStory" wire:loading.attr="disabled"
                                 class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400 font-medium text-sm group shrink-0">
                                 <svg wire:loading wire:target="generateInstagramStory"

@@ -60,6 +60,11 @@
             </div>
 
             <div class="flex items-center gap-3 text-xs text-gray-500">
+                <div class="flex items-center gap-1" title="Views">
+                    <x-bi-eye />
+                    <span>{{ $writing->view_count }}</span>
+                </div>
+
                 <div class="flex items-center gap-1" title="Likes">
                     <x-bi-heart-fill class="text-red-500 bg-red-50 dark:bg-red-900/20" />
                     <span>{{ $writing->likes_count ?? $writing->likes()->count() }}</span>

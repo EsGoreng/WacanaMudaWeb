@@ -59,28 +59,18 @@
                 <div
                     class="flex items-center gap-1 sm:gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-medium ml-auto sm:ml-0">
 
+                    <div class="flex items-center gap-1.5 px-2 py-1.5 sm:px-2.5 sm:py-2.5 rounded-lg transition-colors cursor-default hover:bg-zinc-100 dark:hover:bg-white/5"
+                        title="Views">
+                        <x-bi-eye class="w-4 h-4" />
+                        <span class="text-xs sm:text-sm">{{ $forum->view_count }}</span>
+                    </div>
+
+                    <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
+
                     <button
                         class="flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-white/5 px-2 py-1.5 sm:px-2.5 sm:py-2.5 rounded-lg transition-colors">
                         <x-bi-chat-left-text class="w-4 h-4" />
                         <span class="text-xs sm:text-sm">{{ $forum->comments_count }}</span>
-                    </button>
-
-                    <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
-
-                    <button x-data="{ copied: false }"
-                        @click.prevent="navigator.clipboard.writeText('{{ route('forum.show', $forum->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                        class="flex items-center gap-1.5 px-2 py-1.5 sm:px-2.5 sm:py-2.5 rounded-lg transition-colors"
-                        :class="copied ? 'bg-green-500/10 text-green-500' :
-                            'hover:bg-zinc-100 dark:hover:bg-white/5 text-zinc-500 dark:text-zinc-400'"
-                        title="Copy Link">
-
-                        <template x-if="!copied">
-                            <x-bi-link class="w-4 h-4" />
-                        </template>
-
-                        <template x-if="copied">
-                            <x-bi-check2 class="w-4 h-4" />
-                        </template>
                     </button>
 
                     <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>

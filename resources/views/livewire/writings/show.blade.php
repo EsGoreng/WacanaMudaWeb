@@ -143,6 +143,13 @@
                     </div>
 
                     <div class="flex items-center space-x-3 text-zinc-500">
+
+                        <div class="p-2 rounded-lg flex items-center gap-2 text-zinc-500 cursor-default"
+                            title="Total Views">
+                            <x-bi-eye class="w-5 h-5" />
+                            <span class="text-xs font-bold">{{ $writing->view_count }}</span>
+                        </div>
+
                         <button wire:click="generateInstagramStory"
                             class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors flex items-center justify-center"
                             title="Download Instastory">
