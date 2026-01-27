@@ -6,7 +6,6 @@ use App\Livewire\BaseDataTable;
 use App\Models\Category;
 use App\Models\Event;
 use Filament\Actions\Action;
-use Filament\Actions\BulkAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -14,7 +13,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ViewField;
-use Filament\Notifications\Collection;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -154,18 +152,7 @@ class Table extends BaseDataTable
                             ->send();
                     })])
             ->bulkActions([
-                BulkAction::make('delete')
-                    ->label('Delete Selected')
-                    ->icon('heroicon-o-trash')
-                    ->requiresConfirmation()
-                    ->action(function (Collection $records) {
-                        $records->each->delete();
-
-                        Notification::make()
-                            ->title('Event deleted successfully')
-                            ->danger()
-                            ->send();
-                    }),
+                $this->getBulkDeleteAction(),
             ]);
     }
 

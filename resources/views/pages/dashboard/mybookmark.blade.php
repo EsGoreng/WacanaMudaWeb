@@ -38,7 +38,7 @@
                 <div
                     class="bg-white dark:bg-zinc-800/50 p-12 rounded-xl text-center border border-zinc-200 dark:border-zinc-800">
                     <x-bi-pen class="w-12 h-12 mx-auto mb-3 opacity-50 text-zinc-400" />
-                    <p class="text-zinc-500 dark:text-zinc-400 font-medium">Belum ada tulisan yang disimpan.</p>
+                    <p class="text-zinc-500 dark:text-zinc-400 font-medium">There are no posts saved yet.</p>
                 </div>
             @endif
         </div>
@@ -59,7 +59,7 @@
                 <div
                     class="bg-white dark:bg-zinc-800/50 p-12 rounded-xl text-center border border-zinc-200 dark:border-zinc-800">
                     <x-bi-chat-left-text class="w-12 h-12 mx-auto mb-3 opacity-50 text-zinc-400" />
-                    <p class="text-zinc-500 dark:text-zinc-400 font-medium">Belum ada diskusi forum yang disimpan.
+                    <p class="text-zinc-500 dark:text-zinc-400 font-medium">There are no forum saved yet.
                     </p>
                 </div>
             @endif
@@ -81,7 +81,8 @@
                 <div
                     class="bg-white dark:bg-zinc-800/50 p-12 rounded-xl text-center border border-zinc-200 dark:border-zinc-800">
                     <x-bi-calendar-event class="w-12 h-12 mx-auto mb-3 opacity-50 text-zinc-400" />
-                    <p class="text-zinc-500 dark:text-zinc-400 font-medium">Belum ada acara yang disimpan.</p>
+                    <p class="text-zinc-500 dark:text-zinc-400 font-medium">
+                        There are no saved events yet.</p>
                 </div>
             @endif
         </div>

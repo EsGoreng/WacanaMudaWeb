@@ -95,12 +95,6 @@
                 <p class="text-sm md:text-base dark:text-zinc-400 text-zinc-700 mb-6 max-w-md mx-auto">
                     We couldn't find any writings matching your criteria. Try adjusting your filters.
                 </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <button wire:click="clearFilters"
-                        class="w-full sm:w-auto px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl font-medium transition-colors text-sm">
-                        Clear All Filters
-                    </button>
-                </div>
             </div>
         @else
             <div class="flex flex-col gap-4">

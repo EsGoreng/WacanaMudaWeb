@@ -23,7 +23,6 @@
                     <p class="text-sm md:text-base dark:text-zinc-400 text-zinc-700 mb-6 max-w-md mx-auto">
                         We couldn't find any events matching your criteria.
                     </p>
-                    <button wire:click="clearFilters" class="text-blue-600 hover:underline">Clear all filters</button>
                 </div>
             @endforelse
         </div>

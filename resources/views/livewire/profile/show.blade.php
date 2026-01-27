@@ -39,7 +39,7 @@
                                 class="bg-white dark:bg-zinc-800/50 p-8 rounded-xl text-center border border-zinc-200 dark:border-zinc-800">
                                 <div class="text-zinc-500 dark:text-zinc-400">
                                     <x-bi-pen class="w-12 h-12 mx-auto mb-3 opacity-50" />
-                                    <p class="font-medium">Belum ada tulisan yang dipublikasikan.</p>
+                                    <p class="font-medium">There are no published articles yet.</p>
                                 </div>
                             </div>
                         @endforelse
@@ -59,7 +59,7 @@
                                 class="bg-white dark:bg-zinc-800/50 p-8 rounded-xl text-center border border-zinc-200 dark:border-zinc-800">
                                 <div class="text-zinc-500 dark:text-zinc-400">
                                     <x-bi-chat-left-text class="w-12 h-12 mx-auto mb-3 opacity-50" />
-                                    <p class="font-medium">Belum ada diskusi forum yang dibuat.</p>
+                                    <p class="font-medium">There are no forum created yet.</p>
                                 </div>
                             </div>
                         @endforelse

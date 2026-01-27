@@ -13,8 +13,18 @@ class Table extends BaseDataTable
 {
     public function table(FilamentTable $table): FilamentTable
     {
+        $user = auth()->user();
+
         return $table
-            ->query(Forum::query()->where('user_id', auth()->id()))
+            ->striped()
+            ->heading('Manage Forums')
+            ->description('This table allows you to manage all of your created forums efficiently.')
+            ->query(Forum::query()
+                ->when(
+                    ! $user->hasRole('superadmin'),
+                    fn ($query) => $query->where('user_id', $user->id)
+                )
+            )
             ->columns([
                 TextColumn::make('title')
                     ->searchable()
