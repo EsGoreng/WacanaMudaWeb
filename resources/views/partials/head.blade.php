@@ -16,47 +16,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
 
-<script src="https://unpkg.com/lenis@1.3.17/dist/lenis.min.js"></script>
-<script>
-    function initLenis() {
-        if (window.lenis) {
-            window.lenis.destroy();
-        }
-
-        const scrollElement = document.getElementById('main-content') || window;
-
-        window.lenis = new Lenis({
-            wrapper: scrollElement === window ? window : scrollElement,
-            content: scrollElement === window ? document.documentElement : scrollElement.querySelector('div'),
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            smoothTouch: false,
-            touchMultiplier: 2,
-        });
-
-        function raf(time) {
-            window.lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-    }
-
-    document.addEventListener('DOMContentLoaded', initLenis);
-
-    document.addEventListener('livewire:navigated', () => {
-        initLenis();
-        // Reset scroll position saat navigasi halaman
-        window.lenis.scrollTo(0, {
-            immediate: true
-        });
-    });
-</script>
-
 @filamentStyles
-@vite('resources/css/app.css')
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 @fluxAppearance
