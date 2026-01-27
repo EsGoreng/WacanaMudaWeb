@@ -130,9 +130,10 @@
                     class="block w-full rounded-lg border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 py-2 pl-3 pr-10 text-sm text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-sm">
                     <option value="latest">Latest First</option>
                     <option value="oldest">Oldest First</option>
+                    <option value="popular">Most Viewed</option>
+                    <option value="most_liked">Most Liked</option>
                     <option value="title_asc">Title (A-Z)</option>
                     <option value="title_desc">Title (Z-A)</option>
-                    <option value="popular">Most Popular</option>
                 </select>
             </div>
 

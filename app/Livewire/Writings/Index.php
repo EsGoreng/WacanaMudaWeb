@@ -67,7 +67,7 @@ class Index extends Component
     public function posts()
     {
         $query = Writing::with(['user', 'categories'])
-            ->withCount(['likes', 'contentViews'])
+            ->withCount(['likes'])
             ->where('status', 'Published')
             ->whereNotNull('published_at');
 
@@ -106,7 +106,7 @@ class Index extends Component
                 break;
 
             case 'popular':
-                $query->orderByDesc('content_views_count');
+                $query->orderByDesc('view_count');
                 break;
 
             case 'most_liked':

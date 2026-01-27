@@ -62,7 +62,7 @@
             <div class="flex items-center gap-3 text-xs text-gray-500">
                 <div class="flex items-center gap-1" title="Views">
                     <x-bi-eye />
-                    <span>{{ $writing->view_count }}</span>
+                    <span>{{ $writing->view_count ?? 0 }}</span>
                 </div>
 
                 <div class="flex items-center gap-1" title="Likes">

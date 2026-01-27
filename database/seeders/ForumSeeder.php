@@ -48,6 +48,7 @@ class ForumSeeder extends Seeder
 
             $this->generateVotes($forum, $users);
 
+            // --- PERBAIKAN DI SINI ---
             $viewCount = rand(5, 150);
             $viewData = [];
             for ($v = 0; $v < $viewCount; $v++) {
@@ -60,6 +61,9 @@ class ForumSeeder extends Seeder
             }
             if (! empty($viewData)) {
                 ContentView::insert($viewData);
+
+                // UPDATE: Sinkronisasi jumlah view ke tabel forums
+                $forum->update(['view_count' => $viewCount]);
             }
         });
     }

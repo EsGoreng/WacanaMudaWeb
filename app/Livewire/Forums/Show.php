@@ -61,10 +61,6 @@ class Show extends Component implements HasForms
             $this->isBookmarked = $bookmarkService->isBookmarked(auth()->user(), $this->forum);
         }
 
-        ContentView::create([
-            'viewable_type' => Forum::class,
-            'viewable_id' => $this->forum->id,
-        ]);
         $this->calculateScore();
 
         $this->commentForm->fill();

@@ -41,9 +41,7 @@
 
     <div class="lg:col-span-1">
         <div class="sticky top-8 space-y-6">
-            <x-filter.sidebar title="Search Forums" :categories="$this->categories" :selectedCategories="$selectedCategories" count-key="forums_count"
-                {{-- Pastikan ini sesuai dengan nama relasi count di controller --}}>
-                {{-- Slot: Isi Filter Spesifik Forum --}}
+            <x-filter.sidebar title="Search Forums" :categories="$this->categories" :selectedCategories="$selectedCategories" count-key="forums_count">
                 <div>
                     <label class="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                         Sort By

@@ -58,6 +58,8 @@ class WritingSeeder extends Seeder
                 'published_at' => $publishedAt,
                 'created_at' => $publishedAt ?? Carbon::now(),
                 'updated_at' => Carbon::now(),
+                // Default view_count 0 saat create
+                'view_count' => 0,
             ]);
 
             $randomCategories = $categoryIds->random(mt_rand(1, 3));
@@ -82,6 +84,7 @@ class WritingSeeder extends Seeder
                     ]);
                 }
 
+                // --- PERBAIKAN DI SINI ---
                 $viewCount = rand(10, 200);
                 $viewData = [];
                 for ($v = 0; $v < $viewCount; $v++) {
@@ -95,6 +98,8 @@ class WritingSeeder extends Seeder
 
                 if (! empty($viewData)) {
                     ContentView::insert($viewData);
+
+                    $writing->update(['view_count' => $viewCount]);
                 }
             }
         }

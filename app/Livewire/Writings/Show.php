@@ -72,11 +72,6 @@ class Show extends Component implements HasForms
 
             Session::put($sessionKey, true);
         }
-
-        ContentView::create([
-            'viewable_type' => Writing::class,
-            'viewable_id' => $this->writing->writing_id,
-        ]);
     }
 
     public function generateInstagramStory(StoryGeneratorService $service)
