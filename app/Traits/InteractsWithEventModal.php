@@ -16,8 +16,13 @@ trait InteractsWithEventModal
 
     public function updatedIsModalOpen($value)
     {
+
         if (! $value) {
             $this->reset('selectedEvent');
+
+            if (property_exists($this, 'urlEventId')) {
+                $this->urlEventId = '';
+            }
         }
     }
 
@@ -32,12 +37,21 @@ trait InteractsWithEventModal
         }
 
         $this->isModalOpen = true;
+
+        if (property_exists($this, 'urlEventId')) {
+            $this->urlEventId = $eventId;
+        }
     }
 
     public function closeModal()
     {
         $this->isModalOpen = false;
+
         $this->reset('selectedEvent');
+
+        if (property_exists($this, 'urlEventId')) {
+            $this->urlEventId = '';
+        }
     }
 
     public function toggleBookmark(BookmarkService $service)

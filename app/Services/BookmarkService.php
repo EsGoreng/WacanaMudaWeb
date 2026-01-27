@@ -72,7 +72,7 @@ class BookmarkService
         return \App\Models\Forum::whereHas('bookmarks', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         })
-            ->with(['user', 'category'])
+            ->with(['user', 'categories'])
             ->withCount('comments')
             ->latest()
             ->paginate(5, ['*'], 'forumsPage');

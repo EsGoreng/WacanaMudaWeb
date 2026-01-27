@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Services\BookmarkService;
 use App\Services\StoryGeneratorService;
 use App\Traits\InteractsWithEventModal;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,6 +14,16 @@ class Index extends Component
 {
     use InteractsWithEventModal;
     use WithPagination;
+
+    #[Url(as: 'id')]
+    public $urlEventId = '';
+
+    public function mount(BookmarkService $bookmarkService)
+    {
+        if ($this->urlEventId) {
+            $this->openModal($this->urlEventId, $bookmarkService);
+        }
+    }
 
     public function toggleEventBookmark($eventId, BookmarkService $service)
     {

@@ -33,6 +33,11 @@ return new class extends Migration
             $table->string('location_name');
             $table->string('location_address')->nullable();
 
+            $table->boolean('is_online')->default(false);
+            $table->string('meeting_link')->nullable();
+
+            $table->string('register_link')->nullable();
+
             $table->enum('status', ['draft', 'published', 'ongoing', 'canceled', 'ended'])->default('draft');
 
             $table->timestamps();

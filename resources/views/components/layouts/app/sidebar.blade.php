@@ -21,12 +21,13 @@
                 <flux:sidebar.group class="grid">
                     <flux:sidebar.item icon="home" :href="route('home')" :current="request()->routeIs('home')"
                         wire:navigate>
-                        {{ __('Home') }}
+                        Home
                     </flux:sidebar.item>
                     @can(['create posts'])
                         <flux:sidebar.item icon="computer-desktop" :href="route('dashboard')"
-                            :current="request()->routeIs('dashboard*')" wire:navigate>
-                            {{ __('Dashboard') }}
+                            :current="request()->routeIs('dashboard*') && ! request()->routeIs('dashboard.writing.create')"
+                            wire:navigate>
+                            Dashboard
                         </flux:sidebar.item>
                     @endcan
                 </flux:sidebar.group>
@@ -37,31 +38,31 @@
                 <flux:sidebar.group class="grid">
                     <flux:sidebar.item icon="book-open" :href="route('writings')"
                         :current="request()->routeIs('writing*')" wire:navigate>
-                        {{ __('Article & Blog') }}
+                        Article & Blog
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="chat-bubble-left-right" :href="route('forums')"
                         :current="request()->routeIs('forum*')" wire:navigate>
-                        {{ __('Forum') }}
+                        Forum
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="calendar" :href="route('events')" :current="request()->routeIs('event*')"
                         wire:navigate>
-                        {{ __('Event') }}
+                        Event
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
             <flux:spacer />
-            @auth
+            @can(['create posts'])
                 <flux:separator variant="subtle" />
                 <flux:heading>Action</flux:heading>
                 <flux:sidebar.group>
                     <flux:sidebar.nav>
-                        <flux:sidebar.item icon="pencil" :href="route('dashboard.writing')" wire:navigate>
-                            {{ __('Create Writing') }}
+                        <flux:sidebar.item icon="pencil" :href="route('dashboard.writing.create')" wire:navigate>
+                            Create Writing
                         </flux:sidebar.item>
                     </flux:sidebar.nav>
                 </flux:sidebar.group>
-            @endauth
+            @endcan
 
             <flux:separator variant="subtle" />
             <flux:heading>Contact us</flux:heading>
@@ -71,7 +72,7 @@
                         <x-slot:icon>
                             <x-bi-instagram />
                         </x-slot:icon>
-                        {{ __('Instagram') }}
+                        Instagram
                     </flux:sidebar.item>
                 </flux:sidebar.nav>
             </flux:sidebar.group>
@@ -120,17 +121,17 @@
                     @auth
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
                             class="w-full cursor-pointer">
-                            {{ __('Log Out') }}
+                            Log Out
                         </flux:menu.item>
                     @endauth
                     @guest
                         <flux:menu.item as="button" type="submit" href="{{ route('login') }}"
                             icon="arrow-left-start-on-rectangle" class="w-full cursor-pointer">
-                            {{ __('Log In') }}
+                            Log In
                         </flux:menu.item>
                         <flux:menu.item as="button" type="submit" href="{{ route('register') }}"
                             icon="clipboard-document-list" class="w-full cursor-pointer">
-                            {{ __('Register') }}
+                            Register
                         </flux:menu.item>
                     @endguest
                 </flux:menu>

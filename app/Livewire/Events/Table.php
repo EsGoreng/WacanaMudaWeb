@@ -12,10 +12,12 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ViewField;
 use Filament\Notifications\Collection;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
@@ -91,6 +93,8 @@ class Table extends BaseDataTable
 
                         unset($data['categories']);
 
+                        $data['register_link'] = $data['register_link'] ?? null;
+
                         $event = Event::create($data);
 
                         $event->categories()->sync($categoryIds);
@@ -123,6 +127,8 @@ class Table extends BaseDataTable
                                 $data['banner_image'] = $record->banner_image;
                             }
                         }
+
+                        $data['register_link'] = $data['register_link'] ?? null;
 
                         $record->update($data);
 
@@ -179,6 +185,7 @@ class Table extends BaseDataTable
 
                         TextInput::make('slug')
                             ->disabled()
+                            ->hidden()
                             ->dehydrated()
                             ->required()
                             ->unique(Event::class, 'slug', ignoreRecord: true),
@@ -195,19 +202,55 @@ class Table extends BaseDataTable
                             ->default('draft')
                             ->required(),
 
-                        RichEditor::make('description')
-                            ->label('Description')
-                            ->columnSpanFull()
-                            ->fileAttachmentsDirectory('events/attachments')
-                            ->fileAttachmentsVisibility('public')
-                            ->extraInputAttributes(['style' => 'min-height: 20rem;'])
-                            ->required(),
+                        Toggle::make('has_register_link')
+                            ->label('Use Registration Link')
+                            ->helperText('Enable this if users need to register via an external link.')
+                            ->live()
+                            ->dehydrated(false)
+                            ->default(false)
+                            ->afterStateHydrated(fn ($component, $record) => $component->state($record?->register_link !== null)),
+
+                        Toggle::make('is_online')
+                            ->label('Online Event?')
+                            ->onColor('success')
+                            ->offColor('gray')
+                            ->live()
+                            ->default(false),
+
+                        TextInput::make('meeting_link')
+                            ->label('Meeting Link / Join URL')
+                            ->placeholder('https://zoom.us/j/...')
+                            ->url()
+                            ->visible(fn (Get $get) => $get('is_online'))
+                            ->required(fn (Get $get) => $get('is_online'))
+                            ->columnSpanFull(),
+
+                        TextInput::make('location_name')
+                            ->label(fn (Get $get) => $get('is_online') ? 'Platform Name (e.g. Zoom)' : 'Location Name')
+                            ->placeholder(fn (Get $get) => $get('is_online') ? 'Zoom, Google Meet, etc.' : 'Gedung Serbaguna...')
+                            ->required()
+                            ->columnSpanFull(),
+
+                        TextInput::make('location_address')
+                            ->label('Location Address')
+                            ->required(fn (Get $get) => ! $get('is_online'))
+                            ->hidden(fn (Get $get) => $get('is_online'))
+                            ->columnSpanFull(),
+
+                        TextInput::make('register_link')
+                            ->label('Register Link')
+                            ->placeholder('https://...')
+                            ->hint('Can be left blank if there is no need for a link')
+                            ->visible(fn (Get $get) => $get('has_register_link'))
+                            ->required(fn (Get $get) => $get('has_register_link'))
+                            ->url()
+                            ->nullable()
+                            ->columnSpanFull(),
 
                         Select::make('categories')
                             ->label('Categories')
                             ->multiple()
                             ->options(Category::all()->pluck('name', 'category_id'))
-                            // ->relationship('categories', 'name')
                             ->preload()
                             ->searchable()
                             ->columnSpanFull(),
@@ -223,12 +266,12 @@ class Table extends BaseDataTable
                             ->after('start_time')
                             ->required(),
 
-                        TextInput::make('location_name')
-                            ->label('Location Name')
-                            ->required(),
-
-                        TextInput::make('location_address')
-                            ->label('Location Address')
+                        RichEditor::make('description')
+                            ->label('Description')
+                            ->columnSpanFull()
+                            ->fileAttachmentsDirectory('events/attachments')
+                            ->fileAttachmentsVisibility('public')
+                            ->extraInputAttributes(['style' => 'min-height: 20rem;'])
                             ->required(),
 
                         TextInput::make('image_credit')->hidden(),

@@ -2,21 +2,25 @@
     <x-slot:secondary_nav>
         @can(['create posts'])
             <flux:navbar.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('My Profile') }}
+                My Profile
             </flux:navbar.item>
             <flux:navbar.item :href="route('dashboard.writing')" :current="request()->routeIs('dashboard.writing')"
                 wire:navigate>
-                {{ __('Activities') }}
+                Activities
+            </flux:navbar.item>
+            <flux:navbar.item :href="route('dashboard.mybookmark')" :current="request()->routeIs('dashboard.mybookmark')"
+                wire:navigate>
+                My Bookmark
             </flux:navbar.item>
         @endcan
         @can(['validate members', 'manage events'])
             <flux:navbar.item :href="route('dashboard.event')" :current="request()->routeIs('dashboard.event')"
                 wire:navigate>
-                {{ __('Event') }}
+                Event
             </flux:navbar.item>
             <flux:navbar.item :href="route('dashboard.member')" :current="request()->routeIs('dashboard.member')"
                 wire:navigate>
-                {{ __('Validate Member') }}
+                User Management
             </flux:navbar.item>
         @endcan
 

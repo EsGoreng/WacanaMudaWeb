@@ -14,7 +14,7 @@
             {{ $events->links() }}
         </div>
 
-        <x-event.event-modal wire:model="isModalOpen" maxWidth="5xl">
+        <x-event.event-modal wire:model.live="isModalOpen" maxWidth="5xl">
             @if ($selectedEvent)
                 <x-event.detail :event="$selectedEvent" :is-bookmarked="$isBookmarked" />
             @endif

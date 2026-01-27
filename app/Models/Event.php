@@ -28,6 +28,9 @@ class Event extends Model
         'unsplash_download_location',
         'location_name',
         'location_address',
+        'is_online',
+        'meeting_link',
+        'register_link',
         'status',
     ];
 
@@ -37,6 +40,7 @@ class Event extends Model
     protected $casts = [
         'start_time' => 'datetime',
         'end_time' => 'datetime',
+        'is_online' => 'boolean',
     ];
 
     public function statusColor(): Attribute

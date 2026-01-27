@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Forums;
+use App\Livewire\MyBookmarks;
 use App\Livewire\Profile;
 use App\Livewire\Writings;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::view('/dashboard/writing', 'pages.dashboard.writing')->name('dashboard.writing');
     Route::get('/dashboard/writing/create', Writings\Form::class)->name('dashboard.writing.create');
     Route::get('/dashboard/writing/{writing}/edit', Writings\Form::class)->name('dashboard.writing.edit');
+
+    Route::get('/dashboard/mybookmark', MyBookmarks\Index::class)->name('dashboard.mybookmark');
 
     Route::view('/dashboard/event', 'pages.dashboard.event')->name('dashboard.event');
     Route::view('/dashboard/member', 'pages.dashboard.member')->name('dashboard.member');

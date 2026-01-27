@@ -7,9 +7,9 @@
 
 <div
     class="relative w-full max-w-sm rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-white group">
-    <div class="relative h-[500px] w-full">
+    <div class="relative h-[550px] w-full">
         <img alt="{{ $event->title }}"
-            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             src="{{ str_starts_with($event->banner_image, 'http') ? $event->banner_image : asset('storage/' . $event->banner_image) }}" />
 
         <button wire:click.stop="generateInstagramStory({{ $event->id }})" wire:loading.attr="disabled"
@@ -108,7 +108,7 @@
                     </h2>
                 </div>
 
-                <p class="text-white/90 text-sm leading-relaxed mb-5 font-medium pr-2 drop-shadow-sm">
+                <p class="text-white/90 text-sm leading-relaxed mb-5 font-medium pr-2 drop-shadow-sm break-all">
                     {{ \Illuminate\Support\Str::limit(strip_tags($event->description ?? ''), 80) }}
                 </p>
 
