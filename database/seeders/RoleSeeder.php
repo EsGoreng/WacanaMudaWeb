@@ -58,7 +58,6 @@ class RoleSeeder extends Seeder
             'name' => 'Super Admin',
             'username' => 'superadmin',
             'password' => Hash::make('password123'),
-            'is_active' => true,
             'phone' => '6281234567890',
         ]);
         $superadmin->assignRole('superadmin');
@@ -66,12 +65,21 @@ class RoleSeeder extends Seeder
         $admin = User::firstOrCreate([
             'email' => 'admin@wacanamuda.id',
         ], [
-            'name' => 'Anonymous Admin',
+            'name' => 'Admin',
             'username' => 'admin1',
             'password' => Hash::make('password123'),
-            'is_active' => true,
             'phone' => '6281200000000',
         ]);
         $admin->assignRole('admin');
+
+        $member = User::firstOrCreate([
+            'email' => 'member@wacanamuda.id',
+        ], [
+            'name' => 'Member',
+            'username' => 'member1',
+            'password' => Hash::make('password123'),
+            'phone' => '6281200000000',
+        ]);
+        $member->assignRole('member');
     }
 }

@@ -26,7 +26,6 @@ return new class extends Migration
 
             $table->string('instagram_url')->nullable();
             $table->string('linkedin_url')->nullable();
-            $table->boolean('is_active')->default(false);
 
             $table->integer('followers_count')->default(0);
             $table->integer('following_count')->default(0);
