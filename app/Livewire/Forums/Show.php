@@ -13,6 +13,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -43,7 +44,18 @@ class Show extends Component implements HasForms
     {
         $this->forum = $forum;
         $this->forum->load(['user', 'categories', 'votes']);
-        $this->forum->increment('view_count');
+        $sessionKey = 'viewed_forum_'.$this->forum->id;
+
+        if (! Session::has($sessionKey)) {
+            ContentView::create([
+                'viewable_type' => Forum::class,
+                'viewable_id' => $this->forum->id,
+            ]);
+
+            $this->forum->increment('view_count');
+
+            Session::put($sessionKey, true);
+        }
 
         if (auth()->check()) {
             $this->isBookmarked = $bookmarkService->isBookmarked(auth()->user(), $this->forum);

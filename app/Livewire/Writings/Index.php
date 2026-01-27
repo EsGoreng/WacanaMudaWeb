@@ -4,6 +4,7 @@ namespace App\Livewire\Writings;
 
 use App\Models\Category;
 use App\Models\Writing;
+use App\Traits\InteractsWithContentFilters;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -11,53 +12,14 @@ use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use InteractsWithContentFilters;
     use WithPagination;
-
-    #[Url(except: '')]
-    public $search = '';
-
-    #[Url(except: [])]
-    public $selectedCategories = [];
-
-    #[Url(except: 'latest')]
-    public $sortBy = 'latest';
-
-    #[Url(except: '')]
-    public $dateFrom = '';
-
-    #[Url(except: '')]
-    public $dateTo = '';
 
     #[Url(except: '')]
     public $readingTimeMin = '';
 
     #[Url(except: '')]
     public $readingTimeMax = '';
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingSelectedCategories()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingSortBy()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingDateFrom()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingDateTo()
-    {
-        $this->resetPage();
-    }
 
     public function updatingReadingTimeMin()
     {
@@ -69,6 +31,11 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function resetCustomFilters()
+    {
+        $this->reset(['readingTimeMin', 'readingTimeMax']);
+    }
+
     public function mount()
     {
         $categorySlug = request()->query('category');
@@ -78,7 +45,6 @@ class Index extends Component
 
             if ($category) {
                 $this->selectedCategories = [$category->category_id];
-                $this->category = '';
             }
         }
     }
@@ -100,8 +66,8 @@ class Index extends Component
     #[Computed]
     public function posts()
     {
-
         $query = Writing::with(['user', 'categories'])
+            ->withCount(['likes', 'contentViews'])
             ->where('status', 'Published')
             ->whereNotNull('published_at');
 
@@ -116,7 +82,6 @@ class Index extends Component
 
         if (! empty($this->selectedCategories) && count($this->selectedCategories) > 0) {
             $query->whereHas('categories', function ($q) {
-
                 $q->whereIn('categories.category_id', $this->selectedCategories);
             });
         }
@@ -139,21 +104,28 @@ class Index extends Component
             case 'oldest':
                 $query->oldest('published_at');
                 break;
+
+            case 'popular':
+                $query->orderByDesc('content_views_count');
+                break;
+
+            case 'most_liked':
+                $query->orderByDesc('likes_count');
+                break;
+
             case 'title_asc':
                 $query->orderBy('title', 'asc');
                 break;
             case 'title_desc':
                 $query->orderBy('title', 'desc');
                 break;
-            case 'popular':
-                $query->latest('published_at'); // Revisi
-                break;
+
             default:
                 $query->latest('published_at');
                 break;
         }
 
-        return $query->paginate(9);
+        return $query->paginate(6);
     }
 
     #[Computed]

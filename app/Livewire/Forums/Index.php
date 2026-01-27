@@ -5,77 +5,16 @@ namespace App\Livewire\Forums;
 use App\Models\Category;
 use App\Models\Forum;
 use App\Services\BookmarkService;
+use App\Traits\InteractsWithContentFilters;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use InteractsWithContentFilters;
     use WithPagination;
-
-    #[Url(except: [])]
-    public $selectedCategories = [];
-
-    #[Url(except: '')]
-    public $search = '';
-
-    #[Url(except: null)]
-    public $selectedCategory = null;
-
-    #[Url(except: 'latest')]
-    public $sortBy = 'latest';
-
-    #[Url(except: null)]
-    public $dateFrom = null;
-
-    #[Url(except: null)]
-    public $dateTo = null;
-
-    public function toggleBookmark($forumId, BookmarkService $service)
-    {
-        if (! Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $forum = Forum::find($forumId);
-
-        if ($forum) {
-            $service->toggleBookmark(Auth::user(), $forum);
-        }
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingSelectedCategories()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingSortBy()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingDateFrom()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingDateTo()
-    {
-        $this->resetPage();
-    }
-
-    public function clearFilters()
-    {
-        $this->reset(['search', 'selectedCategories', 'sortBy', 'dateFrom', 'dateTo']);
-        $this->resetPage();
-    }
 
     #[Computed]
     public function categories()
@@ -83,11 +22,23 @@ class Index extends Component
         return Category::whereHas('forums')
             ->withCount(['forums' => function ($q) {
                 if (! empty($this->search)) {
-                    $q->where('title', 'like', '%'.$this->search.'%');
+                    $q->where('title', 'like', '%'.$this->search.'%')
+                        ->orWhere('body', 'like', '%'.$this->search.'%');
                 }
             }])
             ->orderBy('name')
             ->get();
+    }
+
+    public function toggleBookmark($forumId, BookmarkService $service)
+    {
+        if (! Auth::check()) {
+            return redirect()->route('login');
+        }
+        $forum = Forum::find($forumId);
+        if ($forum) {
+            $service->toggleBookmark(Auth::user(), $forum);
+        }
     }
 
     public function vote($forumId, $type)
@@ -97,7 +48,6 @@ class Index extends Component
         }
 
         $forum = Forum::find($forumId);
-
         if (! $forum) {
             return;
         }
@@ -106,14 +56,11 @@ class Index extends Component
 
         if ($existingVote) {
             if ($existingVote->type === $type) {
-
                 $existingVote->delete();
             } else {
-
                 $existingVote->update(['type' => $type]);
             }
         } else {
-
             $forum->votes()->create([
                 'user_id' => Auth::id(),
                 'type' => $type,

@@ -14,6 +14,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -59,7 +60,18 @@ class Show extends Component implements HasForms
         $this->commentForm->fill();
         $this->replyForm->fill();
 
-        $this->writing->increment('view_count');
+        $sessionKey = 'viewed_writing_'.$this->writing->writing_id;
+
+        if (! Session::has($sessionKey)) {
+            ContentView::create([
+                'viewable_type' => Writing::class,
+                'viewable_id' => $this->writing->writing_id,
+            ]);
+
+            $this->writing->increment('view_count');
+
+            Session::put($sessionKey, true);
+        }
 
         ContentView::create([
             'viewable_type' => Writing::class,

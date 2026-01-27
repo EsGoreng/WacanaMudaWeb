@@ -30,6 +30,11 @@ class Forum extends Model
         );
     }
 
+    public function contentViews(): MorphMany
+    {
+        return $this->morphMany(ContentView::class, 'viewable');
+    }
+
     public function votes(): MorphMany
     {
         return $this->morphMany(Vote::class, 'votable');

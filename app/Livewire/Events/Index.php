@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Event;
 use App\Services\BookmarkService;
 use App\Services\StoryGeneratorService;
+use App\Traits\InteractsWithContentFilters;
 use App\Traits\InteractsWithEventModal;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
@@ -14,26 +15,12 @@ use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use InteractsWithContentFilters;
     use InteractsWithEventModal;
     use WithPagination;
 
     #[Url(as: 'id')]
     public $urlEventId = '';
-
-    #[Url(except: [])]
-    public $selectedCategories = [];
-
-    #[Url(except: '')]
-    public $search = '';
-
-    #[Url(except: 'latest')]
-    public $sortBy = 'latest';
-
-    #[Url(except: null)]
-    public $dateFrom = null;
-
-    #[Url(except: null)]
-    public $dateTo = null;
 
     public function mount(BookmarkService $bookmarkService)
     {
@@ -42,57 +29,25 @@ class Index extends Component
         }
     }
 
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingSelectedCategories()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingSortBy()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingDateFrom()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingDateTo()
-    {
-        $this->resetPage();
-    }
-
-    public function clearFilters()
-    {
-        $this->reset(['search', 'selectedCategories', 'sortBy', 'dateFrom', 'dateTo']);
-        $this->resetPage();
-    }
-
     #[Computed]
     public function categories()
     {
+        // ... Logika kategori tetap sama ...
         $validStatuses = ['published', 'ongoing', 'ended', 'canceled'];
 
         return Category::whereHas('events', function ($query) use ($validStatuses) {
             $query->whereIn('status', $validStatuses);
-        })
-            ->withCount(['events' => function ($query) use ($validStatuses) {
-                $query->whereIn('status', $validStatuses);
-                if (! empty($this->search)) {
-                    $query->where(function ($q) {
-                        $q->where('title', 'like', '%'.$this->search.'%')
-                            ->orWhere('description', 'like', '%'.$this->search.'%')
-                            ->orWhere('location_name', 'like', '%'.$this->search.'%');
-                    });
-                }
-            }])
-            ->orderBy('name')
-            ->get();
+        })->withCount(['events' => function ($query) use ($validStatuses) {
+            // ... logic count ...
+            $query->whereIn('status', $validStatuses);
+            if (! empty($this->search)) {
+                $query->where(function ($q) {
+                    $q->where('title', 'like', '%'.$this->search.'%')
+                        ->orWhere('description', 'like', '%'.$this->search.'%')
+                        ->orWhere('location_name', 'like', '%'.$this->search.'%');
+                });
+            }
+        }])->orderBy('name')->get();
     }
 
     public function toggleEventBookmark($eventId, BookmarkService $service)
