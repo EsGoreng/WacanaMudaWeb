@@ -89,81 +89,87 @@
             @endguest
         </flux:sidebar>
 
-        <div class="min-h-screen flex flex-1 flex-col overflow-x-hidden" x-data="{
+        <div class="min-h-screen flex flex-1 flex-col overflow-hidden min-w-0" x-data="{
             showTopBar: true,
-            lastScrollY: 0,
-            handleScroll(e) {
-                const currentScrollY = e.target.scrollTop;
+            lastScroll: 0,
+            init() {
+                window.addEventListener('lenis-scroll', (e) => {
+                    const currentScroll = e.detail.scroll;
+                    const direction = e.detail.direction;
         
-                if (currentScrollY > this.lastScrollY && currentScrollY > 10) {
-                    this.showTopBar = false;
-                } else {
-                    this.showTopBar = true;
-                }
-                this.lastScrollY = currentScrollY;
+                    if (direction === 1 && currentScroll > 50) {
+                        this.showTopBar = false;
+                    } else {
+                        this.showTopBar = true;
+                    }
+                    this.lastScroll = currentScroll;
+                });
             }
         }">
             <flux:header
                 class="sticky top-0 z-10 block! border-b border-zinc-200 dark:border-slate-800 bg-zinc-100/90 dark:bg-zinc-900/80 backdrop-blur-sm transition-all duration-300">
 
-                <div class="overflow-hidden pl-1 transition-all duration-300 ease-in-out lg:!h-auto lg:!opacity-100"
-    @if (isset($secondary_nav)) :class="showTopBar ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'" @endif>
-                    <flux:navbar class="lg:hidden w-full pt-3">
+                <div class="pl-1 transition-all duration-300 ease-in-out lg:!h-auto lg:!opacity-100 lg:hidden">
+                    <flux:navbar class="w-full pt-3">
                         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
                         <flux:spacer />
                         <flux:dropdown position="top" align="end">
-                            <flux:profile class="flex-row-reverse" :initials="auth()->user() ? auth()->user()->initials() : 'G'" :avatar="auth()->user() && auth()->user()->avatar
-                    ? Storage::url(auth()->user()->avatar)
-                    : (auth()->user()
-                        ? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name)
-                        : null)" />
-                <flux:menu>
-                    @auth
-                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
-                            class="w-full cursor-pointer">
-                            Log Out
-                        </flux:menu.item>
-                    @endauth
-                    @guest
-                        <flux:menu.item as="button" type="submit" href="{{ route('login') }}"
-                            icon="arrow-left-start-on-rectangle" class="w-full cursor-pointer">
-                            Log In
-                        </flux:menu.item>
-                        <flux:menu.item as="button" type="submit" href="{{ route('register') }}"
-                            icon="clipboard-document-list" class="w-full cursor-pointer">
-                            Register
-                        </flux:menu.item>
-                    @endguest
-                </flux:menu>
-                </flux:dropdown>
-                </flux:navbar>
+                            <flux:profile class="flex-row-reverse" :initials="auth()->user() ? auth()->user()->initials() : 'G'"
+                                :avatar="auth()->user() && auth()->user()->avatar
+                                    ? Storage::url(auth()->user()->avatar)
+                                    : (auth()->user()
+                                        ? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name)
+                                        : null)" />
+                            <flux:menu>
+                                @auth
+                                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
+                                        class="w-full cursor-pointer">
+                                        Log Out
+                                    </flux:menu.item>
+                                @endauth
+                                @guest
+                                    <flux:menu.item as="button" type="submit" href="{{ route('login') }}"
+                                        icon="arrow-left-start-on-rectangle" class="w-full cursor-pointer">
+                                        Log In
+                                    </flux:menu.item>
+                                    <flux:menu.item as="button" type="submit" href="{{ route('register') }}"
+                                        icon="clipboard-document-list" class="w-full cursor-pointer">
+                                        Register
+                                    </flux:menu.item>
+                                @endguest
+                            </flux:menu>
+                        </flux:dropdown>
+                    </flux:navbar>
+                </div>
+
+                {{-- Secondary Nav: INI YANG DI-HIDE SAAT SCROLL --}}
+                @if (isset($secondary_nav))
+                    <div class="overflow-hidden transition-all duration-500 ease-in-out border-t border-zinc-200/50 dark:border-zinc-700/50"
+                        x-bind:class="showTopBar ? 'max-h-24 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-2'">
+                        <flux:navbar scrollable class="py-2">
+                            {{ $secondary_nav }}
+                        </flux:navbar>
+                    </div>
+                @endif
+
+            </flux:header>
+
+            {{-- Main: Added w-full, max-w-full, relative, and explicit overflow-x-hidden --}}
+            <main id="main-content" class="flex-1 overflow-y-auto overflow-x-hidden outline-none relative w-full">
+                <div
+                    class="min-h-full w-full max-w-full bg-white dark:bg-transparent dark:bg-gradient-to-b dark:from-page-gray-950/50 dark:to-page-gray-950/90">
+                    {{ $slot }}
+                </div>
+                @include('components.footer')
+            </main>
+
         </div>
+    </div>
+    @livewire('notifications')
 
-        @if (isset($secondary_nav))
-            <flux:navbar scrollable class="py-2">
-                {{ $secondary_nav }}
-            </flux:navbar>
-        @endif
+    @filamentScripts
+    @vite('resources/js/app.js')
+    @fluxScripts
+</body>
 
-        </flux:header>
-
-        <main id="main-content" class="flex-1 overflow-y-auto overflow-x-hidden" @scroll="handleScroll($event)">
-            <div
-                class="min-h-full bg-white dark:bg-transparent dark:bg-gradient-to-b dark:from-page-gray-950/50 dark:to-page-gray-950/90">
-                {{ $slot }}
-            </div>
-
-
-            @include('components.footer')
-        </main>
-
-        </div>
-        </div>
-        @livewire('notifications')
-
-        @filamentScripts
-        @vite('resources/js/app.js')
-        @fluxScripts
-    </body>
-
-    </html>
+</html>

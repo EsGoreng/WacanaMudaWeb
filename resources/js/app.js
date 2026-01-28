@@ -1,47 +1,51 @@
 import Lenis from "lenis";
 
-// Inisialisasi Singleton (Hanya dibuat sekali)
 let lenis;
 
 const initLenis = () => {
-    // Cek apakah sudah ada instance, jika belum buat baru
-    if (!lenis) {
-        const scrollElement = document.getElementById("main-content") || window;
+    const wrapperElement = document.querySelector("#main-content") || window;
+    const contentElement =
+        document.querySelector("#main-content > div") ||
+        document.documentElement;
 
-        lenis = new Lenis({
-            wrapper: scrollElement === window ? window : scrollElement,
-            // content logic biasanya otomatis dideteksi Lenis, tapi bisa diexplicitkan
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: "vertical",
-            gestureDirection: "vertical",
-            smooth: true,
-            smoothTouch: false,
-            touchMultiplier: 2,
-        });
+    if (lenis) lenis.destroy();
 
-        // Loop Animation Frame cukup dijalankan sekali saja
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+    lenis = new Lenis({
+        wrapper: wrapperElement === window ? window : wrapperElement,
+        content: contentElement,
+        duration: 1.0,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        touchMultiplier: 1.5,
+    });
+
+    lenis.on("scroll", ({ scroll, direction }) => {
+        window.dispatchEvent(
+            new CustomEvent("lenis-scroll", {
+                detail: {
+                    scroll: scroll,
+                    direction: direction,
+                },
+            }),
+        );
+    });
+
+    function raf(time) {
+        lenis.raf(time);
         requestAnimationFrame(raf);
     }
+    requestAnimationFrame(raf);
 };
 
-// Jalankan saat load awal
-initLenis();
+document.addEventListener("DOMContentLoaded", initLenis);
 
-// Hook ke Livewire
 document.addEventListener("livewire:navigated", () => {
-    // Jangan destroy & create ulang (berat di memori).
-    // Cukup reset scroll ke atas.
-    if (lenis) {
-        lenis.scrollTo(0, { immediate: true });
+    initLenis();
+    lenis.scrollTo(0, { immediate: true });
 
-        // Opsional: panggil resize jika konten berubah drastis dan Lenis tidak mendeteksi otomatis
-        // lenis.resize();
-    } else {
-        initLenis(); // Fallback jika navigasi pertama via ajax
-    }
+    setTimeout(() => {
+        if (lenis) lenis.resize();
+    }, 100);
 });
+
+window.lenis = lenis;
