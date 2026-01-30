@@ -4,11 +4,18 @@ use App\Livewire\Forums;
 use App\Livewire\MyBookmarks;
 use App\Livewire\Profile;
 use App\Livewire\Writings;
+use App\Models\LandingPageSetting;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {});
 
-Route::view('/', 'pages.welcome')->name('welcome');
+Route::get('/', function () {
+    $landingPage = LandingPageSetting::firstOrCreate([], [
+        'content' => [],
+    ]);
+
+    return view('pages.welcome', compact('landingPage'));
+})->name('welcome');
 Route::view('/home', 'pages.home')->name('home');
 
 Route::get('/profile/{user:username}', Profile\Show::class)->name('profile.show');
@@ -32,6 +39,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::view('/dashboard/event', 'pages.dashboard.event')->name('dashboard.event');
     Route::view('/dashboard/member', 'pages.dashboard.member')->name('dashboard.member');
+    Route::view('/dashboard/landingpage', 'pages.dashboard.landingsetting')->name('dashboard.landingsetting');
 });
 
 require __DIR__.'/settings.php';

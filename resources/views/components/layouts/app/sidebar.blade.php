@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark" >
 
 <head>
     @include('partials.head')
 </head>
 
-<body class="bg-white dark:bg-zinc-900 overflow-x-hidden">
+<body class="bg-white dark:bg-zinc-900">
 
     <x-star-background />
 
-    <div class="flex h-screen overflow-hidden relative">
+    <div class="flex h-screen relative">
         <flux:sidebar sticky collapsible="mobile"
             class="border-e border-zinc-200 from-slate-100 to-slate-200 dark:border-slate-800 antialiased bg-linear-to-t dark:bg-linear-to-t dark:from-slate-950 dark:to-slate-900">
             <flux:sidebar.header>
-                <x-app-logo :sidebar="true" href="{{ route('home') }}" wire:navigate />
+                <x-app-logo :sidebar="true" href="{{ route('welcome') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
 
@@ -89,7 +89,7 @@
             @endguest
         </flux:sidebar>
 
-        <div class="min-h-screen flex flex-1 flex-col overflow-hidden min-w-0" x-data="{
+        <div class="min-h-screen flex flex-1 flex-col min-w-0" x-data="{
             showTopBar: true,
             lastScroll: 0,
             init() {
@@ -142,7 +142,6 @@
                     </flux:navbar>
                 </div>
 
-                {{-- Secondary Nav: INI YANG DI-HIDE SAAT SCROLL --}}
                 @if (isset($secondary_nav))
                     <div class="overflow-hidden transition-all duration-500 ease-in-out border-t border-zinc-200/50 dark:border-zinc-700/50"
                         x-bind:class="showTopBar ? 'max-h-24 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-2'">
@@ -154,8 +153,7 @@
 
             </flux:header>
 
-            {{-- Main: Added w-full, max-w-full, relative, and explicit overflow-x-hidden --}}
-            <main id="main-content" class="flex-1 overflow-y-auto overflow-x-hidden outline-none relative w-full">
+            <main id="main-content" class="flex-1 overflow-y-auto outline-none relative w-full max-w-full min-w-0">
                 <div
                     class="min-h-full w-full max-w-full bg-white dark:bg-transparent dark:bg-gradient-to-b dark:from-page-gray-950/50 dark:to-page-gray-950/90">
                     {{ $slot }}

@@ -2,7 +2,7 @@
 
 @php
     $user = auth()->user();
-    $isBookmarked = $event->isBookmarkedBy($user);
+    $isBookmarked = $user ? $event->isBookmarkedBy($user) : false;
 @endphp
 
 <div
@@ -113,7 +113,7 @@
                 </p>
 
                 <div class="flex flex-wrap gap-2 mb-6">
-                    @forelse($event->categories as $category)
+                    @forelse($event->categories as $category) 
                         <div
                             class="{{ $category->badgeClass }} backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 text-xs font-medium text-white cursor-default">
                             {{ $category->name }}

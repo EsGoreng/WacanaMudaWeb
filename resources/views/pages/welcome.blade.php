@@ -3,7 +3,7 @@
 
 <head>
     @include('partials.head')
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    @livewireStyles
     <style>
         .section-card {
             border-radius: 1rem;
@@ -94,22 +94,19 @@
                     class="container mx-auto px-6 md:px-12 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 h-full items-center">
                     <div class="max-w-3xl">
                         <div class="flex items-center gap-2 mb-6 text-xs tracking-[0.2em] text-zinc-400 uppercase">
-                            <span>[ Dari <b>Kata</b> ke <b>Karya</b> ]</span>
+                            <span>[ Wacana Muda Berkarya ]</span>
                             <span class="material-symbols-outlined text-sm">arrow_forward</span>
                         </div>
                         <h1 class="font-display text-6xl md:text-8xl font-bold leading-[0.9] tracking-tight mb-8">
-                            WACANA MUDA<br />
-                            <span class="text-accent">BERKARYA</span>
+                            DARI KATA<br />KE
+                            <span class="text-accent">KARYA</span>
                         </h1>
                         <p
                             class="text-zinc-400 max-w-lg text-sm md:text-base leading-relaxed mb-10 border-l border-zinc-700 pl-4">
                             Wacana Muda Berkarya bukan tempat bagi yang
                             sudah sempurna, tapi ruang aman dan nyaman
-                            untuk yang mau belajar bersama. Yang ingin
+                            untuk yang mau belajar bersama, Yang ingin
                             bersuara, berkarya, dan merasa.
-                            Maka dari itu mari melangkah Bersama. Entah lewat
-                            Ruang Kata, Jejak Karya, atau Jelajah Rasa. Jalanmu
-                            bisa dimulai dari sini.
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <a class="group bg-white text-black px-6 py-3 rounded text-xs font-bold uppercase tracking-wider hover:bg-slate-200 transition-colors flex items-center gap-2"
@@ -126,142 +123,220 @@
                 </div>
             </header>
 
-            <section id="about"
-                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
-                <div class="container mx-auto px-6 md:px-12 relative z-10">
-                    <div
-                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
-                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
-                        <span>[ Lorem Ipsum ]</span>
-                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
-                    </div>
-                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                        ABOUT US
-                    </h2>
-                </div>
-            </section>
+            @foreach ($landingPage->content ?? [] as $block)
+                @php $data = $block['data']; @endphp
 
-            <section id="pillars" class="section-card py-24 bg-slate-50 dark:bg-slate-900 text-black dark:text-white">
-                <div class="container mx-auto px-6 md:px-12">
-                    <div class="flex justify-between items-end mb-16">
-                        <h2
-                            class="font-display text-5xl md:text-6xl font-medium tracking-tight flex items-center gap-4">
-                            3 Pillars
-                            <span class="material-symbols-outlined text-4xl transform rotate-45">arrow_downward</span>
-                        </h2>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div
-                            class="group relative bg-white dark:bg-slate-800 rounded-lg p-8 h-[400px] flex flex-col justify-end overflow-hidden hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-zinc-200/50 dark:border-zinc-700">
-                            <h3 class="text-xl font-display font-medium relative z-10">WMB Ruang Kata</h3>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 relative z-10">A place where
-                                <b>ideas</b> are born, discourse is <b>nurtured</b>, and reason is <b>tested</b>.
-                                Here, we converse <b>not to win</b>, but <b>to understand</b>.
-                                Discussions, forums, and a space for exchanging perspectives.
-                                This is a space for words that truly matter.
+                    <x-landing-section :id="$block['type']">
+                        @if ($block['type'] === 'about_section')
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+
+                            <div class="order-2 md:order-1 flex flex-col text-left">
+                                @if (isset($data['section_title']))
+                                    <h2
+                                        class="font-serif italic text-5xl md:text-7xl font-bold  tracking-tighter mb-6 leading-[0.9]">
+                                        {{ $data['section_title'] }}
+                                    </h2>
+                                @endif
+
+                                <div
+                                    class="prose dark:prose-invert max-w-none text-lg text-zinc-600 dark:text-zinc-400">
+                                    {!! $data['content'] !!}
+                                </div>
+                            </div>
+
+                            <div class="order-1 md:order-2 relative">
+                                <div
+                                    class="relative rounded-2xl overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800 group">
+                                    @if (isset($data['image']))
+                                        <img src="{{ Storage::url($data['image']) }}" alt="About Us"
+                                            class="w-full h-full object-cover aspect-video transform transition-transform duration-700 group-hover:scale-105">
+                                    @else
+                                        <div
+                                            class="bg-zinc-200 dark:bg-zinc-800 h-64 w-full flex items-center justify-center text-zinc-500">
+                                            No Image Uploaded
+                                        </div>
+                                    @endif
+
+                                </div>
+
+                            </div>
+
                         </div>
+                        @endif
 
-                        <div
-                            class="group relative bg-white dark:bg-slate-800 rounded-lg p-8 h-[400px] flex flex-col justify-end overflow-hidden hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-zinc-200/50 dark:border-zinc-700">
-                            <h3 class="text-xl font-display font-medium relative z-10">WMB Jelajah Rasa</h3>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 relative z-10"><b>Exploring</b>
-                                places, time, and emotions that are <b>not written in books</b>. We wander not only to
-                                see, but also to <b>feel</b> and <b>understand</b>. Every step is a lesson,
-                                and every journey deserves to be <b>reflected upon</b>.
-                            </p>
-                        </div>
-                        <div
-                            class="group relative bg-white dark:bg-slate-800 rounded-lg p-8 h-[400px] flex flex-col justify-end overflow-hidden hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-zinc-200/50 dark:border-zinc-700">
-                            <h3 class="text-xl font-display font-medium relative z-10">WMB Jejak Karya</h3>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-2 relative z-10">Not content with <b>
-                                    merely having a voice</b>, we also seek to
-                                <b>touch reality</b>. Through action and service, we learn to leave
-                                meaningful footprints in our surroundings.
-                                Because <b>work is not about scale, but about impact</b>.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                        @if ($block['type'] === 'vision_mission_section')
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mt-12 text-left">
+                                
+                                <div class="group relative p-8 rounded-3xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 overflow-hidden">
+                                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12 translate-x-4 -translate-y-4">
+                                        <span class="material-symbols-outlined text-9xl">visibility</span>
+                                    </div>
+                                    
+                                    <div class="relative z-10">
+                                        <h3 class="font-display text-3xl font-bold mb-6 text-accent">VISI</h3>
+                                        <p class="text-xl md:text-2xl font-serif italic leading-relaxed text-zinc-700 dark:text-zinc-200">
+                                            &ldquo;{{ $data['vision'] ?? '...' }}&rdquo;
+                                        </p>
+                                    </div>
+                                </div>
 
-            <section id="activities"
-                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
-                <div class="container mx-auto px-6 md:px-12 relative z-10">
-                    <div
-                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
-                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
-                        <span>[ Lorem Ipsum ]</span>
-                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
-                    </div>
-                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                        WHAT ARE WE DOING
-                    </h2>
-                </div>
-            </section>
+                                <div class="group relative p-8 rounded-3xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 overflow-hidden">
+                                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12 translate-x-4 -translate-y-4">
+                                        <span class="material-symbols-outlined text-9xl">target</span>
+                                    </div>
 
-            <section
-                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
-                <div class="container mx-auto px-6 md:px-12 relative z-10">
-                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                        PRINCIPLE
-                    </h2>
-                </div>
-            </section>
+                                    <div class="relative z-10">
+                                        <h3 class="font-display text-3xl font-bold mb-6 text-accent">MISI</h3>
+                                        @if(isset($data['missions']) && count($data['missions']) > 0)
+                                            <ul class="space-y-4">
+                                                @foreach($data['missions'] as $mission)
+                                                    <li class="flex items-start gap-4">
+                                                        <span class="mt-1 flex-shrink-0 bg-accent/10 text-accent rounded-full p-1">
+                                                            <span class="material-symbols-outlined text-sm font-bold">check</span>
+                                                        </span>
+                                                        <span class="text-lg text-zinc-700 dark:text-zinc-300 leading-snug">
+                                                            {{ $mission['value'] ?? '' }}
+                                                        </span>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        @endif
 
-            <section
-                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
-                <div class="container mx-auto px-6 md:px-12 relative z-10">
-                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                        LATEST WRITING CONTENT
-                    </h2>
-                </div>
-            </section>
+                        @if ($block['type'] === 'pillars_section')
+                            @if (isset($data['items']))
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                                    @foreach ($data['items'] as $pillar)
+                                        <div
+                                            class="p-6 rounded-2xl bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10">
+                                            <h3 class="font-display text-xl font-bold mb-3">{{ $pillar['title'] ?? '' }}
+                                            </h3>
+                                            <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                                                {{ $pillar['description'] ?? '' }}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        @endif
 
-            <section id="events"
-                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
-                <div class="container mx-auto px-6 md:px-12 relative z-10">
-                    <div
-                        class="flex justify-center items-center gap-2 mb-8 text-xs tracking-[0.2em] text-zinc-400 uppercase">
-                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
-                        <span>[ Lorem Ipsum ]</span>
-                        <span class="material-symbols-outlined text-sm">arrow_downward</span>
-                    </div>
-                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                        OUR EVENT
-                    </h2>
-                </div>
-            </section>
+                        @if ($block['type'] === 'gallery_section')        
+                                <div class="mb-12">
+                                    @if (isset($data['section_title']))
+                                        <h2 class="font-display text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-[0.9]">
+                                            {{ $data['section_title'] }}
+                                        </h2>
+                                    @endif
+                                    @if (isset($data['section_subtitle']))
+                                        <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto text-lg">
+                                            {{ $data['section_subtitle'] }}
+                                        </p>
+                                    @endif
+                                </div>
 
-            <section
-                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
-                <div class="container mx-auto px-6 md:px-12 relative z-10">
-                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                        FOUNDER
-                    </h2>
-                </div>
-            </section>
+                                @if (isset($data['items']) && count($data['items']) > 0)
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[300px]">
+                                        @foreach ($data['items'] as $item)
+                                            @php
+                                                $extension = pathinfo($item['media_file'], PATHINFO_EXTENSION);
+                                                $isVideo = in_array(strtolower($extension), ['mp4', 'mov', 'webm']);
+                                                $isWide = $item['is_wide'] ?? false;
+                                            @endphp
 
-            <section
-                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
-                <div class="container mx-auto px-6 md:px-12 relative z-10">
-                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                        FEEDBACK
-                    </h2>
-                </div>
-            </section>
+                                            <div class="group relative overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-white/5 {{ $isWide ? 'md:col-span-2' : 'md:col-span-1' }}">
+                                                
+                                                @if ($isVideo)
+                                                    <video class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 " 
+                                                        autoplay muted loop playsinline>
+                                                        <source src="{{ Storage::url($item['media_file']) }}" type="video/{{ $extension }}">
+                                                    </video>
+                                                @else
+                                                    <img src="{{ Storage::url($item['media_file']) }}" 
+                                                        alt="{{ $item['caption'] ?? 'Gallery Image' }}"
+                                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                                @endif
 
-            <section
-                class="section-card py-32 bg-slate-50 dark:bg-slate-900 text-black dark:text-white text-center relative overflow-hidden">
-                <div class="container mx-auto px-6 md:px-12 relative z-10">
-                    <h2 class="font-display text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                        EXPLORE APP
-                    </h2>
-                </div>
-            </section>
+                                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:backdrop-blur-xs rounded-2xl transition-opacity duration-300 flex items-end p-6">
+                                                    @if(!empty($item['caption']))
+                                                        <p class="text-white font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                                            {{ $item['caption'] }}
+                                                        </p>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="p-12 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl text-zinc-500">
+                                        Belum ada dokumentasi yang diunggah.
+                                    </div>
+                                @endif
+
+                        @endif
+
+                        @if ($block['type'] === 'latest_writings_section')
+                            {{-- Header Section --}}
+                            <div class="mb-12 text-center md:text-left">
+                                @if (isset($data['section_title']))
+                                    <h2 class="font-display text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-[0.9]">
+                                        {{ $data['section_title'] }}
+                                    </h2>
+                                @endif
+                                @if (isset($data['section_subtitle']))
+                                    <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl text-lg">
+                                        {{ $data['section_subtitle'] }}
+                                    </p>
+                                @endif
+                            </div>
+
+                            {{-- Query Data Tulisan --}}
+                            @php
+                                $writings = \App\Models\Writing::query()
+                                    ->where('status', 'Published')
+                                    ->latest('published_at')
+                                    ->take($data['limit'] ?? 4) // Default saya naikkan ke 4 agar genap di layout 2 kolom
+                                    ->with(['user', 'categories']) 
+                                    ->withCount(['likes', 'comments']) // Penting: Hitung jumlah like & komen untuk card
+                                    ->get();
+                            @endphp
+
+                            @if($writings->count() > 0)
+                                {{-- Menggunakan grid 1 kolom (Mobile) sampai 2 kolom (Desktop Besar) karena Card berbentuk Horizontal --}}
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 text-left">
+                                    @foreach($writings as $writing)
+                                        <x-writing.card :writing="$writing" />
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="py-12 text-center border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl">
+                                    <p class="text-zinc-500 italic">Belum ada tulisan terbaru.</p>
+                                </div>
+                            @endif
+                                
+                            {{-- Button Action --}}
+                            <div class="mt-12 flex justify-center">
+                                <a href="{{ route('writings') }}" class="group bg-zinc-900 dark:bg-white text-white dark:text-black px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-accent hover:text-white dark:hover:bg-accent dark:hover:text-white transition-all flex items-center gap-2">
+                                    Lihat Semua Artikel
+                                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </a>
+                            </div>
+                        @endif
+
+                        @if ($block['type'] === 'upcoming_events_section')
+                            @livewire('landing-page.upcoming-events', ['data' => $block['data']])
+                        @endif
+
+                    </x-landing-section>
+                
+            @endforeach
 
         </div>
     </div>
     @include('components.footer')
+    @livewireScripts
 </body>
 
 </html>

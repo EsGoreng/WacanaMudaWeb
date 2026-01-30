@@ -22,6 +22,10 @@
                 wire:navigate>
                 User Management
             </flux:navbar.item>
+            <flux:navbar.item :href="route('dashboard.landingsetting')"
+                :current="request()->routeIs('dashboard.landingsetting')" wire:navigate>
+                Landing Page
+            </flux:navbar.item>
         @endcan
 
     </x-slot:secondary_nav>

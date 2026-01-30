@@ -1,7 +1,7 @@
     <footer
         class="p-4 md:p-8 lg:p-10  antialiased bg-linear-to-b from-slate-100 to-slate-300 dark:from-slate-700 dark:to-slate-800">
-        <div class="mx-auto max-w-screen-xl text-center">
-            <div class="flex justify-center mb-4 scale-125">
+        <div class=" text-center">
+            <div class="flex justify-center mb-4 ">
                 <x-app-logo class="text-white dark:text-black" />
             </div>
             <p class="my-6 text-gray-500 dark:text-white">Ruang Kata - Jelajah Rasa - Jejak Karya</p>
