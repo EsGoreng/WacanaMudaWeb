@@ -165,10 +165,9 @@ class Editor extends BaseDataTable
 
                                 Toggle::make('is_visible')->default(true),
                             ]),
-
-                        Block::make('upcoming_events_section')
+                        Block::make('events_section')
                             ->label('Agenda Kegiatan (Events)')
-                            ->icon('heroicon-m-calendar')
+                            ->icon('heroicon-m-calendar-days')
                             ->schema([
                                 TextInput::make('section_title')
                                     ->label('Judul Seksi')
@@ -182,11 +181,14 @@ class Editor extends BaseDataTable
                                 TextInput::make('limit')
                                     ->label('Jumlah Event Ditampilkan')
                                     ->numeric()
-                                    ->default(3)
+                                    ->default(4)
+                                    ->minValue(4)
+                                    ->maxValue(6)
                                     ->required(),
 
                                 Toggle::make('is_visible')->default(true),
                             ]),
+
                     ]),
             ])
             ->statePath('data');

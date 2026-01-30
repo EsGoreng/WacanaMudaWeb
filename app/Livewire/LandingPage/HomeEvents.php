@@ -8,24 +8,15 @@ use App\Services\StoryGeneratorService;
 use App\Traits\InteractsWithEventModal;
 use Livewire\Component;
 
-class UpcomingEvents extends Component
+class HomeEvents extends Component
 {
     use InteractsWithEventModal;
 
-    public $limit = 3;
+    public $data = [];
 
-    public $title = 'AGENDA KEGIATAN';
-
-    public $subtitle = '';
-
-    public $isVisible = true;
-
-    public function mount($data = [])
+    public function mount($data)
     {
-        $this->title = $data['section_title'] ?? 'AGENDA KEGIATAN';
-        $this->subtitle = $data['section_subtitle'] ?? '';
-        $this->limit = $data['limit'] ?? 3;
-        $this->isVisible = $data['is_visible'] ?? true;
+        $this->data = $data;
     }
 
     public function toggleEventBookmark($eventId, BookmarkService $service)
@@ -53,14 +44,14 @@ class UpcomingEvents extends Component
     public function render()
     {
         $events = Event::query()
+            ->with(['categories', 'bookmarks'])
             ->whereIn('status', ['published', 'ongoing'])
-            ->where('end_time', '>=', now())
+            ->whereDate('start_time', '>=', now())
             ->orderBy('start_time', 'asc')
-            ->take($this->limit)
-            ->with(['categories'])
+            ->take($this->data['limit'] ?? 3)
             ->get();
 
-        return view('livewire.landing-page.upcoming-events', [
+        return view('livewire.landing-page.home-events', [
             'events' => $events,
         ]);
     }

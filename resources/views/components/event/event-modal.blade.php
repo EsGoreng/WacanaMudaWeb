@@ -17,16 +17,15 @@
         ][$maxWidth] ?? 'sm:max-w-2xl';
 @endphp
 
+<template x-teleport="body">
 <div x-data="{ show: @entangle($attributes->wire('model')) }" x-show="show" x-on:keydown.escape.window="show = false" style="display: none;"
-    class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    {{-- Backdrop (Background Gelap) --}}
+    class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
         class="fixed inset-0 bg-zinc-500/10 backdrop-blur-sm transition-opacity">
     </div>
 
-    {{-- Modal Panel (Konten Utama) --}}
     <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
         <div x-show="show" x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -40,3 +39,4 @@
         </div>
     </div>
 </div>
+</template>

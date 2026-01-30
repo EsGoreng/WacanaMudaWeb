@@ -278,7 +278,6 @@
                         @endif
 
                         @if ($block['type'] === 'latest_writings_section')
-                            {{-- Header Section --}}
                             <div class="mb-12 text-center md:text-left">
                                 @if (isset($data['section_title']))
                                     <h2 class="font-display text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-[0.9]">
@@ -325,8 +324,12 @@
                             </div>
                         @endif
 
-                        @if ($block['type'] === 'upcoming_events_section')
-                            @livewire('landing-page.upcoming-events', ['data' => $block['data']])
+                        @if ($block['type'] === 'events_section')
+                            @if($data['is_visible'] ?? true)
+                            <div class="text-left">
+                                @livewire('landing-page.home-events', ['data' => $data])
+                            </div>
+                            @endif
                         @endif
 
                     </x-landing-section>
@@ -336,7 +339,6 @@
         </div>
     </div>
     @include('components.footer')
-    @livewireScripts
 </body>
 
 </html>
