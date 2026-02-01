@@ -1,4 +1,4 @@
-<div class="min-h-screen font-sans antialiased transition-colors duration-100 overflow-x-hidden">
+<div class="min-h-screen font-sans antialiased transition-colors duration-100 ">
 
     <div class="relative w-full h-[50px] group">
         <flux:button icon="arrow-left" :href="route('forums')"
@@ -10,7 +10,6 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
         <div class="lg:col-span-8 min-w-0">
-
             <article
                 class="flex flex-col rounded-xl bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm transition-colors duration-200">
                 <div class="flex flex-col sm:flex-row">
@@ -44,10 +43,16 @@
                             </div>
                             <span class="opacity-50">•</span>
                             <span class="truncate max-w-[150px] sm:max-w-none">Posted by
-                                <a href="{{ route('profile.show', $forum->user) }}"
-                                    class="hover:underline cursor-pointer text-zinc-600 dark:text-zinc-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                    {{ $forum->user->name }}
-                                </a>
+                                @if ($forum->is_anonymous)
+                                    <span class="cursor-default text-zinc-600 dark:text-zinc-300 font-medium italic">
+                                        Anonymous
+                                    </span>
+                                @else
+                                    <a href="{{ route('profile.show', $forum->user) }}"
+                                        class="hover:underline cursor-pointer text-zinc-600 dark:text-zinc-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                        {{ $forum->user->name }}
+                                    </a>
+                                @endif
                             </span>
                             <span class="opacity-50">•</span>
                             <span class="whitespace-nowrap">{{ $forum->created_at->diffForHumans() }}</span>
@@ -183,37 +188,56 @@
             </div>
 
         </div>
-
         <aside class="lg:col-span-4 space-y-8 lg:pt-0 sticky top-6 self-start">
+            <div>
+                <h3
+                    class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-white mb-5 border-b border-zinc-200 dark:border-zinc-700 pb-2">
+                    Latest Discussions
+                </h3>
+                <div class="space-y-4">
+                    @forelse($latestForums as $latest)
+                        <div class="flex gap-4 group cursor-pointer backdrop-blur-xs bg-blue-50/80 dark:bg-zinc-900/20 p-4 rounded-xl border border-blue-100 dark:border-zinc-800 transition-all hover:bg-blue-100/80 dark:hover:bg-zinc-900/40"
+                            onclick="window.location='{{ route('forum.show', $latest) }}'">
 
-            <div
-                class="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm transition-colors duration-200">
-                <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-4">Latest Discussions</h3>
-                <div class="flex flex-col gap-4">
-                    @foreach ($latestForums as $latest)
-                        <a class="group" href="{{ route('forums', $latest->slug) }}">
-                            <p
-                                class="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 leading-snug mb-1 line-clamp-2">
-                                {{ $latest->title }}
+
+                            <div class="flex flex-col justify-center min-w-0 flex-1">
+                                <h4
+                                    class="font-bold text-base text-zinc-900 dark:text-white mb-1 leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                                    <a href="{{ route('forum.show', $latest) }}">
+                                        {{ $latest->title }}
+                                    </a>
+                                </h4>
+
+                                <div class="flex items-center gap-3 text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                    <span class="flex items-center gap-1 font-medium">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                            fill="currentColor" class="w-4 h-4 opacity-70">
+                                            <path fill-rule="evenodd"
+                                                d="M10 2c-2.236 0-4.43.18-6.57.524C1.993 2.755 1 4.014 1 5.426v5.148c0 1.413.993 2.67 2.43 2.902.848.137 1.705.248 2.57.331v3.443a.75.75 0 001.28.53l3.58-3.579a42.31 42.31 0 011.14-.092c2.236 0 4.43-.18 6.57-.524 1.437-.232 2.43-1.49 2.43-2.902V5.426c0-1.413-.993-2.67-2.43-2.902A42.35 42.35 0 0010 2z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        {{ $latest->comments_count }} Comments
+                                    </span>
+                                    <span class="text-blue-400 dark:text-blue-600">•</span>
+                                    <span
+                                        class="opacity-75">{{ $latest->created_at->diffForHumans(null, true, true) }}</span>
+                                </div>
+
+                                <a href="{{ route('forum.show', $latest) }}"
+                                    class="text-sm font-medium text-blue-600 dark:text-blue-500 mt-2 hover:underline justify-self-end">
+                                    View discussion
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-center">
+                            <p class="text-zinc-500 dark:text-zinc-400 text-sm italic">No other discussions yet.
                             </p>
-                            <p class="text-xs text-zinc-500">{{ $latest->comments_count ?? 0 }} comments •
-                                {{ $latest->created_at->diffForHumans(null, true, true) }}</p>
-                        </a>
-                    @endforeach
+                        </div>
+                    @endforelse
                 </div>
             </div>
 
-            <div
-                class="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm transition-colors duration-200">
-                <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Topic Rules</h3>
-                <ul class="list-decimal list-inside text-sm text-zinc-700 dark:text-zinc-300 space-y-2">
-                    <li>Be respectful to others.</li>
-                    <li>No self-promotion without context.</li>
-                    <li>Use code blocks for code.</li>
-                </ul>
-            </div>
-
         </aside>
-
     </div>
 </div>

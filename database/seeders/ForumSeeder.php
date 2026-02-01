@@ -24,6 +24,9 @@ class ForumSeeder extends Seeder
         Forum::factory(20)->make()->each(function ($forum) use ($users, $categories) {
             $forum->user_id = $users->random()->id;
 
+            // --- UPDATE: Random set Anonymous (20% chance) ---
+            $forum->is_anonymous = rand(1, 100) <= 20;
+
             $forum->created_at = Carbon::now()->subDays(rand(1, 60));
             $forum->updated_at = Carbon::now();
             $forum->save();
@@ -48,7 +51,6 @@ class ForumSeeder extends Seeder
 
             $this->generateVotes($forum, $users);
 
-            // --- PERBAIKAN DI SINI ---
             $viewCount = rand(5, 150);
             $viewData = [];
             for ($v = 0; $v < $viewCount; $v++) {
@@ -61,8 +63,6 @@ class ForumSeeder extends Seeder
             }
             if (! empty($viewData)) {
                 ContentView::insert($viewData);
-
-                // UPDATE: Sinkronisasi jumlah view ke tabel forums
                 $forum->update(['view_count' => $viewCount]);
             }
         });

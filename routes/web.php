@@ -16,7 +16,6 @@ Route::get('/', function () {
 
     return view('pages.welcome', compact('landingPage'));
 })->name('welcome');
-Route::view('/home', 'pages.home')->name('home');
 
 Route::get('/profile/{user:username}', Profile\Show::class)->name('profile.show');
 

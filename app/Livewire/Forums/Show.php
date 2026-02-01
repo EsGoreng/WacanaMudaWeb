@@ -232,6 +232,7 @@ class Show extends Component implements HasForms
     {
         $latestForums = Forum::where('id', '!=', $this->forum->id)
             ->with('categories', 'user')
+            ->withCount('comments')
             ->latest()
             ->take(3)
             ->get();

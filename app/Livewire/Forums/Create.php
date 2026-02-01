@@ -10,6 +10,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Components\Section;
@@ -63,6 +64,11 @@ class Create extends Component implements HasActions, HasForms
                             ->toolbarButtons([
                                 'bold', 'italic', 'link', 'bulletList', 'codeBlock', 'blockquote',
                             ])
+                            ->columnSpanFull(),
+
+                        Toggle::make('is_anonymous')
+                            ->label('Post as Anonymous')
+                            ->default(false)
                             ->columnSpanFull(),
 
                         View::make('components.submit-button')

@@ -31,10 +31,16 @@
                 </div>
                 <span class="opacity-50">•</span>
                 <span class="truncate max-w-[120px] sm:max-w-none">Posted by
-                    <a href="{{ route('profile.show', $forum->user) }}"
-                        class="hover:underline text-zinc-700 dark:text-zinc-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                        {{ $forum->user->name }}
-                    </a>
+                    @if ($forum->is_anonymous)
+                        <span class="text-zinc-700 dark:text-zinc-300 font-medium italic">
+                            Anonymous
+                        </span>
+                    @else
+                        <a href="{{ route('profile.show', $forum->user) }}"
+                            class="hover:underline text-zinc-700 dark:text-zinc-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            {{ $forum->user->name }}
+                        </a>
+                    @endif
                 </span>
                 <span class="opacity-50">•</span>
                 <span class="whitespace-nowrap">{{ $forum->created_at->diffForHumans() }}</span>

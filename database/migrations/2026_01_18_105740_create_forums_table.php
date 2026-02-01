@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories', 'category_id')->cascadeOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
+            $table->boolean('is_anonymous')->default(false);
             $table->text('body');
             $table->string('link_url')->nullable();
             $table->string('type')->default('discussion');

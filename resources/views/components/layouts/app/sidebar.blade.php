@@ -19,10 +19,6 @@
 
             <flux:sidebar.nav class="gap-3">
                 <flux:sidebar.group class="grid">
-                    <flux:sidebar.item icon="home" :href="route('home')" :current="request()->routeIs('home')"
-                        wire:navigate>
-                        Home
-                    </flux:sidebar.item>
                     @can(['create posts'])
                         <flux:sidebar.item icon="computer-desktop" :href="route('dashboard')"
                             :current="request()->routeIs('dashboard*') && ! request()->routeIs('dashboard.writing.create')"

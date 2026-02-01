@@ -46,7 +46,7 @@
                         <div class="flex gap-2">
                             @if (Route::has('login'))
                                 @auth
-                                    <a href="{{ url('/home') }}"
+                                    <a href="{{ url('/dashboard') }}"
                                         class="bg-white/10 px-4 py-2 rounded-full text-xs font-medium uppercase hover:bg-white hover:text-black transition-colors">Home</a>
                                 @else
                                     <a href="{{ route('login') }}"

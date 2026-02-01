@@ -97,6 +97,7 @@ class Show extends Component implements HasActions, HasForms
     {
         return view('livewire.profile.show', [
             'user' => $this->user,
+
             'writings' => $this->user->writings()
                 ->latest()
                 ->when(Auth::id() !== $this->user->id, function ($query) {
@@ -104,9 +105,13 @@ class Show extends Component implements HasActions, HasForms
                         ->where('is_anonymous', false);
                 })
                 ->paginate(3),
+
             'forums' => $this->user->forums()
                 ->latest()
                 ->withCount('comments')
+                ->when(Auth::id() !== $this->user->id, function ($query) {
+                    $query->where('is_anonymous', false);
+                })
                 ->paginate(3),
         ]);
     }
