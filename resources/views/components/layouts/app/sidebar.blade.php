@@ -23,7 +23,7 @@
                         <flux:sidebar.item icon="computer-desktop" :href="route('dashboard')"
                             :current="request()->routeIs('dashboard*') && ! request()->routeIs('dashboard.writing.create')"
                             wire:navigate>
-                            Dashboarda
+                            Dashboardaa
                         </flux:sidebar.item>
                     @endcan
                 </flux:sidebar.group>
