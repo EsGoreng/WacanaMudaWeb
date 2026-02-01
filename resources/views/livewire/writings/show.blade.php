@@ -261,12 +261,12 @@
                     </div>
                 </div>
 
-                <div
+                {{-- <div
                     class="bg-zinc-100 dark:bg-zinc-800 h-[300px] rounded-xl flex flex-col items-center justify-center text-center p-4">
                     <span
                         class="text-zinc-400 dark:text-zinc-500 text-xs font-semibold uppercase tracking-widest mb-2">Advertisement</span>
                     <div class="w-16 h-1 border-t-2 border-zinc-300 dark:border-zinc-600"></div>
-                </div>
+                </div> --}}
 
             </aside>
         </div>

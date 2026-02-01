@@ -25,6 +25,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'manage events']);
         Permission::create(['name' => 'moderate content']);
         Permission::create(['name' => 'validate members']);
+        Permission::create(['name' => 'setting landingpage']);
 
         Permission::create(['name' => 'manage admins']);
 

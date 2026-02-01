@@ -13,11 +13,13 @@
                 My Bookmark
             </flux:navbar.item>
         @endcan
-        @can(['validate members', 'manage events'])
+        @can(['manage events'])
             <flux:navbar.item :href="route('dashboard.event')" :current="request()->routeIs('dashboard.event')"
                 wire:navigate>
                 Event
             </flux:navbar.item>
+        @endcan
+        @can(['manage events', 'setting landingpage'])
             <flux:navbar.item :href="route('dashboard.member')" :current="request()->routeIs('dashboard.member')"
                 wire:navigate>
                 User Management

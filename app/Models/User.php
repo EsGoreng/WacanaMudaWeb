@@ -77,9 +77,6 @@ class User extends Authenticatable
         return $this->followers()->where('follower_id', $user->id)->exists();
     }
 
-    /**
-     * Get the user's initials
-     */
     public function initials(): string
     {
         return Str::of($this->name)

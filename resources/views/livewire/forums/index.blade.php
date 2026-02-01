@@ -32,11 +32,20 @@
             </div>
 
         </div>
+        {{-- 
+        <div wire:ignore class="mt-6 w-full">
+            <div
+                class="w-full bg-zinc-50 dark:bg-zinc-900/50 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 text-center overflow-hidden">
+                <span class="text-[10px] uppercase tracking-wider text-zinc-400 block mb-2">Advertisement</span>
 
-        <div
-            class="group rounded-xl bg-gradient-to-br h-[200px] mt-6 backdrop-blur-sm from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border border-zinc-200/50 dark:border-zinc-800/50 p-6 transition-all duration-300 flex items-center justify-center text-zinc-400">
-            Space Iklan / Banner
-        </div>
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6872662166970722"
+                    data-ad-slot="1366055602" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+            </div>
+        </div> --}}
     </div>
 
     <div class="lg:col-span-1">
