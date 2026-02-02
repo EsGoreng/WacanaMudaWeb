@@ -5,22 +5,18 @@ namespace App\Services;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use Spatie\Browsershot\Browsershot;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StoryGeneratorService
 {
     /**
      * Generate Instagram Story Screenshot
      */
-    public function generate(?Model $model, string $viewPath, string $dataKey = 'data'): ?StreamedResponse
+    public function generate(?Model $model, string $viewPath, string $dataKey = 'data'): ?string
     {
-
         if (! $model) {
             Notification::make()
-                ->title('Generation Failed')
-                ->body('Data content is not available.')
+                ->title('Failed')
+                ->body('Data not found.')
                 ->danger()
                 ->send();
 
@@ -28,41 +24,19 @@ class StoryGeneratorService
         }
 
         try {
-
-            $html = view($viewPath, [
+            return view($viewPath, [
                 $dataKey => $model,
             ])->render();
 
-            $title = $model->title ?? 'story';
-            $fileName = Str::slug($title).'-story.jpg';
-
-            $screenshot = Browsershot::html($html)
-                ->windowSize(1080, 1920)
-                ->deviceScaleFactor(1)
-                ->noSandbox()
-                ->waitUntilNetworkIdle()
-                ->screenshot();
-
-            Notification::make()
-                ->title('Story generated successfully')
-                ->body('Your file is ready to download.')
-                ->success()
-                ->send();
-
-            return response()->streamDownload(function () use ($screenshot) {
-                echo $screenshot;
-            }, $fileName);
-
         } catch (\Exception $e) {
-
             Notification::make()
-                ->title('Generation Failed')
-                ->body('An error occurred while creating the story image.')
+                ->title('Failed processing Story')
+                ->body('There\'s something wrong.')
                 ->danger()
                 ->persistent()
                 ->send();
 
-            Log::error('Story Generation Error: '.$e->getMessage());
+            Log::error('Story Preparation Error: '.$e->getMessage());
 
             return null;
         }

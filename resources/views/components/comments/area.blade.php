@@ -8,7 +8,7 @@
     </h3>
 
     @auth
-        <div class="mb-8 flex gap-3">
+        <div class="mb-8 flex gap-2 md:gap-3">
             <div class="shrink-0">
                 <img src="{{ auth()->user()->avatar ? Storage::url(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
                     class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700">

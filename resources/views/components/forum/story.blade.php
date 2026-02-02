@@ -7,9 +7,9 @@
     <title>{{ $forum->title }} - Story</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
 
     <script>
@@ -25,7 +25,7 @@
                         "text-muted": "#94a3b8",
                     },
                     fontFamily: {
-                        "display": ["'Plus Jakarta Sans'", "sans-serif"]
+                        "display": ["'Outfit'", "sans-serif"],
                     },
                 },
             },
@@ -62,7 +62,7 @@
 
     <div class="relative flex h-full w-full flex-col items-center z-10">
 
-        <div class="flex justify-center mt-40 mb-24 scale-[2.5]">
+        <div class="flex font-sans justify-center mt-40 mb-24 scale-[2.5]">
             <x-app-logo class="text-white drop-shadow-lg" />
         </div>
 
@@ -71,8 +71,7 @@
 
             <div
                 class="relative h-[400px] w-full bg-gradient-to-br from-sky-900 to-indigo-950 flex items-center justify-center">
-                <div class="opacity-20">
-                    <span class="material-symbols-outlined text-[15rem]">forum</span>
+                <div class="opacity-20 scale-[10]"> <x-bi-chat-quote class="text-white" />
                 </div>
                 <div class="absolute inset-0 bg-gradient-to-t from-card-bg via-transparent to-transparent"></div>
             </div>
@@ -82,7 +81,7 @@
                 <div class="flex flex-wrap gap-3 mb-8">
                     @foreach ($forum->categories as $category)
                         <span
-                            class="{{ $category->badge_class ?? 'bg-blue-600' }} bg-opacity-90 border border-white/10 px-5 py-2 rounded-full text-lg font-bold uppercase tracking-wide shadow-lg">
+                            class="inline-flex items-center justify-center {{ $category->badge_class ?? 'bg-blue-600' }} bg-opacity-90 border border-white/10 px-5 py-2 rounded-full text-lg font-bold uppercase whitespace-nowrap tracking-wide shadow-lg">
                             {{ $category->name }}
                         </span>
                     @endforeach
@@ -95,17 +94,18 @@
                 </div>
 
                 <div class="flex items-center justify-between mb-8">
-                    <span class="text-2xl font-medium text-slate-400">
+                    <span
+                        class="inline-flex items-center text-2xl font-medium text-slate-400 whitespace-nowrap leading-none">
                         {{ $forum->created_at->format('M d, Y') }}
                     </span>
                     <span
-                        class="bg-slate-800 border border-slate-700 text-sky-400 px-6 py-2 rounded-full text-xl font-bold tracking-wide">
+                        class="inline-flex items-center justify-center bg-slate-800 border border-slate-700 text-sky-400 px-6 py-2 rounded-full text-xl font-bold tracking-wide">
                         Discussion
                     </span>
                 </div>
 
                 <h1
-                    class="text-left text-[3.2rem] leading-[1.2] font-extrabold text-white mb-6 tracking-tight drop-shadow-md">
+                    class="font-sans text-left text-[3.2rem] leading-[1.2] font-extrabold text-white mb-6 tracking-tight drop-shadow-md">
                     {{ $forum->title }}
                 </h1>
 
@@ -129,11 +129,11 @@
 
                     <div class="flex items-center gap-6 text-slate-400">
                         <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-3xl">chat_bubble</span>
-                            <span class="text-xl font-bold">{{ $forum->replies()->count() }}</span>
+                            <x-bi-chat-dots class="w-5 h-5" />
+                            <span class="text-xl font-bold">{{ $forum->comments()->count() }}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-3xl">visibility</span>
+                            <x-bi-eye class="w-5 h-5" />
                             <span
                                 class="text-xl font-bold">{{ \Illuminate\Support\Number::abbreviate($forum->view_count) }}</span>
                         </div>

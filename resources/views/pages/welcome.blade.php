@@ -126,8 +126,8 @@
             @foreach ($landingPage->content ?? [] as $block)
                 @php $data = $block['data']; @endphp
 
-                    <x-landing-section :id="$block['type']">
-                        @if ($block['type'] === 'about_section')
+                <x-landing-section :id="$block['type']">
+                    @if ($block['type'] === 'about_section')
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
 
                             <div class="order-2 md:order-1 flex flex-col text-left">
@@ -162,178 +162,196 @@
                             </div>
 
                         </div>
-                        @endif
+                    @endif
 
-                        @if ($block['type'] === 'vision_mission_section')
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mt-12 text-left">
-                                
-                                <div class="group relative p-8 rounded-3xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 overflow-hidden">
-                                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12 translate-x-4 -translate-y-4">
-                                        <span class="material-symbols-outlined text-9xl">visibility</span>
-                                    </div>
-                                    
-                                    <div class="relative z-10">
-                                        <h3 class="font-display text-3xl font-bold mb-6 text-accent">VISI</h3>
-                                        <p class="text-xl md:text-2xl font-serif italic leading-relaxed text-zinc-700 dark:text-zinc-200">
-                                            &ldquo;{{ $data['vision'] ?? '...' }}&rdquo;
-                                        </p>
-                                    </div>
+                    @if ($block['type'] === 'vision_mission_section')
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mt-12 text-left">
+
+                            <div
+                                class="group relative p-8 rounded-3xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 overflow-hidden">
+                                <div
+                                    class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12 translate-x-4 -translate-y-4">
+                                    <span class="material-symbols-outlined text-9xl">visibility</span>
                                 </div>
 
-                                <div class="group relative p-8 rounded-3xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 overflow-hidden">
-                                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12 translate-x-4 -translate-y-4">
-                                        <span class="material-symbols-outlined text-9xl">target</span>
-                                    </div>
-
-                                    <div class="relative z-10">
-                                        <h3 class="font-display text-3xl font-bold mb-6 text-accent">MISI</h3>
-                                        @if(isset($data['missions']) && count($data['missions']) > 0)
-                                            <ul class="space-y-4">
-                                                @foreach($data['missions'] as $mission)
-                                                    <li class="flex items-start gap-4">
-                                                        <span class="mt-1 flex-shrink-0 bg-accent/10 text-accent rounded-full p-1">
-                                                            <span class="material-symbols-outlined text-sm font-bold">check</span>
-                                                        </span>
-                                                        <span class="text-lg text-zinc-700 dark:text-zinc-300 leading-snug">
-                                                            {{ $mission['value'] ?? '' }}
-                                                        </span>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        @endif
-
-                        @if ($block['type'] === 'pillars_section')
-                            @if (isset($data['items']))
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-                                    @foreach ($data['items'] as $pillar)
-                                        <div
-                                            class="p-6 rounded-2xl bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10">
-                                            <h3 class="font-display text-xl font-bold mb-3">{{ $pillar['title'] ?? '' }}
-                                            </h3>
-                                            <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                                                {{ $pillar['description'] ?? '' }}</p>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
-                        @endif
-
-                        @if ($block['type'] === 'gallery_section')        
-                                <div class="mb-12">
-                                    @if (isset($data['section_title']))
-                                        <h2 class="font-display text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-[0.9]">
-                                            {{ $data['section_title'] }}
-                                        </h2>
-                                    @endif
-                                    @if (isset($data['section_subtitle']))
-                                        <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto text-lg">
-                                            {{ $data['section_subtitle'] }}
-                                        </p>
-                                    @endif
-                                </div>
-
-                                @if (isset($data['items']) && count($data['items']) > 0)
-                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[300px]">
-                                        @foreach ($data['items'] as $item)
-                                            @php
-                                                $extension = pathinfo($item['media_file'], PATHINFO_EXTENSION);
-                                                $isVideo = in_array(strtolower($extension), ['mp4', 'mov', 'webm']);
-                                                $isWide = $item['is_wide'] ?? false;
-                                            @endphp
-
-                                            <div class="group relative overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-white/5 {{ $isWide ? 'md:col-span-2' : 'md:col-span-1' }}">
-                                                
-                                                @if ($isVideo)
-                                                    <video class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 " 
-                                                        autoplay muted loop playsinline>
-                                                        <source src="{{ Storage::url($item['media_file']) }}" type="video/{{ $extension }}">
-                                                    </video>
-                                                @else
-                                                    <img src="{{ Storage::url($item['media_file']) }}" 
-                                                        alt="{{ $item['caption'] ?? 'Gallery Image' }}"
-                                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                                @endif
-
-                                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:backdrop-blur-xs rounded-2xl transition-opacity duration-300 flex items-end p-6">
-                                                    @if(!empty($item['caption']))
-                                                        <p class="text-white font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                                            {{ $item['caption'] }}
-                                                        </p>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <div class="p-12 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl text-zinc-500">
-                                        Belum ada dokumentasi yang diunggah.
-                                    </div>
-                                @endif
-
-                        @endif
-
-                        @if ($block['type'] === 'latest_writings_section')
-                            <div class="mb-12 text-center md:text-left">
-                                @if (isset($data['section_title']))
-                                    <h2 class="font-display text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-[0.9]">
-                                        {{ $data['section_title'] }}
-                                    </h2>
-                                @endif
-                                @if (isset($data['section_subtitle']))
-                                    <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl text-lg">
-                                        {{ $data['section_subtitle'] }}
+                                <div class="relative z-10">
+                                    <h3 class="font-display text-3xl font-bold mb-6 text-accent">VISI</h3>
+                                    <p
+                                        class="text-xl md:text-2xl font-serif italic leading-relaxed text-zinc-700 dark:text-zinc-200">
+                                        &ldquo;{{ $data['vision'] ?? '...' }}&rdquo;
                                     </p>
-                                @endif
+                                </div>
                             </div>
 
-                            {{-- Query Data Tulisan --}}
-                            @php
-                                $writings = \App\Models\Writing::query()
-                                    ->where('status', 'Published')
-                                    ->latest('published_at')
-                                    ->take($data['limit'] ?? 4) // Default saya naikkan ke 4 agar genap di layout 2 kolom
-                                    ->with(['user', 'categories']) 
-                                    ->withCount(['likes', 'comments']) // Penting: Hitung jumlah like & komen untuk card
-                                    ->get();
-                            @endphp
+                            <div
+                                class="group relative p-8 rounded-3xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 overflow-hidden">
+                                <div
+                                    class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12 translate-x-4 -translate-y-4">
+                                    <span class="material-symbols-outlined text-9xl">target</span>
+                                </div>
 
-                            @if($writings->count() > 0)
-                                {{-- Menggunakan grid 1 kolom (Mobile) sampai 2 kolom (Desktop Besar) karena Card berbentuk Horizontal --}}
-                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 text-left">
-                                    @foreach($writings as $writing)
-                                        <x-writing.card :writing="$writing" />
-                                    @endforeach
+                                <div class="relative z-10">
+                                    <h3 class="font-display text-3xl font-bold mb-6 text-accent">MISI</h3>
+                                    @if (isset($data['missions']) && count($data['missions']) > 0)
+                                        <ul class="space-y-4">
+                                            @foreach ($data['missions'] as $mission)
+                                                <li class="flex items-start gap-4">
+                                                    <span
+                                                        class="mt-1 flex-shrink-0 bg-accent/10 text-accent rounded-full p-1">
+                                                        <span
+                                                            class="material-symbols-outlined text-sm font-bold">check</span>
+                                                    </span>
+                                                    <span
+                                                        class="text-lg text-zinc-700 dark:text-zinc-300 leading-snug">
+                                                        {{ $mission['value'] ?? '' }}
+                                                    </span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </div>
-                            @else
-                                <div class="py-12 text-center border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl">
-                                    <p class="text-zinc-500 italic">Belum ada tulisan terbaru.</p>
-                                </div>
+                            </div>
+
+                        </div>
+                    @endif
+
+                    @if ($block['type'] === 'pillars_section')
+                        @if (isset($data['items']))
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                                @foreach ($data['items'] as $pillar)
+                                    <div
+                                        class="p-6 rounded-2xl bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10">
+                                        <h3 class="font-display text-xl font-bold mb-3">{{ $pillar['title'] ?? '' }}
+                                        </h3>
+                                        <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                                            {{ $pillar['description'] ?? '' }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    @endif
+
+                    @if ($block['type'] === 'gallery_section')
+                        <div class="mb-12">
+                            @if (isset($data['section_title']))
+                                <h2
+                                    class="font-display text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-[0.9]">
+                                    {{ $data['section_title'] }}
+                                </h2>
                             @endif
-                                
-                            {{-- Button Action --}}
-                            <div class="mt-12 flex justify-center">
-                                <a href="{{ route('writings') }}" class="group bg-zinc-900 dark:bg-white text-white dark:text-black px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-accent hover:text-white dark:hover:bg-accent dark:hover:text-white transition-all flex items-center gap-2">
-                                    Lihat Semua Artikel
-                                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                                </a>
+                            @if (isset($data['section_subtitle']))
+                                <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto text-lg">
+                                    {{ $data['section_subtitle'] }}
+                                </p>
+                            @endif
+                        </div>
+
+                        @if (isset($data['items']) && count($data['items']) > 0)
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[300px]">
+                                @foreach ($data['items'] as $item)
+                                    @php
+                                        $extension = pathinfo($item['media_file'], PATHINFO_EXTENSION);
+                                        $isVideo = in_array(strtolower($extension), ['mp4', 'mov', 'webm']);
+                                        $isWide = $item['is_wide'] ?? false;
+                                    @endphp
+
+                                    <div
+                                        class="group relative overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-white/5 {{ $isWide ? 'md:col-span-2' : 'md:col-span-1' }}">
+
+                                        @if ($isVideo)
+                                            <video
+                                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 "
+                                                autoplay muted loop playsinline>
+                                                <source src="{{ Storage::url($item['media_file']) }}"
+                                                    type="video/{{ $extension }}">
+                                            </video>
+                                        @else
+                                            <img src="{{ Storage::url($item['media_file']) }}"
+                                                alt="{{ $item['caption'] ?? 'Gallery Image' }}"
+                                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                        @endif
+
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:backdrop-blur-xs rounded-2xl transition-opacity duration-300 flex items-end p-6">
+                                            @if (!empty($item['caption']))
+                                                <p
+                                                    class="text-white font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                                    {{ $item['caption'] }}
+                                                </p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div
+                                class="p-12 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl text-zinc-500">
+                                Belum ada dokumentasi yang diunggah.
+                            </div>
+                        @endif
+                    @endif
+
+                    @if ($block['type'] === 'latest_writings_section')
+                        <div class="mb-12 text-center md:text-left">
+                            @if (isset($data['section_title']))
+                                <h2
+                                    class="font-display text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-[0.9]">
+                                    {{ $data['section_title'] }}
+                                </h2>
+                            @endif
+                            @if (isset($data['section_subtitle']))
+                                <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl text-lg">
+                                    {{ $data['section_subtitle'] }}
+                                </p>
+                            @endif
+                        </div>
+
+                        {{-- Query Data Tulisan --}}
+                        @php
+                            $writings = \App\Models\Writing::query()
+                                ->where('status', 'Published')
+                                ->latest('published_at')
+                                ->take($data['limit'] ?? 4) // Default saya naikkan ke 4 agar genap di layout 2 kolom
+                                ->with(['user', 'categories'])
+                                ->withCount(['likes', 'comments']) // Penting: Hitung jumlah like & komen untuk card
+                                ->get();
+                        @endphp
+
+                        @if ($writings->count() > 0)
+                            {{-- Menggunakan grid 1 kolom (Mobile) sampai 2 kolom (Desktop Besar) karena Card berbentuk Horizontal --}}
+                            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 text-left">
+                                @foreach ($writings as $writing)
+                                    <x-writing.card :writing="$writing" />
+                                @endforeach
+                            </div>
+                        @else
+                            <div
+                                class="py-12 text-center border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl">
+                                <p class="text-zinc-500 italic">Belum ada tulisan terbaru.</p>
                             </div>
                         @endif
 
-                        @if ($block['type'] === 'events_section')
-                            @if($data['is_visible'] ?? true)
+                        {{-- Button Action --}}
+                        <div class="mt-12 flex justify-center">
+                            <a href="{{ route('writings') }}"
+                                class="group bg-zinc-900 dark:bg-white text-white dark:text-black px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-accent hover:text-white dark:hover:bg-accent dark:hover:text-white transition-all flex items-center gap-2">
+                                Lihat Semua Artikel
+                                <span
+                                    class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </a>
+                        </div>
+                    @endif
+
+                    @if ($block['type'] === 'events_section')
+                        @if ($data['is_visible'] ?? true)
                             <div class="text-left">
                                 @livewire('landing-page.home-events', ['data' => $data])
                             </div>
-                            @endif
                         @endif
+                    @endif
 
-                    </x-landing-section>
-                
+                </x-landing-section>
+
             @endforeach
 
         </div>

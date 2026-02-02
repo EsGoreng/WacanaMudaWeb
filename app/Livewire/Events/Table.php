@@ -237,6 +237,7 @@ class Table extends BaseDataTable
                         Select::make('categories')
                             ->label('Categories')
                             ->multiple()
+                            ->maxItems(3)
                             ->options(Category::all()->pluck('name', 'category_id'))
                             ->preload()
                             ->searchable()

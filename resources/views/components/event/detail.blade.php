@@ -6,11 +6,13 @@
             alt="{{ $event->title }}" class="absolute inset-0 w-full h-full object-cover">
     </div>
 
-    <div class="w-full md:w-1/2 p-8 md:p-10 flex flex-col h-full bg-zinc-800 relative overflow-y-auto">
+    <div class="w-full md:w-1/2 p-8 md:p-10 flex flex-col h-full bg-white dark:bg-zinc-800 relative overflow-y-auto">
 
         <div class="absolute top-4 right-4 flex items-center gap-2 z-10">
             <button wire:click="generateInstagramStory({{ $event->id }})" wire:loading.attr="disabled"
-                class="w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-lg border border-white/10 bg-white/10 text-gray-400 hover:bg-white/20 hover:text-gray-200">
+                class="w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-sm 
+                border border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900
+                dark:border-white/10 dark:bg-white/10 dark:text-gray-400 dark:hover:bg-white/20 dark:hover:text-gray-200">
                 <div wire:loading.remove wire:target="generateInstagramStory({{ $event->id }})"
                     class="flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
@@ -21,7 +23,7 @@
                 </div>
                 <div wire:loading wire:target="generateInstagramStory({{ $event->id }})"
                     class="flex items-center justify-center">
-                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <svg class="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                             stroke-width="4"></circle>
@@ -34,7 +36,9 @@
 
             <button x-data="{ copied: false }"
                 x-on:click="navigator.clipboard.writeText(window.location.origin + window.location.pathname + '?id={{ $event->id }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                class="w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-lg border border-white/10 bg-white/10 text-gray-400 hover:bg-white/20 hover:text-gray-200"
+                class="w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-sm
+                border border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900
+                dark:border-white/10 dark:bg-white/10 dark:text-gray-400 dark:hover:bg-white/20 dark:hover:text-gray-200"
                 title="Copy Link">
                 <div x-show="!copied" class="flex items-center justify-center transition-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -46,7 +50,7 @@
                     </svg>
                 </div>
                 <div x-show="copied" x-cloak
-                    class="flex items-center justify-center text-green-400 transition-all duration-300">
+                    class="flex items-center justify-center text-green-500 dark:text-green-400 transition-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-check-lg" viewBox="0 0 16 16">
                         <path
@@ -56,7 +60,9 @@
             </button>
 
             <button wire:click="closeModal"
-                class="p-2 rounded-full hover:bg-gray-100/10 text-gray-400 hover:text-gray-200 transition-colors">
+                class="p-2 rounded-full transition-colors 
+                text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700
+                dark:text-gray-400 dark:hover:bg-gray-100/10 dark:hover:text-gray-200">
                 <x-bi-x-circle-fill class="w-8 h-8" />
             </button>
         </div>
@@ -64,22 +70,26 @@
         <div class="flex flex-wrap gap-2 mb-2 mt-12 md:mt-12">
             @forelse($event->categories as $category)
                 <div
-                    class="{{ $category->badgeClass }} px-3 py-1.5 rounded-full border border-black/10 text-xs font-medium text-black transition-colors hover:bg-white/20 cursor-default shadow-sm">
+                    class="{{ $category->badgeClass }} px-3 py-1.5 rounded-full border text-xs font-medium transition-colors shadow-sm cursor-default
+                    border-zinc-200 text-zinc-700 hover:bg-zinc-100
+                    dark:border-white/10 dark:text-zinc-200 dark:hover:bg-white/20">
                     {{ $category->name }}
                 </div>
             @empty
                 <div
-                    class="bg-black/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-black/10 text-xs font-medium text-white shadow-sm">
+                    class="px-3 py-1.5 rounded-full border text-xs font-medium shadow-sm
+                    bg-zinc-100 border-zinc-200 text-zinc-600
+                    dark:bg-white/10 dark:border-white/10 dark:backdrop-blur-sm dark:text-white">
                     Event
                 </div>
             @endforelse
         </div>
 
-        <h2 class="text-3xl font-extrabold text-zinc-950 dark:text-zinc-50 mb-2 leading-tight">
+        <h2 class="text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 mb-2 leading-tight">
             {{ $event->title }}
         </h2>
 
-        <div class="flex items-center text-zinc-950 dark:text-zinc-300 mb-4 text-sm">
+        <div class="flex items-center text-zinc-700 dark:text-zinc-300 mb-4 text-sm">
             @if ($event->is_online)
                 <x-bi-camera-video class="mr-2 h-5 w-5 flex-shrink-0" />
                 <span>Online via {{ $event->location_name }}</span>
@@ -94,22 +104,22 @@
             @endif
         </div>
 
-        <hr class="border-zinc-100 dark:border-zinc-700 mb-4">
+        <hr class="border-zinc-200 dark:border-zinc-700 mb-4">
 
         <div class="mb-4">
             <h3 class="font-bold text-zinc-900 dark:text-zinc-50 mb-2">About this event</h3>
-            <div class="prose dark:prose-invert max-w-none w-full break-words">
+            <div class="prose prose-zinc dark:prose-invert max-w-none w-full break-words">
                 {!! $event->description !!}
             </div>
         </div>
 
-        <div class="mt-auto pt-6 border-t border-zinc-100 dark:border-zinc-700 flex flex-col gap-3">
+        <div class="mt-auto pt-6 border-t border-zinc-200 dark:border-zinc-700 flex flex-col gap-3">
 
             <button wire:click="toggleBookmark" wire:loading.attr="disabled"
                 class="w-full font-semibold py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm border
                  {{ $isBookmarked
-                     ? 'bg-yellow-500/10 border-yellow-500/50 text-yellow-500 hover:bg-yellow-500/20'
-                     : 'bg-zinc-700/50 border-zinc-600 hover:bg-zinc-700 text-zinc-300' }}">
+                     ? 'bg-yellow-500/10 border-yellow-500/50 text-yellow-600 dark:text-yellow-500 hover:bg-yellow-500/20'
+                     : 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:bg-zinc-700/50 dark:border-zinc-600 dark:hover:bg-zinc-700 dark:text-zinc-300' }}">
 
                 <div wire:loading.remove wire:target="toggleBookmark" class="flex items-center gap-2">
                     @if ($isBookmarked)

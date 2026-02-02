@@ -51,6 +51,7 @@ class Create extends Component implements HasActions, HasForms
                         Select::make('categories')
                             ->label('Categories')
                             ->multiple()
+                            ->maxItems(3)
                             ->options(Category::all()->pluck('name', 'category_id'))
                             ->searchable()
                             ->preload()

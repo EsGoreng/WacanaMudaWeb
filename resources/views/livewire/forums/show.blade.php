@@ -122,7 +122,7 @@
                             <div class="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 shrink-0"></div>
 
                             <button x-data="{ copied: false }"
-                                @click.prevent="navigator.clipboard.writeText('{{ route('forums', $forum->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                                @click.prevent="navigator.clipboard.writeText('{{ route('forum.show', $forum->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
                                 class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400 font-medium text-sm group shrink-0"
                                 :class="copied ? 'bg-green-50 dark:bg-green-500/10' : ''">
                                 <template x-if="!copied">

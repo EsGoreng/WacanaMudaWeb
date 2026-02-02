@@ -103,7 +103,7 @@
             }
         }">
             <flux:header
-                class="sticky top-0 z-10 block! border-b border-zinc-200 dark:border-slate-800 bg-zinc-100/90 dark:bg-zinc-900/80 backdrop-blur-sm transition-all duration-300">
+                class="sticky top-0 z-10 block! border-b border-slate-200 dark:border-slate-800 bg-slate-200/90 dark:bg-zinc-900/80 backdrop-blur-sm transition-all duration-300">
 
                 <div class="pl-1 transition-all duration-300 ease-in-out lg:!h-auto lg:!opacity-100 lg:hidden">
                     <flux:navbar class="w-full pt-3">
@@ -151,7 +151,7 @@
 
             <main id="main-content" class="flex-1 overflow-y-auto outline-none relative w-full max-w-full min-w-0">
                 <div
-                    class="min-h-full w-full max-w-full bg-white dark:bg-transparent dark:bg-gradient-to-b dark:from-page-gray-950/50 dark:to-page-gray-950/90">
+                    class="min-h-full w-full max-w-full bg-gradient-to-b from-slate-300 to-slate-400 dark:bg-transparent dark:bg-gradient-to-b dark:from-page-gray-950/50 dark:to-page-gray-950/90">
                     {{ $slot }}
                 </div>
                 @include('components.footer')

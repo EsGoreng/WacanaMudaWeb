@@ -69,7 +69,7 @@
                             $isFollowing = $user->isFollowedBy(Auth::user());
                         @endphp
                         <button wire:click="toggleFollow" wire:loading.attr="disabled"
-                            class="px-5 py-2 rounded-xl active:scale-95 duration-300 flex items-center gap-1 text-sm font-medium transition-colors
+                            class=" rounded-xl active:scale-95 duration-300 flex items-center gap-1 font-medium transition-colors
                             {{ $isFollowing
                                 ? 'bg-zinc-200 text-zinc-800 hover:bg-zinc-300 dark:bg-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-600'
                                 : 'bg-zinc-600 text-white hover:bg-zinc-700' }}">
@@ -77,7 +77,7 @@
                             {{ $isFollowing ? 'Unfollow' : 'Follow' }}
 
                             @if (!$isFollowing)
-                                <span class="text-lg leading-none">+</span>
+                                <span class="text-sm leading-none">+</span>
                             @endif
                         </button>
                     @endif

@@ -21,9 +21,9 @@ class CreateNewUser implements CreatesNewUsers
         $cleanPhone = preg_replace('/[^0-9]/', '', $input['phone']);
 
         if (substr($cleanPhone, 0, 2) === '08') {
-            $cleanPhone = '62' . substr($cleanPhone, 1);
+            $cleanPhone = '62'.substr($cleanPhone, 1);
         }
-        
+
         $input['phone'] = $cleanPhone;
 
         Validator::make($input, [
@@ -46,7 +46,6 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'phone' => $input['phone'],
             'password' => $input['password'],
-            'is_active' => false,
         ]);
 
         $user->assignRole('member');

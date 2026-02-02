@@ -7,10 +7,9 @@
     <title>{{ $writing->title }} - Story</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
 
     <script>
@@ -26,7 +25,7 @@
                         "text-muted": "#94a3b8",
                     },
                     fontFamily: {
-                        "display": ["'Plus Jakarta Sans'", "sans-serif"]
+                        "display": ["'Outfit'", "sans-serif"],
                     },
                 },
             },
@@ -64,7 +63,7 @@
 
     <div class="relative flex h-full w-full flex-col items-center z-10">
 
-        <div class="flex justify-center mt-40 mb-24 scale-[2.5] ">
+        <div class="flex font-sans justify-center mt-40 mb-24 scale-[2.5] ">
             <x-app-logo class="text-white drop-shadow-lg" />
         </div>
 
@@ -81,7 +80,7 @@
                 <div class="flex flex-wrap gap-3 mb-8">
                     @forelse($writing->categories->take(3) as $category)
                         <span
-                            class="{{ $category->badge_class }} bg-opacity-90 border border-white/10 px-5 py-2 rounded-full text-lg font-bold uppercase tracking-wide shadow-lg">
+                            class="inline-flex whitespace-nowrap items-center justify-center {{ $category->badge_class }} bg-opacity-90 border border-white/10 px-5 py-2 rounded-full text-lg font-bold uppercase tracking-wide shadow-lg leading-none">
                             {{ $category->name }}
                         </span>
                     @empty
@@ -93,12 +92,13 @@
                 </div>
 
                 <div class="flex items-center justify-between mb-8">
-                    <span class="text-2xl font-medium text-slate-400">
+                    <span
+                        class="inline-flex items-center whitespace-nowrap text-2xl font-medium text-slate-400 leading-none">
                         {{ \Carbon\Carbon::parse($writing->published_at ?? now())->format('M d, Y') }}
                     </span>
                     <span
-                        class="bg-slate-800 border border-slate-700 text-sky-400 px-6 py-2 rounded-full text-xl font-bold tracking-wide">
-                        {{ $writing->reading_time }} min read
+                        class="inline-flex items-center whitespace-nowrap justify-center bg-slate-800 border border-slate-700 text-sky-400 px-6 py-2 rounded-full text-xl font-bold tracking-wide leading-none">{{ $writing->reading_time }}
+                        min read
                     </span>
                 </div>
 
@@ -121,7 +121,7 @@
                     </p>
                 </div>
 
-                <div class="flex items-center justify-between mb-10">
+                <div class="flex items-center justify-between mb-10 mt-auto pt-8 border-t border-slate-800/50">
                     <div class="flex items-center gap-4">
 
                         <span class="text-2xl font-bold text-slate-200">
@@ -130,13 +130,13 @@
                     </div>
 
                     <div class="flex items-center gap-6 text-slate-400">
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-3xl">chat_bubble</span>
-                            <span class="text-xl font-bold">{{ $writing->comments()->count() }}</span>
+                        <div class="flex items-center gap-4">
+                            <x-bi-chat-dots class="w-5 h-5" />
+                            <span class="text-2xl font-bold">{{ $writing->comments()->count() }}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-3xl">favorite</span>
-                            <span class="text-xl font-bold">{{ $writing->likes()->count() }}</span>
+                            <x-bi-heart class="w-5 h-5" />
+                            <span class="text-2xl font-bold">{{ $writing->likes()->count() }}</span>
                         </div>
                     </div>
                 </div>

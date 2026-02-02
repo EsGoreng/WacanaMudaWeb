@@ -7,10 +7,9 @@
     <title>{{ $event->title }} - Story</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
 
     <script>
@@ -26,7 +25,7 @@
                         "text-muted": "#94a3b8",
                     },
                     fontFamily: {
-                        "display": ["'Plus Jakarta Sans'", "sans-serif"]
+                        "display": ["'Outfit'", "sans-serif"],
                     },
                 },
             },
@@ -54,7 +53,6 @@
 <body class="w-[1080px] h-[1920px] font-display antialiased overflow-hidden text-white relative bg-slate-950">
 
     <div class="absolute inset-0 z-0">
-        {{-- Pastikan component x-star-background tersedia atau hapus jika error --}}
         <x-star-background />
     </div>
 
@@ -66,15 +64,13 @@
     <div class="relative flex h-full w-full flex-col items-center z-10">
 
         <div class="flex justify-center mt-40 mb-24 scale-[2.5] ">
-            {{-- Pastikan component x-app-logo tersedia --}}
-            <x-app-logo class="text-white drop-shadow-lg" />
+            <x-app-logo class="text-white drop-shadow-lg font-sans" />
         </div>
 
         <div
             class="relative w-[850px] bg-card-bg border border-card-border rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col">
 
             <div class="relative h-[650px] w-full bg-slate-800">
-                {{-- Handle Image Path Logic --}}
                 <img src="{{ str_starts_with($event->banner_image, 'http') ? $event->banner_image : public_path('storage/' . $event->banner_image) }}"
                     alt="Cover" class="w-full h-full object-cover opacity-90">
                 <div class="absolute inset-0 bg-gradient-to-t from-card-bg via-transparent to-transparent"></div>
@@ -85,7 +81,7 @@
                 <div class="flex flex-wrap gap-3 mb-8">
                     @forelse($event->categories->take(3) as $category)
                         <span
-                            class="{{ $category->badge_class ?? 'bg-slate-700 text-white' }} bg-opacity-90 border border-white/10 px-5 py-2 rounded-full text-lg font-bold uppercase tracking-wide shadow-lg">
+                            class="inline-flex items-center justify-center {{ $category->badge_class ?? 'bg-slate-700 text-white' }} bg-opacity-90 border border-white/10 px-5 py-2 whitespace-nowrap rounded-full text-lg font-bold uppercase tracking-wide shadow-lg leading-none">
                             {{ $category->name }}
                         </span>
                     @empty
@@ -97,11 +93,13 @@
                 </div>
 
                 <div class="flex items-center justify-between mb-8">
-                    <span class="text-2xl font-medium text-slate-400">
+                    <span
+                        class="inline-flex items-center text-2xl font-medium text-slate-400 whitespace-nowrap leading-none">
                         {{ \Carbon\Carbon::parse($event->start_time)->format('M d, Y') }}
                     </span>
+
                     <span
-                        class="bg-slate-800 border border-slate-700 text-sky-400 px-6 py-2 rounded-full text-xl font-bold tracking-wide">
+                        class="inline-flex items-center justify-center bg-slate-800 border border-slate-700 text-sky-400 px-6 py-2 whitespace-nowrap rounded-full text-xl font-bold tracking-wide leading-none">
                         {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WIB
                     </span>
                 </div>
@@ -117,9 +115,8 @@
                     </p>
                 </div>
 
-                <div class="flex items-center justify-between mb-10">
+                <div class="flex items-center justify-between mb-10 mt-auto pt-8 border-t border-slate-800/50">
                     <div class="flex items-center gap-4">
-                        {{-- Status Event sebagai pengganti Author --}}
                         <span
                             class="text-2xl font-bold text-slate-200 uppercase tracking-wider border border-white/20 px-4 py-1 rounded-lg">
                             {{ $event->statusLabel ?? 'Upcoming' }}
@@ -127,10 +124,7 @@
                     </div>
 
                     <div class="flex items-center gap-6 text-slate-400">
-                        {{-- Bisa diganti lokasi atau info lain, disini saya pakai Icon Calendar --}}
                         <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-3xl">calendar_month</span>
-                            <span class="text-xl font-bold">Save the date</span>
                         </div>
                     </div>
                 </div>

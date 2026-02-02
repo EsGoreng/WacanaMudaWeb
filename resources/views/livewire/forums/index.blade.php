@@ -1,5 +1,5 @@
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-    <div class="lg:col-span-3">
+    <div class="lg:col-span-3 order-2 lg:order-1">
         <x-filter.header :results="$forums" :categories="$this->categories" :selectedCategories="$selectedCategories" :search="$search" :sortBy="$sortBy"
             :dateFrom="$dateFrom" :dateTo="$dateTo" />
         <div class="space-y-4">
@@ -48,7 +48,7 @@
         </div> --}}
     </div>
 
-    <div class="lg:col-span-1">
+    <div class="lg:col-span-1 order-1 lg:order-2">
         <div class="sticky top-8 space-y-6">
             <x-filter.sidebar title="Search Forums" :categories="$this->categories" :selectedCategories="$selectedCategories" count-key="forums_count">
                 <div>

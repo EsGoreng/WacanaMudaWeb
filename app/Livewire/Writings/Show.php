@@ -12,9 +12,11 @@ use App\Services\UnsplashService;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -76,7 +78,26 @@ class Show extends Component implements HasForms
 
     public function generateInstagramStory(StoryGeneratorService $service)
     {
-        return $service->generate($this->writing, 'components.writing.story', 'writing');
+        if (! $this->writing) {
+            return;
+        }
+
+        $htmlContent = $service->generate($this->writing, 'components.writing.story', 'writing');
+
+        if (! $htmlContent) {
+            return;
+        }
+
+        $this->dispatch('start-story-download',
+            html: $htmlContent,
+            fileName: Str::slug($this->writing->title).'-story.jpg'
+        );
+
+        Notification::make()
+            ->title('Memproses Story...')
+            ->body('Gambar sedang dibuat di latar belakang.')
+            ->success()
+            ->send();
     }
 
     public function toggleBookmark(BookmarkService $service)

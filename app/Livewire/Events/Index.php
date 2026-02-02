@@ -8,6 +8,8 @@ use App\Services\BookmarkService;
 use App\Services\StoryGeneratorService;
 use App\Traits\InteractsWithContentFilters;
 use App\Traits\InteractsWithEventModal;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -66,9 +68,28 @@ class Index extends Component
 
     public function generateInstagramStory($eventId, StoryGeneratorService $service)
     {
-        $event = Event::with('categories')->find($eventId);
+        $event = Event::find($eventId);
 
-        return $service->generate($event, 'components.event.story', 'event');
+        if (! $event) {
+            return;
+        }
+
+        $htmlContent = $service->generate($event, 'components.event.story', 'event');
+
+        if (! $htmlContent) {
+            return;
+        }
+
+        $this->dispatch('start-story-download',
+            html: $htmlContent,
+            fileName: Str::slug($event->title).'-story.jpg'
+        );
+
+        Notification::make()
+            ->title('Processing Image...')
+            ->body('Download will start....')
+            ->success()
+            ->send();
     }
 
     public function render()

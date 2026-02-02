@@ -19,7 +19,6 @@ class ForumFactory extends Factory
         return [
 
             'user_id' => User::factory(),
-            'category_id' => Category::first()->category_id ?? 1,
 
             'title' => $title,
             'slug' => Str::slug($title).'-'.Str::random(4),

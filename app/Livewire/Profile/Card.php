@@ -58,7 +58,7 @@ class Card extends Component implements HasActions, HasForms
     public function editProfile(): Action
     {
         return Action::make('editProfile')
-            ->label('Edit Profile')
+            ->label('Edit')
             ->icon('heroicon-m-pencil-square')
             ->color('gray')
             ->fillForm(fn (): array => [
@@ -135,7 +135,7 @@ class Card extends Component implements HasActions, HasForms
                     ->send();
             })
             ->extraAttributes([
-                'class' => 'bg-zinc-100 text-zinc-900 border border-zinc-200 hover:bg-zinc-200 dark:bg-zinc-700 dark:text-white dark:border-zinc-600 dark:hover:bg-zinc-600 rounded-xl px-4 py-2',
+                'class' => 'bg-zinc-100 text-zinc-900 border border-zinc-200 hover:bg-zinc-200 dark:bg-zinc-700 dark:text-white dark:border-zinc-600 dark:hover:bg-zinc-600 rounded-xl px-3 py-1 text-xs',
             ]);
     }
 

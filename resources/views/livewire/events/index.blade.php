@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-    <div class="lg:col-span-3">
+    <div class="lg:col-span-3 order-2 lg:order-1">
         <x-filter.header :results="$events" :categories="$this->categories" :selectedCategories="$selectedCategories" :search="$search" :sortBy="$sortBy"
             :dateFrom="$dateFrom" :dateTo="$dateTo" />
 
@@ -38,7 +38,7 @@
         </x-event.event-modal>
     </div>
 
-    <div class="lg:col-span-1">
+    <div class="lg:col-span-1 order-1 lg:order-2">
         <x-filter.sidebar title="Search Events" :categories="$this->categories" :selectedCategories="$selectedCategories" count-key="events_count">
             <div>
                 <label class="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-2">Sort By</label>

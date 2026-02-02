@@ -1,13 +1,13 @@
 @props(['comment', 'parentCommentId', 'depth' => 0])
 
 @php
-    $maxDepth = 3;
+    $maxDepth = 2;
     $isTooDeep = $depth >= $maxDepth;
 @endphp
 
 <div class="flex flex-col" wire:key="comment-{{ $comment->id }}">
 
-    <div class="flex gap-3 relative group {{ $isTooDeep ? 'mt-3' : '' }}">
+    <div class="flex gap-2 md:gap-3 relative group {{ $isTooDeep ? 'mt-3' : '' }}">
 
         <div class="flex flex-col items-center shrink-0 w-8">
             <img src="{{ $comment->user->avatar ? Storage::url($comment->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name) }}"
@@ -85,7 +85,7 @@
                             <div class="w-0.5 h-full bg-zinc-200 dark:bg-slate-800 absolute left-4 -ml-[2px]"></div>
                         </div>
 
-                        <div class="flex-1 pl-4 pt-2">
+                        <div class="flex-1 pl-2 md:pl-4 pt-2">
                             <x-comments.item :comment="$child" :parentCommentId="$parentCommentId" :depth="$depth + 1" />
                         </div>
                     </div>

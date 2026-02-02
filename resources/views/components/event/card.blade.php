@@ -65,7 +65,7 @@
         <div class="absolute bottom-0 left-0 w-full p-6 flex flex-col justify-end h-full">
             <div class="mt-auto backdrop-blur-sm bg-black/20 rounded-xl p-5 border border-white/10 shadow-lg">
 
-                <div class="flex items-center gap-3 text-xs font-medium text-blue-100/90 mb-2">
+                <div class="flex items-center gap-2 text-xs font-medium text-blue-100/90 mb-2">
                     <div class="flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +73,7 @@
                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                             </path>
                         </svg>
-                        <span>
+                        <span class="whitespace-nowrap">
                             {{ \Carbon\Carbon::parse($event->start_time)->format('d M, Y') }}
                         </span>
                     </div>
@@ -86,7 +86,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span>
+                        <span class="whitespace-nowrap">
                             {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} -
                             {{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }}
                         </span>
@@ -113,7 +113,7 @@
                 </p>
 
                 <div class="flex flex-wrap gap-2 mb-6">
-                    @forelse($event->categories as $category) 
+                    @forelse($event->categories as $category)
                         <div
                             class="{{ $category->badgeClass }} backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 text-xs font-medium text-white cursor-default">
                             {{ $category->name }}

@@ -228,6 +228,94 @@ class Form extends Component implements HasActions, HasSchemas
                                     ->label('Content')
                                     ->columnSpanFull()
                                     ->required()
+                                    ->floatingToolbars([
+                                        'paragraph' => [
+                                            'bold', 'italic', 'underline', 'strike', 'subscript', 'superscript',
+                                        ],
+                                        'heading' => [
+                                            'h1', 'h2', 'h3',
+                                        ],
+                                        'table' => [
+                                            'tableAddColumnBefore', 'tableAddColumnAfter', 'tableDeleteColumn',
+                                            'tableAddRowBefore', 'tableAddRowAfter', 'tableDeleteRow',
+                                            'tableMergeCells', 'tableSplitCell',
+                                            'tableToggleHeaderRow', 'tableToggleHeaderCell',
+                                            'tableDelete',
+                                        ],
+                                    ])
+                                    ->toolbarButtons([
+                                        // Text style & inline formatting
+                                        [
+                                            'bold',
+                                            'italic',
+                                            'underline',
+                                            'strike',
+                                            'subscript',
+                                            'superscript',
+                                            'small',
+                                            'code',
+                                            'highlight',
+                                            'clearFormatting',
+                                            'textColor',
+                                            'link',
+                                        ],
+
+                                        // Headings & paragraph styles
+                                        [
+                                            'h1',
+                                            'h2',
+                                            'h3',
+                                            'lead',
+                                        ],
+
+                                        // Alignment
+                                        [
+                                            'alignStart',
+                                            'alignCenter',
+                                            'alignEnd',
+                                            'alignJustify',
+                                        ],
+
+                                        // Blocks & layout
+                                        [
+                                            'blockquote',
+                                            'codeBlock',
+                                            'horizontalRule',
+                                            'details',
+                                            'grid',
+                                            'gridDelete',
+                                        ],
+
+                                        // Lists
+                                        [
+                                            'bulletList',
+                                            'orderedList',
+                                        ],
+
+                                        // Table tools
+                                        [
+                                            'table',
+                                            'tableAddColumnBefore',
+                                            'tableAddColumnAfter',
+                                            'tableDeleteColumn',
+                                            'tableAddRowBefore',
+                                            'tableAddRowAfter',
+                                            'tableDeleteRow',
+                                            'tableMergeCells',
+                                            'tableSplitCell',
+                                            'tableToggleHeaderRow',
+                                            'tableToggleHeaderCell',
+                                            'tableDelete',
+                                        ],
+
+                                        // Utilities
+                                        [
+                                            'attachFiles',
+                                            'undo',
+                                            'redo',
+                                        ],
+                                    ])
+
                                     ->fileAttachmentsDirectory('writings/attachments')
                                     ->fileAttachmentsVisibility('public')
                                     ->extraInputAttributes(['style' => 'min-height: 20rem;']),
@@ -259,6 +347,7 @@ class Form extends Component implements HasActions, HasSchemas
                                 Select::make('categories')
                                     ->label('Category')
                                     ->multiple()
+                                    ->maxItems(3)
                                     ->options(Category::all()->pluck('name', 'category_id'))
                                     ->required()
                                     ->searchable()

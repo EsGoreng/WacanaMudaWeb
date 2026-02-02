@@ -11,9 +11,11 @@ use App\Services\StoryGeneratorService;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -78,7 +80,26 @@ class Show extends Component implements HasForms
 
     public function generateInstagramStory(StoryGeneratorService $service)
     {
-        return $service->generate($this->forum, 'components.forum.story', 'forum');
+        if (! $this->forum) {
+            return;
+        }
+
+        $htmlContent = $service->generate($this->forum, 'components.forum.story', 'forum');
+
+        if (! $htmlContent) {
+            return;
+        }
+
+        $this->dispatch('start-story-download',
+            html: $htmlContent,
+            fileName: Str::slug($this->forum->title).'-story.jpg'
+        );
+
+        Notification::make()
+            ->title('Memproses Story...')
+            ->body('Gambar sedang dibuat di latar belakang.')
+            ->success()
+            ->send();
     }
 
     protected function getForms(): array
