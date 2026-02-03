@@ -37,7 +37,7 @@ jobs:
           server-dir: ./public_html/
           exclude: |
             **/node_modules/**
-            **/vendor/** # TAMBAHKAN INI
+            **/vendor/** 
             **/.git*
             **/storage/framework/views/**
             **/storage/logs/**
