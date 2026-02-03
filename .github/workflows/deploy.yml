@@ -36,9 +36,9 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ./public_html/
           exclude: |
-            **/.git*
             **/node_modules/**
+            **/vendor/** # TAMBAHKAN INI
+            **/.git*
             **/storage/framework/views/**
             **/storage/logs/**
             .env
-            tests/
