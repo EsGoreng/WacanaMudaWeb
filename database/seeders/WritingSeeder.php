@@ -58,7 +58,6 @@ class WritingSeeder extends Seeder
                 'published_at' => $publishedAt,
                 'created_at' => $publishedAt ?? Carbon::now(),
                 'updated_at' => Carbon::now(),
-                // Default view_count 0 saat create
                 'view_count' => 0,
             ]);
 

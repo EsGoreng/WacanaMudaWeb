@@ -1,40 +1,56 @@
-<div class="py-12">
-    <div class="mb-12 text-center md:text-left">
-        @if (isset($data['section_title']))
-            <h2 class="font-display text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-[0.9]">
-                {{ $data['section_title'] }}
+<div class=""> {{-- Padding dihapus karena biasanya sudah diatur parent container --}}
+
+    {{-- HEADER SECTION --}}
+    <div class="mb-12 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+            <span class="text-[10px] uppercase tracking-[0.2em] text-accent-content font-bold mb-3 block">
+                Agenda
+            </span>
+            <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight mb-0 text-zinc-900 dark:text-white">
+                {{ $data['section_title'] ?? 'Kegiatan Terbaru' }}
             </h2>
-        @endif
-        @if (isset($data['section_subtitle']))
-            <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl text-lg">
-                {{ $data['section_subtitle'] }}
-            </p>
-        @endif
+            @if (isset($data['section_subtitle']))
+                <p class="mt-4 text-zinc-500 dark:text-zinc-400 max-w-2xl text-base leading-relaxed hidden md:block">
+                    {{ $data['section_subtitle'] }}
+                </p>
+            @endif
+        </div>
+
+        {{-- Desktop View All Link --}}
+        <a href="{{ route('events') }}"
+            class="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-700 pb-1 hover:border-accent hover:text-accent transition-colors">
+            See All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
     </div>
 
-    @if($events->count() > 0)
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center md:justify-items-start">
-            @foreach($events as $event)
+    {{-- GRID SECTION --}}
+    @if ($events->count() > 0)
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 text-left">
+            @foreach ($events as $event)
+                {{-- Menggunakan Component Card yang sudah distyle sebelumnya --}}
                 <x-event.card :event="$event" />
             @endforeach
         </div>
     @else
-        <div class="py-12 text-center border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl">
-            <p class="text-zinc-500 italic">Belum ada agenda kegiatan terbaru.</p>
+        {{-- EMPTY STATE --}}
+        <div
+            class="py-12 text-center border border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl text-zinc-400">
+            <p class="text-sm italic">Belum ada agenda kegiatan terbaru.</p>
         </div>
     @endif
 
-    <div class="mt-12 flex justify-center md:justify-start">
-        <a href="{{ route('events') }}" 
-           class="group bg-zinc-900 dark:bg-white text-white dark:text-black px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-accent hover:text-white dark:hover:bg-accent dark:hover:text-white transition-all flex items-center gap-2">
+    {{-- MOBILE BUTTON (Hanya muncul di HP) --}}
+    <div class="mt-8 md:hidden flex justify-center">
+        <a href="{{ route('events') }}"
+            class="text-xs font-bold uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-700 pb-1 hover:text-accent transition-colors">
             Lihat Semua Agenda
-            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
         </a>
     </div>
 
-    <x-event.event-modal wire:model="isModalOpen" maxWidth="5xl" >
+    {{-- MODAL (Tetap dipertahankan jika dibutuhkan untuk fitur pop-up) --}}
+    <x-event.event-modal wire:model="isModalOpen" maxWidth="5xl">
         @if ($selectedEvent)
-            <x-event.detail :event="$selectedEvent" :is-bookmarked="$isBookmarked"/>
+            <x-event.detail :event="$selectedEvent" :is-bookmarked="$isBookmarked" />
         @endif
     </x-event.event-modal>
 </div>

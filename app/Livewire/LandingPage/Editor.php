@@ -58,7 +58,6 @@ class Editor extends BaseDataTable
                                     ->label('Content')
                                     ->required(),
 
-                                Toggle::make('is_visible')->default(true),
                             ]),
                         Block::make('vision_mission_section')
                             ->label('Visi & Misi')
@@ -83,7 +82,6 @@ class Editor extends BaseDataTable
                                     ])
                                     ->defaultItems(3),
 
-                                Toggle::make('is_visible')->default(true),
                             ]),
 
                         Block::make('pillars_section')
@@ -98,7 +96,7 @@ class Editor extends BaseDataTable
                                     ])
                                     ->grid(3)
                                     ->maxItems(3),
-                                Toggle::make('is_visible')->default(true),
+
                             ]),
                         Block::make('gallery_section')
                             ->label('Dokumentasi Kegiatan')
@@ -136,7 +134,6 @@ class Editor extends BaseDataTable
                                     ->grid(3)
                                     ->collapsible(),
 
-                                Toggle::make('is_visible')->default(true),
                             ]),
                         Block::make('latest_writings_section')
                             ->label('Tulisan Terbaru (Feed)')
@@ -163,7 +160,6 @@ class Editor extends BaseDataTable
                                     ->label('Tampilkan Penulis')
                                     ->default(true),
 
-                                Toggle::make('is_visible')->default(true),
                             ]),
                         Block::make('events_section')
                             ->label('Agenda Kegiatan (Events)')
@@ -185,8 +181,45 @@ class Editor extends BaseDataTable
                                     ->minValue(4)
                                     ->maxValue(6)
                                     ->required(),
+                            ]),
 
-                                Toggle::make('is_visible')->default(true),
+                        Block::make('contact_section')
+                            ->label('Hubungi Kami (Contact)')
+                            ->icon('heroicon-m-chat-bubble-left-right')
+                            ->schema([
+                                TextInput::make('section_title')
+                                    ->default('HUBUNGI KAMI')
+                                    ->required(),
+
+                                Textarea::make('section_subtitle')
+                                    ->rows(2),
+
+                                // --- GROUP KONTAK UTAMA ---
+                                TextInput::make('email')
+                                    ->email()
+                                    ->prefixIcon('heroicon-m-envelope')
+                                    ->required(),
+
+                                TextInput::make('phone')
+                                    ->label('WhatsApp / Telepon')
+                                    ->tel()
+                                    ->prefixIcon('heroicon-m-phone')
+                                    ->required(),
+
+                                TextInput::make('instagram')
+                                    ->label('Link Instagram') // <--- Field Baru
+                                    ->prefix('https://instagram.com/')
+                                    ->url()
+                                    ->prefixIcon('heroicon-m-camera'),
+
+                                Textarea::make('address')
+                                    ->label('Alamat Lengkap')
+                                    ->rows(3)
+                                    ->required(),
+
+                                Textarea::make('google_maps_code')
+                                    ->label('Embed Google Maps (HTML)')
+                                    ->rows(4),
                             ]),
 
                     ]),
