@@ -6,7 +6,7 @@
 @endphp
 
 <article
-    class="group relative flex flex-col-reverse lg:flex-row gap-6 py-6 hover:opacity-90 duration-300 p-4 lg:p-8 bg-white dark:bg-zinc-900/40 backdrop-blur-xs border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer overflow-hidden">
+    class="group relative flex flex-col-reverse lg:flex-row gap-6 py-6 hover:opacity-90 duration-300 p-4 lg:p-8 bg-gradient-to-b from-zinc-50 to-zinc-200 dark:from-zinc-700/10 dark:to-zinc-900/20 border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-xs border rounded-xl shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer overflow-hidden">
 
     <div class="absolute inset-y-0 right-0 w-[30%] hidden lg:block -z-10">
         <img src="{{ $writing->image_url }}" alt="{{ $writing->title }}"

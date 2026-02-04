@@ -42,14 +42,6 @@
                     </span>
                 </div>
             @endif
-            <div
-                class="absolute top-6 left-6 bg-white/90 dark:bg-black/90 backdrop-blur-md px-4 py-2 rounded-full border border-zinc-200 dark:border-zinc-700 shadow-sm pointer-events-none">
-                <span
-                    class="text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                    Location
-                </span>
-            </div>
         </div>
 
         {{-- 2. INFO & INSTAGRAM --}}

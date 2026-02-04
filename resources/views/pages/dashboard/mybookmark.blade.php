@@ -1,8 +1,11 @@
 <div x-data="{ activeTab: 'writing' }">
-    <div class="mb-6">
-        <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">My Bookmarks</h2>
-        <p class="text-zinc-500 text-sm mt-1">Kelola semua konten yang telah Anda simpan di satu tempat.</p>
+    <div>
+        <flux:heading size="xl" level="1">View Bookmark</flux:heading>
+        <flux:text class="mb-6 mt-2 text-base">Overview of all bookmarked content</flux:text>
+
     </div>
+
+    <flux:separator class="mb-6" variant="subtle" />
 
     <x-filament::tabs>
         <x-filament::tabs.item @click="activeTab = 'writing'" :active="false" icon="heroicon-m-pencil"

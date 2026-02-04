@@ -10,13 +10,6 @@
             <div class="absolute inset-0 bg-zinc-900/40"></div>
         </div>
 
-        <div class="absolute top-6 left-4 lg:left-8 z-10">
-            <flux:button icon="arrow-left" :href="route('writings')"
-                class="!bg-black/20 hover:!bg-black/40 !border-white/10 !backdrop-blur-sm !text-white border transition-all">
-                Back
-            </flux:button>
-        </div>
-
         <div
             class="absolute inset-0
            bg-gradient-to-t
@@ -31,6 +24,12 @@
         <div class="absolute inset-0 flex items-end justify-center pb-12 md:pb-16">
             <div class="max-w-screen-xl w-full mx-auto px-4 lg:px-6">
                 <div class="max-w-4xl">
+                    <div class="mb-4">
+                        <flux:button icon="arrow-left" :href="route('writings')"
+                            class="!bg-black/20 hover:!bg-black/40 !border-white/10 !backdrop-blur-sm !text-white border transition-all">
+                            Back
+                        </flux:button>
+                    </div>
                     <div
                         class="inline-flex items-center px-4 py-2 mb-4 rounded-lg bg-black/20 backdrop-blur-sm border border-white/10 shadow-sm">
 
@@ -260,14 +259,6 @@
                         @endforelse
                     </div>
                 </div>
-
-                {{-- <div
-                    class="bg-zinc-100 dark:bg-zinc-800 h-[300px] rounded-xl flex flex-col items-center justify-center text-center p-4">
-                    <span
-                        class="text-zinc-400 dark:text-zinc-500 text-xs font-semibold uppercase tracking-widest mb-2">Advertisement</span>
-                    <div class="w-16 h-1 border-t-2 border-zinc-300 dark:border-zinc-600"></div>
-                </div> --}}
-
             </aside>
         </div>
     </div>

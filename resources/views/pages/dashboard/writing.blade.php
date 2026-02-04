@@ -1,8 +1,15 @@
 <x-dashboard.layout>
+    <div>
+        <flux:heading size="xl" level="1">Manage Content</flux:heading>
+        <flux:text class="mb-6 mt-2 text-base">Overview of all your created content</flux:text>
+    </div>
+
+
+    <flux:separator class="mb-6" variant="subtle" />
+
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-        <div class="lg:col-span-3">
-
+        <div class="lg:col-span-4">
             <div x-data="{ activeTab: 'writing' }">
                 <x-filament::tabs>
                     <x-filament::tabs.item @click="activeTab = 'writing'" :active="false" icon="heroicon-m-pencil"
@@ -32,12 +39,12 @@
 
         </div>
 
-        <div class="lg:col-span-1">
+        {{-- <div class="lg:col-span-1">
             <div class="sticky top-8 rounded-xl border border-neutral-200 dark:border-neutral-700 h-[300px] p-6">
                 <h3 class="font-semibold mb-2">Sidebar Content</h3>
                 <p class="text-sm text-neutral-600 dark:text-neutral-400">This sidebar stays sticky while scrolling
                 </p>
             </div>
-        </div>
+        </div> --}}
     </div>
 </x-dashboard.layout>

@@ -35,7 +35,8 @@
         {{-- EMPTY STATE --}}
         <div
             class="py-12 text-center border border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl text-zinc-400">
-            <p class="text-sm italic">Belum ada agenda kegiatan terbaru.</p>
+            <p class="text-sm italic">
+                There are no new activity agendas yet.</p>
         </div>
     @endif
 

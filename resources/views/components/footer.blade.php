@@ -1,25 +1,104 @@
+@once
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+@endonce
+
+<style>
+    .font-serif-display {
+        font-family: 'Playfair Display', serif;
+    }
+
+    .big-text-clamp {
+        font-size: clamp(3rem, 15vw, 16rem);
+        line-height: 0.8;
+        letter-spacing: -0.04em;
+    }
+</style>
+
+<div class="w-full">
     <footer
-        class="p-4 md:p-8 lg:p-10  antialiased bg-linear-to-b from-slate-100 to-slate-300 dark:from-slate-700 dark:to-slate-800">
-        <div class=" text-center">
-            <div class="flex justify-center mb-4 ">
-                <x-app-logo class="text-white dark:text-black" />
+        class="bg-white dark:bg-slate-950  w-full overflow-hidden shadow-2xl transition-colors duration-300 relative border-t border-zinc-200 dark:border-zinc-800">
+
+        <div class="px-8 pt-12 md:px-16 md:pt-20 pb-4 max-w-[1400px] mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between gap-12 lg:gap-24 mb-12">
+
+                <div class="flex flex-col space-y-8 lg:w-1/3">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 font-sans">
+                            {{ config('app.name', 'Wacana') }}
+                        </h2>
+                        <p class="text-gray-500 italic dark:text-gray-400 max-w-sm">
+                            #Dari<b>Kata</b>ke<b>Karya</b>
+                        </p>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 border border-gray-300 dark:border-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-black dark:hover:text-white transition-colors"
+                            href="https://instagram.com/wacanamuda" target="_blank">
+                            <span><x-bi-instagram /></span>
+                        </a>
+                        <a class="w-10 h-10 border border-gray-300 dark:border-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-black dark:hover:text-white transition-colors"
+                            href="mailto:hello@wacanamuda.space">
+                            <span><x-bi-envelope-fill /></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex-1 grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-12">
+
+                    <div class="flex flex-col space-y-4">
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Explore</h3>
+                        <ul class="space-y-3">
+                            <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    href="{{ route('writings') }}">Writings</a></li>
+                            <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    href="{{ route('forums') }}">Forums</a></li>
+                            <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    href="{{ route('events') }}">Events</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="flex flex-col space-y-4">
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Account</h3>
+                        <ul class="space-y-3">
+                            @auth
+                                <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        href="{{ route('dashboard') }}">Dashboard</a></li>
+                                <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        href="{{ route('profile.show', auth()->user()->username ?? 'me') }}">My Profile</a>
+                                </li>
+                            @else
+                                <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        href="{{ route('login') }}">Sign In</a></li>
+                                <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        href="{{ route('register') }}">Register</a></li>
+                            @endauth
+                        </ul>
+                    </div>
+
+                    <div class="flex flex-col space-y-4">
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Wacana</h3>
+                        <ul class="space-y-3">
+                            <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    href="#">About Us</a></li>
+                            <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    href="#">Guidelines</a></li>
+                            <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <p class="my-6 text-gray-500 dark:text-white">Ruang Kata - Jelajah Rasa - Jejak Karya</p>
-            <ul class="flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white">
-                <li>
-                    <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
-                </li>
-                <li>
-                    <a href="#" class="mr-4 hover:underline md:mr-6">Terms & Conditions</a>
-                </li>
-                <li>
-                    <a href="#" class="mr-4 hover:underline md:mr-6">FAQs</a>
-                </li>
-                <li>
-                    <a href="#" class="mr-4 hover:underline md:mr-6">Contact</a>
-                </li>
-            </ul>
-            <span class="text-sm text-gray-500 sm:text-center dark:text-white">© 2025 <a href="#"
-                    class="hover:underline">WacanMudaBerkarya™</a>. All Rights Reserved.</span>
+        </div>
+
+        <div class="w-full flex justify-center items-end leading-none select-none pointer-events-none pb-4 md:pb-0">
+            <h1
+                class="font-serif-display italic big-text-clamp text-gray-900 dark:text-white tracking-tighter opacity-100">
+                {{ config('app.name', 'Wacana') }}
+            </h1>
         </div>
     </footer>
+</div>

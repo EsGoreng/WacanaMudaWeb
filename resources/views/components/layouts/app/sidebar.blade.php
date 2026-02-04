@@ -57,6 +57,7 @@
                             Create Writing
                         </flux:sidebar.item>
                     </flux:sidebar.nav>
+                    
                 </flux:sidebar.group>
             @endcan
 
@@ -70,8 +71,24 @@
                         </x-slot:icon>
                         Instagram
                     </flux:sidebar.item>
+                    <flux:sidebar.item href="mailto:hello@wacanamuda.com" target="_blank">
+                        <x-slot:icon>
+                            <x-bi-envelope-fill />
+                        </x-slot:icon>
+                        Mail
+                    </flux:sidebar.item>
                 </flux:sidebar.nav>
             </flux:sidebar.group>
+            
+            <flux:separator variant="subtle" />
+
+            <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
+                <flux:radio value="light" icon="sun"></flux:radio>
+                <flux:radio value="dark" icon="moon"></flux:radio>
+                <flux:radio value="system" icon="computer-desktop"></flux:radio>
+            </flux:radio.group>
+
+            <flux:separator variant="subtle" />
 
             @auth
                 <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" :avatar="auth()->user()->avatar ? Storage::url(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name)"/>
