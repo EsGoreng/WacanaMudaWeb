@@ -34,7 +34,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: .domains/wacanamuda.space/public_html/
+          server-dir: domains/wacanamuda.space/public_html/
           exclude: |
             **/node_modules/**
             **/vendor/** 
