@@ -53,34 +53,24 @@ class RoleSeeder extends Seeder
         $roleSuperadmin = Role::create(['name' => 'superadmin']);
         $roleSuperadmin->givePermissionTo(Permission::all());
 
-        $superadmin = User::firstOrCreate([
-            'email' => 'superadmin@wacanamuda.id',
+        $superadmin1 = User::firstOrCreate([
+            'email' => 'superadmin@wacanamuda.space',
         ], [
             'name' => 'Super Admin',
             'username' => 'superadmin',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('@Peopleberkarya123'),
             'phone' => '6281234567890',
         ]);
-        $superadmin->assignRole('superadmin');
+        $superadmin1->assignRole('superadmin');
 
-        $admin = User::firstOrCreate([
-            'email' => 'admin@wacanamuda.id',
+        $superadmin2 = User::firstOrCreate([
+            'email' => 'itsnaakhdan25@gmail.com',
         ], [
-            'name' => 'Admin',
-            'username' => 'admin1',
-            'password' => Hash::make('password123'),
-            'phone' => '6281200000000',
+            'name' => 'Akhdan Fadhil',
+            'username' => 'akhdanfadhil',
+            'password' => Hash::make('@Peopleberkarya123'),
+            'phone' => '6281234567890',
         ]);
-        $admin->assignRole('admin');
-
-        $member = User::firstOrCreate([
-            'email' => 'member@wacanamuda.id',
-        ], [
-            'name' => 'Member',
-            'username' => 'member1',
-            'password' => Hash::make('password123'),
-            'phone' => '6281200000000',
-        ]);
-        $member->assignRole('member');
+        $superadmin2->assignRole('superadmin');
     }
 }

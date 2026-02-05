@@ -1,16 +1,4 @@
-@once
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
-@endonce
-
 <style>
-    .font-serif-display {
-        font-family: 'Playfair Display', serif;
-    }
-
     .big-text-clamp {
         font-size: clamp(3rem, 15vw, 16rem);
         line-height: 0.8;
@@ -26,10 +14,9 @@
             <div class="flex flex-col lg:flex-row justify-between gap-12 lg:gap-24 mb-12">
 
                 <div class="flex flex-col space-y-8 lg:w-1/3">
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 font-sans">
-                            {{ config('app.name', 'Wacana') }}
-                        </h2>
+                    <div class="flex flex-row space-x-4 items-center">
+                        <img src="{{ asset('favicon.svg') }}"
+                            class="h-8 w-8 transition-transform duration-300 group-hover:scale-105">
                         <p class="text-gray-500 italic dark:text-gray-400 max-w-sm">
                             #Dari<b>Kata</b>ke<b>Karya</b>
                         </p>
@@ -83,12 +70,11 @@
                         <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Wacana</h3>
                         <ul class="space-y-3">
                             <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                                    href="#">About Us</a></li>
-                            <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    href="#about">About Us</a></li>
+                            {{-- <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                                     href="#">Guidelines</a></li>
                             <li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                                    href="#">Privacy Policy</a></li>
-                        </ul>
+                                    href="#">Privacy Policy</a></li> </ul> --}}
                     </div>
                 </div>
             </div>
@@ -96,7 +82,7 @@
 
         <div class="w-full flex justify-center items-end leading-none select-none pointer-events-none pb-4 md:pb-0">
             <h1
-                class="font-serif-display italic big-text-clamp text-gray-900 dark:text-white tracking-tighter opacity-100">
+                class="font-sans font-extrabold big-text-clamp text-gray-900 dark:text-white tracking-tighter opacity-100">
                 {{ config('app.name', 'Wacana') }}
             </h1>
         </div>

@@ -16,6 +16,18 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
+                'name' => 'Ruang Kata',
+                'description' => 'Ruang dialog dan pertukaran gagasan, tempat kata-kata tumbuh menjadi pemahaman dan nalar diasah melalui diskusi yang bermakna.',
+            ],
+            [
+                'name' => 'Jejak Karya',
+                'description' => 'Wujud nyata dari pemikiran dan kepedulian, melalui aksi dan pengabdian yang meninggalkan dampak bagi sekitar.',
+            ],
+            [
+                'name' => 'Jelajah Rasa',
+                'description' => 'Perjalanan untuk merasakan, memahami, dan merefleksikan makna dari setiap langkah, waktu, dan pengalaman yang dilalui.',
+            ],
+            [
                 'name' => 'Technology',
                 'description' => 'Membahas perkembangan teknologi, software, hardware, dan inovasi digital.',
             ],

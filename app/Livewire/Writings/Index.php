@@ -3,6 +3,7 @@
 namespace App\Livewire\Writings;
 
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Writing;
 use App\Traits\InteractsWithContentFilters;
 use Livewire\Attributes\Computed;
@@ -20,6 +21,8 @@ class Index extends Component
 
     #[Url(except: '')]
     public $readingTimeMax = '';
+
+    public bool $onlyFollowing = false;
 
     public function updatingReadingTimeMin()
     {
@@ -70,6 +73,16 @@ class Index extends Component
             ->withCount(['likes'])
             ->where('status', 'Published')
             ->whereNotNull('published_at');
+
+        if ($this->onlyFollowing) {
+            if (auth()->check()) {
+                $followingIds = auth()->user()->followings()->pluck('users.id');
+                $query->whereIn('user_id', $followingIds)
+                    ->where('is_anonymous', false);
+            } else {
+                return Writing::where('id', -1)->paginate(6);
+            }
+        }
 
         if (! empty($this->search)) {
             $query->where(function ($q) {
@@ -265,9 +278,16 @@ class Index extends Component
             ],
         ]);
 
+        $totalFollowing = 0;
+
+        if (auth()->check()) {
+            $totalFollowing = auth()->user()->followings()->count();
+        }
+
         return view('livewire.writings.index', [
             'literacyContent' => $literacyContent,
-            'totalAuthors' => \App\Models\User::count(),
+            'totalAuthors' => User::count(),
+            'totalFollowing' => $totalFollowing,
         ]);
     }
 }

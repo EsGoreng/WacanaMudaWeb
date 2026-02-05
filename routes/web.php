@@ -19,11 +19,13 @@ Route::get('/', function () {
 
 Route::get('/profile/{user:username}', Profile\Show::class)->name('profile.show');
 
-Route::get('/writing/{writing:slug}', Writings\Show::class)->name('writing.show');
 Route::view('/writing', 'pages.writing.main')->name('writings');
+Route::view('/writing/following', 'pages.writing.following')->name('writings.following');
+Route::get('/writing/{writing:slug}', Writings\Show::class)->name('writing.show');
 
-Route::get('/forum/{forum:slug}', Forums\Show::class)->name('forum.show');
 Route::view('/forum', 'pages.forum.main')->name('forums');
+Route::view('/forum/following', 'pages.forum.following')->name('forums.following');
+Route::get('/forum/{forum:slug}', Forums\Show::class)->name('forum.show');
 
 Route::view('/event', 'pages.event.main')->name('events');
 

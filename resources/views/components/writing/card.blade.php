@@ -16,14 +16,27 @@
 
     <div class="flex-1 flex flex-col justify-between min-w-0 relative z-10 lg:max-w-[55%]">
         <div class="flex items-center mb-4">
-            <a href="{{ route('profile.show', $writing->user) }}" class="flex items-center hover:underline group/author">
-                <img src="{{ $writing->author_avatar_url }}" alt="{{ $writing->author_display_name }}"
-                    class="w-6 h-6 rounded-full object-cover mr-2 border border-transparent group-hover/author:border-blue-500 transition-colors">
-                <span
-                    class="text-black dark:text-zinc-100 text-sm group-hover/author:text-blue-600 dark:group-hover/author:text-blue-400 transition-colors">
-                    {{ $writing->author_display_name }}
-                </span>
-            </a>
+            @if ($writing->is_anonymous)
+                {{-- Tampilan untuk Anonymous (Tanpa Link & Efek Hover) --}}
+                <div class="flex items-center cursor-default">
+                    <img src="{{ $writing->author_avatar_url }}" alt="{{ $writing->author_display_name }}"
+                        class="w-6 h-6 rounded-full object-cover mr-2 border border-transparent opacity-80">
+                    <span class="text-black dark:text-zinc-100 text-sm">
+                        {{ $writing->author_display_name }}
+                    </span>
+                </div>
+            @else
+                {{-- Tampilan Normal (Dengan Link ke Profile) --}}
+                <a href="{{ route('profile.show', $writing->user) }}"
+                    class="flex items-center hover:underline group/author">
+                    <img src="{{ $writing->author_avatar_url }}" alt="{{ $writing->author_display_name }}"
+                        class="w-6 h-6 rounded-full object-cover mr-2 border border-transparent group-hover/author:border-blue-500 transition-colors">
+                    <span
+                        class="text-black dark:text-zinc-100 text-sm group-hover/author:text-blue-600 dark:group-hover/author:text-blue-400 transition-colors">
+                        {{ $writing->author_display_name }}
+                    </span>
+                </a>
+            @endif
         </div>
 
         <div class="flex items-center gap-2 mb-2 flex-wrap">

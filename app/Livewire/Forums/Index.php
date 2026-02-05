@@ -16,6 +16,8 @@ class Index extends Component
     use InteractsWithContentFilters;
     use WithPagination;
 
+    public bool $onlyFollowing = false;
+
     #[Computed]
     public function categories()
     {
@@ -83,6 +85,18 @@ class Index extends Component
                 },
             ]);
 
+        if ($this->onlyFollowing) {
+            if (auth()->check()) {
+                $followingIds = auth()->user()->followings()->pluck('users.id');
+                $query->whereIn('user_id', $followingIds)
+                    ->where('is_anonymous', false);
+            } else {
+                return view('livewire.forums.index', [
+                    'forums' => Forum::where('id', -1)->paginate(5),
+                ]);
+            }
+        }
+
         if (! empty($this->search)) {
             $query->where(function ($q) {
                 $q->where('title', 'like', '%'.$this->search.'%')
@@ -124,8 +138,15 @@ class Index extends Component
                 break;
         }
 
+        $totalFollowing = 0;
+
+        if (auth()->check()) {
+            $totalFollowing = auth()->user()->followings()->count();
+        }
+
         return view('livewire.forums.index', [
             'forums' => $query->paginate(5),
+            'totalFollowing' => $totalFollowing,
         ]);
     }
 }
