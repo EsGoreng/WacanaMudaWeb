@@ -63,7 +63,7 @@
 
     <div class="relative flex h-full w-full flex-col items-center z-10">
 
-        <div class="flex justify-center mt-40 mb-24 scale-[2.5] ">
+        <div class="flex justify-center mt-64 mb-24 scale-[2.5] ">
             <x-app-logo class="text-white drop-shadow-lg font-sans" />
         </div>
 
@@ -105,7 +105,7 @@
                 </div>
 
                 <h1
-                    class="text-left text-[3.2rem] leading-[1.2] font-extrabold text-white mb-6 tracking-tight drop-shadow-md">
+                    class="text-left text-[3.2rem] leading-[1.2] font-extrabold text-white mb-6 tracking-tight drop-shadow-md truncate">
                     {{ $event->title }}
                 </h1>
 

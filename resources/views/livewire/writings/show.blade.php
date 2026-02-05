@@ -3,7 +3,7 @@
             bg-zinc-50
             dark:bg-page-gray-900">
 
-    <div class="relative w-full h-[500px] md:h-[500px] lg:h-[600px] group">
+    <div class="relative w-full h-[600px] md:h-[600px] lg:h-[800px] group">
 
         <div class="absolute inset-0 w-full h-full h-min-[200px]">
             <img alt="{{ $writing->title }}" class="w-full h-full object-cover" src="{{ $writing->image_url }}" />

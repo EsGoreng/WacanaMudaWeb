@@ -62,7 +62,7 @@
 
     <div class="relative flex h-full w-full flex-col items-center z-10">
 
-        <div class="flex font-sans justify-center mt-40 mb-24 scale-[2.5]">
+        <div class="flex font-sans justify-center mt-64 mb-24 scale-[2.5]">
             <x-app-logo class="text-white drop-shadow-lg" />
         </div>
 
@@ -105,7 +105,7 @@
                 </div>
 
                 <h1
-                    class="font-sans text-left text-[3.2rem] leading-[1.2] font-extrabold text-white mb-6 tracking-tight drop-shadow-md">
+                    class="font-sans text-left text-[3.2rem] leading-[1.2] font-extrabold text-white mb-6 tracking-tight drop-shadow-md truncate">
                     {{ $forum->title }}
                 </h1>
 
@@ -122,12 +122,12 @@
 
                 <div class="flex items-center justify-between mb-10 mt-auto pt-8 border-t border-slate-800/50">
                     <div class="flex items-center gap-4">
-                        <span class="text-2xl font-bold text-slate-200">
+                        <span class="text-2xl font-bold text-slate-200 whitespace-nowrap">
                             By {{ $forum->user->name }}
                         </span>
                     </div>
 
-                    <div class="flex items-center gap-6 text-slate-400">
+                    {{-- <div class="flex items-center gap-6 text-slate-400">
                         <div class="flex items-center gap-2">
                             <x-bi-chat-dots class="w-5 h-5" />
                             <span class="text-xl font-bold">{{ $forum->comments()->count() }}</span>
@@ -137,7 +137,7 @@
                             <span
                                 class="text-xl font-bold">{{ \Illuminate\Support\Number::abbreviate($forum->view_count) }}</span>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
             </div>
