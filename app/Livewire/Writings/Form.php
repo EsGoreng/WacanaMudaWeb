@@ -92,6 +92,8 @@ class Form extends Component implements HasActions, HasSchemas
                                     ->label('Featured Image')
                                     ->disk('public')
                                     ->image()
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                                    ->helperText('Max 2MB, Format: JPG, PNG')
                                     ->live()
                                     ->directory('writings/featured-images')
                                     ->maxSize(2048)
