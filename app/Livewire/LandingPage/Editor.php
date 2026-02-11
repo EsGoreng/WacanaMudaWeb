@@ -49,6 +49,9 @@ class Editor extends BaseDataTable
 
                                 FileUpload::make('image')
                                     ->label('About Image')
+                                    ->maxSize(2048)
+                                    ->optimize('webp')
+                                    ->resize(50)
                                     ->image()
                                     ->disk('public')
                                     ->directory('landing-page/about')
@@ -116,10 +119,12 @@ class Editor extends BaseDataTable
                                     ->schema([
                                         FileUpload::make('media_file')
                                             ->label('File (Foto/Video)')
+                                            ->optimize('webp')
+                                            ->resize(50)
                                             ->disk('public')
                                             ->directory('landing-page/gallery')
                                             ->acceptedFileTypes(['image/*', 'video/mp4', 'video/quicktime'])
-                                            ->maxSize(10240) // Max 10MB
+                                            ->maxSize(2048)
                                             ->required(),
 
                                         TextInput::make('caption')

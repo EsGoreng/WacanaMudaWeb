@@ -1,0 +1,191 @@
+/* ===== 1. FULLSCREEN CONTAINER ===== */
+.fi-fo-rich-editor.fullscreen {
+    position: fixed;
+    border-radius: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 30;
+    background-color: var(--color-white);
+    border: none;
+    box-shadow: none;
+    overflow: hidden;
+}
+body:has(.fi-fo-rich-editor.fullscreen) {
+    overflow: hidden;
+}
+.dark .fi-fo-rich-editor.fullscreen {
+    background-color: var(--gray-900);
+}
+.fi-fo-rich-editor.fullscreen:focus-within {
+    outline: none;
+}
+
+/* ===== 2. MAIN LAYOUT & KUNCI SCROLL BOCOR ===== */
+.fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-main {
+    height: calc(100vh - 3.75rem);
+    max-width: 98vw;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important; /* PENTING: Mencegah kebocoran layar ke bawah */
+}
+@media (min-width: 600px) {
+    .fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-main {
+        width: 100%;
+    }
+}
+
+/* ===== 3. DESKTOP GRID LAYOUT ===== */
+@media (min-width: 672px) {
+    .fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-main {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        /* Gunakan 1 baris saja yang dikunci maksimal setinggi layar */
+        grid-template-rows: minmax(0, 1fr) !important;
+    }
+    .fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-content {
+        grid-row: 1;
+        grid-column: 1;
+    }
+    .fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-panels {
+        position: relative;
+        grid-row: 1;
+        grid-column: 2;
+        overflow-y: auto; /* Jika panel samping panjang, bisa diskrol */
+    }
+}
+
+/* ===== 4. PANELS (HP / Tablet Kiri-Kanan) ===== */
+.fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-panels {
+    position: absolute;
+    right: 0;
+}
+@media (max-width: 671px) {
+    .fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-panels {
+        position: relative;
+        width: 100%;
+        order: -1;
+    }
+}
+
+/* ===== 5. CONTENT WRAPPER (Tempat Scroll Aktif) ===== */
+.fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-content {
+    padding: 1rem 2rem 2rem;
+    flex: 1 1 auto;
+    max-width: 75rem;
+    margin: 0 auto;
+    width: 100%;
+
+    /* PENTING: Memicu Scrollbar di sini */
+    overflow-y: auto !important;
+    height: 100% !important;
+    min-height: 0 !important; /* PENTING: Memaksa scrollbar muncul saat konten panjang */
+}
+
+/* ===== 6. EDITOR TEKS (ProseMirror) ===== */
+.fi-fo-rich-editor.fullscreen .ProseMirror {
+    padding-right: 1rem;
+    box-sizing: border-box;
+    height: auto !important; /* Area teks ikut memanjang secara natural */
+    min-height: calc(100vh - 8rem);
+    max-height: none;
+}
+
+/* ===== 7. TOOLBAR UMUM ===== */
+.fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: inherit;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0.75rem 2rem;
+}
+.dark .fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-toolbar {
+    border-bottom-color: var(--gray-700);
+}
+
+/* ===== 8. CUSTOM MOBILE TOOLBAR (Khusus Layar HP) ===== */
+@media (max-width: 768px) {
+    /* Beri ruang ekstra di bawah agar teks terakhir tidak tertutup toolbar */
+    .fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-content,
+    .fi-fo-rich-editor.fullscreen .ProseMirror {
+        padding-bottom: 5rem !important;
+    }
+
+    /* Pindahkan Toolbar ke Bawah dan Jadikan Horizontal Scroll */
+    .fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-toolbar {
+        position: absolute !important;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0;
+        right: 0;
+        width: 100%;
+
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch;
+
+        box-shadow: 0 -4px 10px -2px rgba(0, 0, 0, 0.05) !important;
+        padding: 0.75rem 1rem max(0.75rem, env(safe-area-inset-bottom)) !important;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    /* Sembunyikan scrollbar di Chrome/Safari */
+    .fi-fo-rich-editor.fullscreen
+        .fi-fo-rich-editor-toolbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Paksa grup tombol menyamping */
+    .fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-toolbar > div {
+        flex-wrap: nowrap !important;
+        flex-shrink: 0;
+    }
+}
+
+/* ===== TOOLBAR NORMAL MODE (MINIMALIS / SATU BARIS) ===== */
+.fi-fo-rich-editor:not(.fullscreen) .fi-fo-rich-editor-toolbar {
+    display: flex;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+
+    /* Opsional: Kurangi padding agar lebih pipih */
+    padding: 0.5rem 0.75rem;
+}
+
+/* Sembunyikan scrollbar di Chrome/Safari */
+.fi-fo-rich-editor:not(.fullscreen)
+    .fi-fo-rich-editor-toolbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Paksa grup tombol di dalamnya menyamping */
+.fi-fo-rich-editor:not(.fullscreen) .fi-fo-rich-editor-toolbar > div {
+    flex-wrap: nowrap !important;
+    flex-shrink: 0;
+}
+
+/* (Opsional) Samarkan border bawah toolbar agar lebih bersih */
+.fi-fo-rich-editor:not(.fullscreen) .fi-fo-rich-editor-toolbar {
+    border-bottom-color: transparent;
+    transition: border-color 0.2s ease;
+}
+.fi-fo-rich-editor:not(.fullscreen):focus-within .fi-fo-rich-editor-toolbar {
+    border-bottom-color: var(
+        --gray-200
+    ); /* Munculkan border hanya saat diketik */
+}
+.dark
+    .fi-fo-rich-editor:not(.fullscreen):focus-within
+    .fi-fo-rich-editor-toolbar {
+    border-bottom-color: var(--gray-700);
+}

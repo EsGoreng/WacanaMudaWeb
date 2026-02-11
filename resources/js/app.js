@@ -48,4 +48,14 @@ document.addEventListener("livewire:navigated", () => {
     }, 100);
 });
 
+document.addEventListener("mouseover", (e) => {
+    const editorContent = e.target.closest(
+        ".fi-fo-rich-editor.fullscreen .fi-fo-rich-editor-content",
+    );
+
+    if (editorContent && !editorContent.hasAttribute("data-lenis-prevent")) {
+        editorContent.setAttribute("data-lenis-prevent", "true");
+    }
+});
+
 window.lenis = lenis;

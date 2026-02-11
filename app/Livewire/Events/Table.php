@@ -275,6 +275,8 @@ class Table extends BaseDataTable
                             ->label('Featured Image')
                             ->disk('public')
                             ->image()
+                            ->optimize('webp')
+                            ->resize(50)
                             ->live()
                             ->directory('event/banner-image')
                             ->maxSize(2048)

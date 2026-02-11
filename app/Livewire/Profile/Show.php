@@ -48,6 +48,9 @@ class Show extends Component implements HasActions, HasForms
                 FileUpload::make('avatar')
                     ->image()
                     ->avatar()
+                    ->maxSize(2048)
+                    ->optimize('webp')
+                    ->resize(50)
                     ->disk('public')
                     ->directory('avatars')
                     ->imageEditor(),
