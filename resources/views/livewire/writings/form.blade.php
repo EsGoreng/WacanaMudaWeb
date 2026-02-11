@@ -12,7 +12,7 @@
             </flux:button>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start py-12 space-y-4">
 
             <div class="lg:col-span-8 space-y-4 sm:space-y-6">
                 <div
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-4 space-y-4 sm:space-y-6 mt-8">
+            <div class="lg:col-span-4 space-y-4 sm:space-y-6">
                 <div
                     class="sm:bg-white sm:dark:bg-gray-900 sm:rounded-xl sm:shadow-sm sm:ring-1 sm:ring-gray-950/5 sm:dark:ring-white/10 sm:p-6">
                     <h2
